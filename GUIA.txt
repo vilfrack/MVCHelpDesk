@@ -1,0 +1,17 @@
+1. SE CREA EL MODELO (TASK) HAY QUE CAMBIAR ESE NOMBRE POR REQUERIMIENTO
+2. SE CREA LA CARPETA CONTEXT CON LA CLASE TaskContext
+3. CAMBIAMOS LA CADENA DE CONEXION DEL WEBCONFIG, EL NOMRE DE LA CADENA DDEBE SER IGUAL A LA CLASE DEL CONTEXTO
+4. SE HABILITA LAS MIGRACIONES (Enable-Migrations -ContextTypeName TaskContext) SE PASA EL PARAMETRO DEL NOMBRE DEL CONTEXTO
+5. Add-Migrations agregamos la migracion seguidamente agregamos Update-Database para actualizar la base de datos
+6. Habilitar migraciones automaticas: (Enable-Migrations -ContextTypeName TaskContext -EnableAutomaticMigrations) OJO EN CASO DE HABER
+EJECUTADO EL PASO 4, SE DEBE BORRAR LA MIGRACION PARA VOLVERLA A EJECUTAR
+7. en el constructor de Configurations.cs se agrega el siguiente codigo AutomaticMigrationDataLossAllowed = true;(invesitgar )
+8. en el Global.asax se agrega el siguiente codigo             Database.SetInitializer(
+																new MigrateDatabaseToLatestVersion<Context.TaskContext,
+																Migrations.Configuration>()); este codigo permite validar si se hicieron cambios en el contexto para actualizarlos
+9.Para dehabilitar la plurarizacion de las tablas se agrega el sigueinte codigo en el contexto de 	ApplicationDbContext:
+ 	protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+        }

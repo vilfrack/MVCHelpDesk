@@ -5,6 +5,11 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVCHelpDesk", "MVCHelpDesk\MVCHelpDesk.csproj", "{100C4D9B-37CE-42D7-827C-6B4F15BDA44B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{619F6A33-B61C-431D-B344-45DE01CF1465}"
+	ProjectSection(SolutionItems) = preProject
+		GUIA.txt = GUIA.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

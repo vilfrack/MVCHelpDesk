@@ -32,6 +32,12 @@ namespace MVCHelpDesk.Models
         }
         public DbSet<Requerimiento> Requerimiento { get; set; }
         public DbSet<Permisos> Permisos { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+        }
     }
 
 }

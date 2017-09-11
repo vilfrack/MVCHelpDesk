@@ -17,7 +17,7 @@ namespace MVCHelpDesk.Controllers
         // GET: Requerimiento
         public ActionResult Index()
         {
-            return View(db.Requerimientos.ToList());
+            return View(db.Requerimiento.ToList());
         }
 
         // GET: Requerimiento/Details/5
@@ -27,7 +27,7 @@ namespace MVCHelpDesk.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Requerimiento requerimiento = db.Requerimientos.Find(id);
+            Requerimiento requerimiento = db.Requerimiento.Find(id);
             if (requerimiento == null)
             {
                 return HttpNotFound();
@@ -50,7 +50,7 @@ namespace MVCHelpDesk.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Requerimientos.Add(requerimiento);
+                db.Requerimiento.Add(requerimiento);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -65,7 +65,7 @@ namespace MVCHelpDesk.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Requerimiento requerimiento = db.Requerimientos.Find(id);
+            Requerimiento requerimiento = db.Requerimiento.Find(id);
             if (requerimiento == null)
             {
                 return HttpNotFound();
@@ -96,7 +96,7 @@ namespace MVCHelpDesk.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Requerimiento requerimiento = db.Requerimientos.Find(id);
+            Requerimiento requerimiento = db.Requerimiento.Find(id);
             if (requerimiento == null)
             {
                 return HttpNotFound();
@@ -109,8 +109,8 @@ namespace MVCHelpDesk.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Requerimiento requerimiento = db.Requerimientos.Find(id);
-            db.Requerimientos.Remove(requerimiento);
+            Requerimiento requerimiento = db.Requerimiento.Find(id);
+            db.Requerimiento.Remove(requerimiento);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
