@@ -1,11 +1,10 @@
-﻿using System.Data.Entity;
-using System.Security.Claims;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using System.Data.Entity.ModelConfiguration.Conventions;
 
-namespace MVCHelpDesk.Models
+namespace Models
 {
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
@@ -32,8 +31,6 @@ namespace MVCHelpDesk.Models
         }
         public DbSet<Requerimiento> Requerimiento { get; set; }
         public DbSet<Permisos> Permisos { get; set; }
-        public DbSet<PermisoPorRol> PermisoPorRol { get; set; }
-        public DbSet<PermisosPorUsuarios> PermisosPorUsuarios { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -41,5 +38,4 @@ namespace MVCHelpDesk.Models
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }
     }
-
 }
