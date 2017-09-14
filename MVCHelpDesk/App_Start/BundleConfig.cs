@@ -33,12 +33,12 @@ namespace MVCHelpDesk
                 "~/Scripts/Apps/Roles/roles.js").IncludeDirectory("~/Scripts", ".js"));
 
             bundles.Add(new StyleBundle("~/bundles/css").Include(
-                "~/Content/css/bootstrap-3.3.7-dist/css/bootstrap.css",
+                "~/Content/bootstrap-3.3.7-dist/css/bootstrap.css",
 
-                "~/Content/css/fileinput.css",
-                "~/Content/css/main.css",
-                "~/Content/css/sb-admin.css",
-                 "~/Content/css/morris.css"
+                "~/Content/fileinput.css",
+                "~/Content/main.css",
+                "~/Content/sb-admin.css",
+                 "~/Content/morris.css"
                 ).IncludeDirectory("~/Content", ".css"));
 
         }
