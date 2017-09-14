@@ -18,7 +18,7 @@ namespace MVCHelpDesk.Attribute
         {
             base.OnActionExecuting(filterContext);
 
-            if (!PermisoByRol(this.permisos))
+            if (!PermisoByRol(this.permisos) && !PermisoByUser(this.permisos))
             {
                 filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new
                 {

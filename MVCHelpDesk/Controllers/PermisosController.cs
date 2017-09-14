@@ -7,14 +7,16 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MVCHelpDesk.Models;
+using MVCHelpDesk.Attribute;
 
 namespace MVCHelpDesk.Controllers
 {
+    [Authorize, ModuloAttribute(modulo = Permisos.AllModulos.Permiso, permisos = Permisos.AllPermisos.ver)]
     public class PermisosController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Permisos
+        [PermisoAttribute(permisos = Permisos.AllPermisos.ver)]
         public ActionResult Index()
         {
             return View(db.Permisos.ToList());
@@ -27,7 +29,7 @@ namespace MVCHelpDesk.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Permisos permisos = db.Permisos.Find(id);
+            Models.Permisos permisos = db.Permisos.Find(id);
             if (permisos == null)
             {
                 return HttpNotFound();
@@ -46,7 +48,7 @@ namespace MVCHelpDesk.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PermisoID,Modulo,Descripcion")] Permisos permisos)
+        public ActionResult Create([Bind(Include = "PermisoID,Modulo,Descripcion")] Models.Permisos permisos)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +67,7 @@ namespace MVCHelpDesk.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Permisos permisos = db.Permisos.Find(id);
+            Models.Permisos permisos = db.Permisos.Find(id);
             if (permisos == null)
             {
                 return HttpNotFound();
@@ -78,7 +80,7 @@ namespace MVCHelpDesk.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PermisoID,Modulo,Descripcion")] Permisos permisos)
+        public ActionResult Edit([Bind(Include = "PermisoID,Modulo,Descripcion")] Models.Permisos permisos)
         {
             if (ModelState.IsValid)
             {
@@ -96,7 +98,7 @@ namespace MVCHelpDesk.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Permisos permisos = db.Permisos.Find(id);
+            Models.Permisos permisos = db.Permisos.Find(id);
             if (permisos == null)
             {
                 return HttpNotFound();
@@ -109,7 +111,7 @@ namespace MVCHelpDesk.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Permisos permisos = db.Permisos.Find(id);
+            Models.Permisos permisos = db.Permisos.Find(id);
             db.Permisos.Remove(permisos);
             db.SaveChanges();
             return RedirectToAction("Index");

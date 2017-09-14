@@ -7,14 +7,17 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MVCHelpDesk.Models;
-
+using MVCHelpDesk.Attribute;
+using MVCHelpDesk.Permisos;
 namespace MVCHelpDesk.Controllers
 {
+    [Authorize]
     public class RequerimientoController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Requerimiento
+        [PermisoAttribute(permisos = AllPermisos.ver)]
         public ActionResult Index()
         {
             return View(db.Requerimiento.ToList());

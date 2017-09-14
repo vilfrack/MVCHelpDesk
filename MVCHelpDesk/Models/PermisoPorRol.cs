@@ -10,7 +10,9 @@ namespace MVCHelpDesk.Models
         public int PermisoRolID { get; set; }
         public int PermisoID { get; set; }
         public string RoleID { get; set; }
+        public int ModuloID { get; set; }
 
+        public virtual Modulos Modulos { get; set; }
         public virtual Permisos Permisos { get; set; }
         //SE DEBE PONER ForeignKey SI QUEREMOS ESTABLECER UNA RELACION CON UN CAMPO EN ESPECIFICO
         [ForeignKey("RoleID")]

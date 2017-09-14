@@ -15,3 +15,5 @@ EJECUTADO EL PASO 4, SE DEBE BORRAR LA MIGRACION PARA VOLVERLA A EJECUTAR
             base.OnModelCreating(modelBuilder);
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }
+10. Se crea todo lo relacionado a permisos, enum y la clase permisoAtribut
+11. se comienza a crear permisos por modulos

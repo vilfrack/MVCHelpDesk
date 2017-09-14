@@ -1,5 +1,8 @@
 namespace MVCHelpDesk.Migrations
 {
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using Models;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -16,18 +19,18 @@ namespace MVCHelpDesk.Migrations
 
         protected override void Seed(MVCHelpDesk.Models.ApplicationDbContext context)
         {
-            //  This method will be called after migrating to the latest version.
+            var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            var RoleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
 
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
+            // Create Admin Role
+            string roleName = "Administrador";
+            IdentityResult roleResult;
+
+            // Check to see if Role Exists, if not create it
+            if (!RoleManager.RoleExists(roleName))
+            {
+                roleResult = RoleManager.Create(new IdentityRole(roleName));
+            }
         }
     }
 }

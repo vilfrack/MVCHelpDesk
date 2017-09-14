@@ -30,10 +30,12 @@ namespace MVCHelpDesk.Models
         {
             return new ApplicationDbContext();
         }
+
         public DbSet<Requerimiento> Requerimiento { get; set; }
         public DbSet<Permisos> Permisos { get; set; }
         public DbSet<PermisoPorRol> PermisoPorRol { get; set; }
         public DbSet<PermisosPorUsuarios> PermisosPorUsuarios { get; set; }
+        public DbSet<Modulos> Modulos { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

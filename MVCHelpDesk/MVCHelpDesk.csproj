@@ -169,6 +169,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Attribute\ModuloAttribute.cs" />
     <Compile Include="Attribute\PermisoAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -179,8 +180,10 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Modulos.cs" />
     <Compile Include="Models\PermisoPorRol.cs" />
     <Compile Include="Models\PermisosPorUsuarios.cs" />
+    <Compile Include="Permisos\AllModulos.cs" />
     <Compile Include="Permisos\AllPermisos.cs" />
     <Compile Include="ViewModel\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -257,6 +260,7 @@
     <Content Include="Views\Permisos\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="AllPermisos\" />
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
