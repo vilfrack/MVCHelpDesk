@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace MVCHelpDesk.Models
 {
     public class Requerimiento
     {
         [Key]
-        public int TaskID { get; set; }
+        public int RequerimientoID { get; set; }
         public DateTime FechaCreacion { get; set; }
         public DateTime FechaFinalizacion { get; set; }//fecha en el que se deberia finalizar el task
 

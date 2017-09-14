@@ -16,7 +16,6 @@ namespace MVCHelpDesk.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        [PermisoAttribute(permisos = Permisos.AllPermisos.ver)]
         public ActionResult Index()
         {
             return View(db.Permisos.ToList());

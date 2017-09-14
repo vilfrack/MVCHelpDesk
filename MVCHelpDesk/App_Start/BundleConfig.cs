@@ -8,24 +8,39 @@ namespace MVCHelpDesk
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
-            bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+            bundles.Add(new ScriptBundle("~/bundles/script").Include(
+              "~/Scripts/jquery-3.2.1.min.js",
 
-            bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        "~/Scripts/jquery.validate*"));
+              "~/Scripts/jquery-ui-1.12.1.custom/jquery-ui.js",
+              "~/Scripts/fileinput.js",
+              "~/Scripts/bootstrap.js",
+              "~/Scripts/plugins/morris/morris.js",
+              "~/Scripts/plugins/morris/morris-data.js",
+              "~/Scripts/plugins/DataTables-1.10.15/media/js/jquery.dataTables.js",//para el grid
+              "~/Scripts/plugins/DataTables-1.10.15/media/js/dataTables.bootstrap.js",//para el grid
+              "~/Scripts/Apps/task/task.js").IncludeDirectory("~/Scripts", ".js"));
 
-            // Use the development version of Modernizr to develop with and learn from. Then, when you're
-            // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
-            bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
-                        "~/Scripts/modernizr-*"));
+            bundles.Add(new ScriptBundle("~/bundles/scriptOperations").Include(
+               "~/Scripts/Apps/OperationsTaks/OperationsTaks.js").IncludeDirectory("~/Scripts", ".js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
+            bundles.Add(new ScriptBundle("~/bundles/scriptUsers").Include(
+                "~/Scripts/Apps/Users/users.js").IncludeDirectory("~/Scripts", ".js"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+            bundles.Add(new ScriptBundle("~/bundles/scriptDepartamento").Include(
+                "~/Scripts/Apps/Departamento/departamento.js").IncludeDirectory("~/Scripts", ".js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/scriptRoles").Include(
+                "~/Scripts/Apps/Roles/roles.js").IncludeDirectory("~/Scripts", ".js"));
+
+            bundles.Add(new StyleBundle("~/bundles/css").Include(
+                "~/Content/css/bootstrap-3.3.7-dist/css/bootstrap.css",
+
+                "~/Content/css/fileinput.css",
+                "~/Content/css/main.css",
+                "~/Content/css/sb-admin.css",
+                 "~/Content/css/morris.css"
+                ).IncludeDirectory("~/Content", ".css"));
+
         }
     }
 }

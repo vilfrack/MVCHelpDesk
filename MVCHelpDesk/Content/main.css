@@ -1,0 +1,53 @@
+
+body{
+
+}
+h5{
+    font-weight: bold;
+}
+  .contenedor {
+    float: left;
+    padding-bottom: 20px;
+    margin: 10px 5px 0 10px;
+  }
+  .column {
+    width: 250px;
+    float: left;
+    padding-bottom: 20px;
+    margin: 5px 5px 0 5px;
+    background-color:rgba(0, 0, 0, 0.1);
+    border-radius:5px;
+  }
+  .portlet {
+   /* margin: 0 1em 0 0;
+    padding: 0.3em;*/
+  }
+  .portlet-header {
+    /*TITULOS*/
+    padding: 0.2em 0.3em;
+    margin-bottom: 0.5em;
+    position: relative;
+    font-weight: bold;
+
+
+  }
+  .portlet-content {
+    padding: 0.4em;
+/*    background-color:#f9f9f9;*/
+    border-radius:5px;
+    margin-left: 10px;
+  }
+  .portlet-placeholder {
+    border: 1px dotted black;
+    margin: 0 1em 1em 0;
+    height: 50px;
+  }
+/*DESARROLLAR DESPUES, EL SIGUIENTE BLOQUE DE CODIGO PERMITE MODIFICAR EL COLOR DE LOS PANEL FOOTER*/
+/*
+.panel-footer.panel-custom {
+    background: red;
+    color: white;
+}
+*/
+
+

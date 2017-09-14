@@ -18,7 +18,7 @@ namespace MVCHelpDesk.Attribute
         {
             base.OnActionExecuting(filterContext);
 
-            if (!PermisoByRol(this.modulo,this.permisos))
+            if (!PermisoByRol(this.modulo,this.permisos) && !PermisoByUser(this.modulo, this.permisos))
             {
                 filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new
                 {
@@ -29,7 +29,6 @@ namespace MVCHelpDesk.Attribute
         }
         public bool PermisoByRol(AllModulos modulo,AllPermisos permisos)
         {
-            //PRUEBA
             int intModulo = (int)modulo;
             int intPermisos = (int)permisos;
 
@@ -42,14 +41,17 @@ namespace MVCHelpDesk.Attribute
 
             return permisoRol;
         }
-        public bool PermisoByUser(AllModulos valor)
+        public bool PermisoByUser(AllModulos modulo, AllPermisos permisos)
         {
-            int intValor = (int)valor;
+            int intModulo = (int)modulo;
+            int intPermisos = (int)permisos;
+
             var s = (from user in db.Users
                      join permisoUsuario in db.PermisosPorUsuarios on user.Id equals permisoUsuario.UsuarioID
                      join per in db.Permisos on permisoUsuario.PermisoID equals per.PermisoID
-                     where permisoUsuario.PermisoID == intValor
-                     select new { permisos = per.PermisoID }).Any();
+                     join m in db.Modulos on permisoUsuario.ModuloID equals m.ModuloID
+                     where m.ModuloID == intModulo && permisoUsuario.PermisoID == intPermisos
+                     select new { permisos = permisoUsuario.PermisoID }).Any();
 
             return s;
         }

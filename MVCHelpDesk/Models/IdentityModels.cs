@@ -32,10 +32,22 @@ namespace MVCHelpDesk.Models
         }
 
         public DbSet<Requerimiento> Requerimiento { get; set; }
+
         public DbSet<Permisos> Permisos { get; set; }
+
         public DbSet<PermisoPorRol> PermisoPorRol { get; set; }
+
         public DbSet<PermisosPorUsuarios> PermisosPorUsuarios { get; set; }
+
         public DbSet<Modulos> Modulos { get; set; }
+
+        public DbSet<Departamento> Departamento { get; set; }
+
+        public DbSet<Files> Files { get; set; }
+
+        public DbSet<Status> Status { get; set; }
+
+        public DbSet<Perfiles> Perfiles { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
