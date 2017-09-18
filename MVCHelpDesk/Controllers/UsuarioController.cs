@@ -103,7 +103,6 @@ namespace MVCHelpDesk.Controllers
             string ruta = Path.Combine(Server.MapPath("~/Images/empleados/" + id));
             string ruta_virtual = "~/Images/empleados/" + id;
             string pathString = ruta;
-
             bool isExists = System.IO.Directory.Exists(pathString);
 
             if (!isExists)
@@ -112,49 +111,130 @@ namespace MVCHelpDesk.Controllers
             var path = string.Format("{0}\\{1}", pathString, file.FileName);
 
             file.SaveAs(path);
-            return ruta_virtual;
+            return ruta_virtual+"/"+ file.FileName;
         }
         // GET: Usuario/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(string id)
         {
-            return View();
+            var query = (from u in db.Users
+                        join p in db.Perfiles on u.Id equals p.UsuarioID
+                        where u.Id == id
+                        select new {
+                            Id = u.Id,
+                            Password = u.PasswordHash,
+                            Email = u.Email,
+                            Nombre = p.Nombre,
+                            Apellido = p.Apellido,
+                            IDPerfil = p.IDPerfil,
+                            Ruta = p.rutaImg
+                        }).SingleOrDefault();
+
+            var userPerfil = new ViewUserPerfil
+            {
+                IDPerfil = query.IDPerfil,
+                IDUser = query.Id,
+                Email = query.Email,
+                Nombre = query.Nombre,
+                Apellido = query.Apellido,
+                Password = query.Password,
+                rutaImg = query.Ruta
+            };
+
+            return PartialView(userPerfil);
         }
 
         // POST: Usuario/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(ViewUserPerfil userPerfil, HttpPostedFileBase FileEdit)
         {
             try
             {
-                // TODO: Add update logic here
+                bool bsuccess = false;
+                if (ModelState.IsValid)
+                {
+                    var result = (from u in db.Users
+                                 join p in db.Perfiles on u.Id equals p.UsuarioID
+                                 where u.Id == userPerfil.IDUser
+                                 select new
+                                 {
+                                     Id = u.Id,
+                                     Password = u.PasswordHash,
+                                     Email = u.Email,
+                                     Nombre = p.Nombre,
+                                     Apellido = p.Apellido,
+                                     IDPerfil = p.IDPerfil,
+                                     Ruta = p.rutaImg
+                                 }).SingleOrDefault();
+                    string ruta = string.Empty;
+                    if (FileEdit != null)
+                    {
+                        ruta = SaveUploadedFile(FileEdit, userPerfil.IDUser);
+                    }
+                    else
+                    {
+                        ruta = result.Ruta;
+                    }
+                    var userStore = new UserStore<ApplicationUser>(db);
+                    var userManager = new UserManager<ApplicationUser>(userStore);
+                    //SE BUSCA AL USUARIO
+                    var usu = userManager.FindById(userPerfil.IDUser);
+                    usu.Email = userPerfil.Email;
+                    usu.Id = userPerfil.IDUser;
+                    usu.UserName = userPerfil.Email;
+                    //se actualiza los resultados
+                    userManager.Update(usu);
+                    //cambiamos el password
+                    userManager.ChangePassword(userPerfil.IDUser,result.Password, userPerfil.Password);
+                    //actualizamos los datos de perfiles
+                    var perfiles = db.Perfiles.Find(userPerfil.IDPerfil);
+                    perfiles.Nombre = userPerfil.Nombre;
+                    perfiles.Apellido = userPerfil.Apellido;
+                    perfiles.rutaImg = ruta;
 
-                return RedirectToAction("Index");
+                    db.SaveChanges();
+                    bsuccess = true;
+
+                }
+                return Json(new { success = bsuccess, Errors = errors.GetErrorsFromModelState(ModelState), JsonRequestBehavior.AllowGet });
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return Json(new { success = false, Errors = errors.GetErrorsFromModelState(ModelState), JsonRequestBehavior.AllowGet });
             }
         }
-
-        // GET: Usuario/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
         // POST: Usuario/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(string id)
         {
             try
             {
-                // TODO: Add delete logic here
+                bool bsuccess = true;
+                Perfiles perfil = db.Perfiles.Where(d => d.UsuarioID == id).SingleOrDefault();
+                if (perfil != null)
+                {
 
-                return RedirectToAction("Index");
+                    string ruta = Path.Combine(Server.MapPath("~/Images/empleados/" + id));
+                    bool isExists = System.IO.Directory.Exists(ruta);
+
+                    if (isExists)
+                        Directory.Delete(ruta, true);
+
+                    db.Perfiles.Remove(perfil);
+                }
+                var userStore = new UserStore<ApplicationUser>(db);
+                var userManager = new UserManager<ApplicationUser>(userStore);
+                //se busca el usuario
+                var usu = userManager.FindById(id);
+                //se elimina
+                userManager.Delete(usu);
+
+
+                db.SaveChanges();
+                return Json(new { success = bsuccess });
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return Json(new { success = false });
             }
         }
     }

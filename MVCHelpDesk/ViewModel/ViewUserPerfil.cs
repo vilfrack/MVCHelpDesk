@@ -4,7 +4,7 @@ namespace MVCHelpDesk.ViewModel
 {
     public class ViewUserPerfil
     {
-        public int IDUser { get; set; }
+        public string IDUser { get; set; }
         public int IDPerfil { get; set; }
         //[Column("Name")]//sirve para cambiar los nombre de los campos
         //Display permite visualizar el campo en la vista, si se quita el firts name saldra pegado
@@ -17,7 +17,7 @@ namespace MVCHelpDesk.ViewModel
 
         [Display(Name = "Password")]
         [Required(ErrorMessage = "El campo {0} No puede quedar vacio")]
-        [StringLength(15, ErrorMessage = "El campo {0} debe contener entre {2} y {1} caracteres", MinimumLength = 6)]
+        [StringLength(200, ErrorMessage = "El campo {0} debe contener entre {2} y {1} caracteres", MinimumLength = 6)]
         public string Password { get; set; }
 
         [Display(Name = "Nombre")]

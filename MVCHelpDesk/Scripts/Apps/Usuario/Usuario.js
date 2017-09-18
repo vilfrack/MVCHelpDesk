@@ -1,6 +1,4 @@
-﻿$(function () {
-    //esconderMensajes();
-});
+﻿
 //CUANDO CERREMOS EL MODAL
 $("button[data-dismiss='modal']").click(function () {
     $('#login').val('');
@@ -22,11 +20,12 @@ $("#tableUsers").on('click', 'tr #eliminar', function () {
     var id = $(this).parents("tr").find("td").eq(0).html();
     $('.mensaje').html('Seguro desea eliminar el registro seleccionados?');
     document.getElementById("hdId").value = id;
+
 });
 //ELIMINAR EL REGISTRO
 $("#btnEliminar").click(function () {
     var params = {
-       id: $('#hdId').val()
+        id: $('#hdId').val()
      };
     $.ajax({
         type: "POST",
@@ -71,8 +70,8 @@ $("#formEdit").submit(function (e) {
                     if (data.success) {
                         //REESTABLECE LOS ESTILOS PREDEFINIDOS DE LOS LABEL ERRORES Y DIV, EN CASO DE QUE SE HAYAN MOSTRADO Y SE HAYAN CORREGIDO
                         $.each(parametros, function (key, value) {
-                            $("#ErrorEdit_" + key).html('');
-                            $("#divEdit_" + key).removeClass(" has-error has-feedback");
+                            $("#Error_" + key).html('');
+                            $("#div_" + key).removeClass(" has-error has-feedback");
                         });
                         $('#alert_success').show("fast");
                         $('#alert_success').show("fast");
@@ -85,11 +84,11 @@ $("#formEdit").submit(function (e) {
                             //VALUE VA A TRAER SOLO AQUELLOS VALORES QUE NO CUMPLAN CON LOS REQUISITOS ESTABLECIDOS EN EL MODELSTATE
                             //CREAR EN LO POSIBLE UNA CLASE QUE GUARDE ESTE CODIGO
                             if (value != "true") {
-                                $("#ErrorEdit_" + key).html(value[value.length - 1].ErrorMessage);
-                                $("#divEdit_" + key).addClass(" has-error has-feedback");
+                                $("#Error_" + key).html(value[value.length - 1].ErrorMessage);
+                                $("#div_" + key).addClass(" has-error has-feedback");
                             } else {
-                                $("#ErrorEdit_" + key).html('');
-                                $("#divEdit_" + key).removeClass(" has-error has-feedback");
+                                $("#Error_" + key).html('');
+                                $("#div_" + key).removeClass(" has-error has-feedback");
                             }
                         });
                     }
