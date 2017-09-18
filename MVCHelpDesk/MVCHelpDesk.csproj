@@ -180,6 +180,7 @@
     <Compile Include="Controllers\PermisosController.cs" />
     <Compile Include="Controllers\RequerimientoController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -226,7 +227,7 @@
     <Content Include="Scripts\Apps\OperationsTaks\OperationsTaks.js" />
     <Content Include="Scripts\Apps\Roles\roles.js" />
     <Content Include="Scripts\Apps\task\task.js" />
-    <Content Include="Scripts\Apps\Users\users.js" />
+    <Content Include="Scripts\Apps\Usuario\Usuario.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Content\bootstrap-3.3.7-dist\css\bootstrap-theme.css.map" />
@@ -1003,6 +1004,9 @@
     <Content Include="Views\Roles\Details.cshtml" />
     <Content Include="Views\Roles\Create.cshtml" />
     <Content Include="Views\Roles\Edit.cshtml" />
+    <Content Include="Views\Usuario\Index.cshtml" />
+    <Content Include="Views\Usuario\Details.cshtml" />
+    <Content Include="Views\Usuario\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AllPermisos\" />

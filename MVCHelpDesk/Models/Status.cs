@@ -9,6 +9,5 @@ namespace MVCHelpDesk.Models
 
         public string nombre { get; set; }
 
-        public string color { get; set; }
     }
 }

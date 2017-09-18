@@ -7,7 +7,9 @@ namespace MVCHelpDesk.Models
     {
         [Key]
         public int RequerimientoID { get; set; }
+
         public DateTime FechaCreacion { get; set; }
+
         public DateTime FechaFinalizacion { get; set; }//fecha en el que se deberia finalizar el task
 
         [Required(ErrorMessage = "You must enter the field {0}")]
@@ -18,7 +20,7 @@ namespace MVCHelpDesk.Models
         [StringLength(200, ErrorMessage = "The fiel {0} must contain between {2} and {1} characters", MinimumLength = 10)]
         public string Descripcion { get; set; }
 
-        public int? StatusID { get; set; }
+        //public int? StatusID { get; set; }
 
 
 

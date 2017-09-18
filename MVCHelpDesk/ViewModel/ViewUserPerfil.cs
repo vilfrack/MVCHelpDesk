@@ -8,17 +8,17 @@ namespace MVCHelpDesk.ViewModel
         public int IDPerfil { get; set; }
         //[Column("Name")]//sirve para cambiar los nombre de los campos
         //Display permite visualizar el campo en la vista, si se quita el firts name saldra pegado
-        [Display(Name = "Login")]
-        [Required(ErrorMessage = "El campo {0} No puede quedar vacio")]//el {0} copia el nombre del campo
+        //[Display(Name = "Login")]
+        //[Required(ErrorMessage = "El campo {0} No puede quedar vacio")]//el {0} copia el nombre del campo
         //El en el between {1} es el primer parametro y {2} es el segundo
         //al agregarle una cantidad maxima de caracter se le cambia el maximo chart en la base de datos
-        [StringLength(15, ErrorMessage = "El campo {0} debe contener entre {2} y {1} caracteres", MinimumLength = 5)]
-        public string login { get; set; }
+        //[StringLength(15, ErrorMessage = "El campo {0} debe contener entre {2} y {1} caracteres", MinimumLength = 5)]
+        //public string UserName { get; set; }
 
         [Display(Name = "Password")]
         [Required(ErrorMessage = "El campo {0} No puede quedar vacio")]
-        [StringLength(15, ErrorMessage = "El campo {0} debe contener entre {2} y {1} caracteres", MinimumLength = 8)]
-        public string password { get; set; }
+        [StringLength(15, ErrorMessage = "El campo {0} debe contener entre {2} y {1} caracteres", MinimumLength = 6)]
+        public string Password { get; set; }
 
         [Display(Name = "Nombre")]
         [Required(ErrorMessage = "El campo {0} No puede quedar vacio")]

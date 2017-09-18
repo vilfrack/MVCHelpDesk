@@ -23,8 +23,8 @@ namespace MVCHelpDesk
             bundles.Add(new ScriptBundle("~/bundles/scriptOperations").Include(
                "~/Scripts/Apps/OperationsTaks/OperationsTaks.js").IncludeDirectory("~/Scripts", ".js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/scriptUsers").Include(
-                "~/Scripts/Apps/Users/users.js").IncludeDirectory("~/Scripts", ".js"));
+            bundles.Add(new ScriptBundle("~/bundles/scriptUsuario").Include(
+                "~/Scripts/Apps/Usuario/Usuario.js").IncludeDirectory("~/Scripts", ".js"));
 
             bundles.Add(new ScriptBundle("~/bundles/scriptDepartamento").Include(
                 "~/Scripts/Apps/Departamento/departamento.js").IncludeDirectory("~/Scripts", ".js"));
