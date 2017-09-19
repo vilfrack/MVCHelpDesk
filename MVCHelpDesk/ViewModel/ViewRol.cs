@@ -1,12 +1,11 @@
-﻿
-
-using System.ComponentModel.DataAnnotations;
-
+﻿using System.ComponentModel.DataAnnotations;
 namespace MVCHelpDesk.ViewModel
 {
     public class ViewRol
     {
+        public string Id { get; set; }
+
         [Required]
-        public string Descripcion { get; set; }
+        public string Name { get; set; }
     }
 }

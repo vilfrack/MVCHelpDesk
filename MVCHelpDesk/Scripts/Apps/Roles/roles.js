@@ -30,7 +30,7 @@ $("#btnEliminar").click(function () {
     };
     $.ajax({
         type: "POST",
-        url: "/Users/Delete",
+        url: "/Roles/Delete",
         data: params,
         dataType: "json",
         success: function (data) {
@@ -60,7 +60,7 @@ $("#formEdit").submit(function (e) {
     var parametros = new FormData($(this)[0]);
     $.ajax({
         type: "POST",
-        url: "/Users/Edit",
+        url: "/Roles/Edit",
         cache: false,
         contentType: false, //importante enviar este parametro en false
         processData: false, //importante enviar este parametro en false
@@ -114,7 +114,7 @@ $("#formCreate").submit(function (e) {
 
     $.ajax({
         type: "POST",
-        url: "/Users/Create",
+        url: "/Roles/Create",
         cache: false,
         contentType: false, //importante enviar este parametro en false
         processData: false, //importante enviar este parametro en false
@@ -163,14 +163,14 @@ $("#formCreate").submit(function (e) {
 //CUANDO SE DE CLICK A EDITAR DESDE LA TABLA
 $("#tableRoles").on('click', 'tr #editar', function () {
     var idTask = $(this).parents("tr").find("td").eq(0).html();
-    var url = "/Users/Edit?id=" + idTask + ""; // Establecer URL de la acción
+    var url = "/Roles/Edit?id=" + idTask + ""; // Establecer URL de la acción
     $("#btnEnviarEditar").prop('disabled', false);
     $("#contenedor-editar").load(url);
 
 });
 //AL HACER CLICK EN AGREGAR NOS MOSTRARA EL MODAL CON EL FORMULARIO
 $("#agregar").click(function () {
-    var url = "/Users/Create"; // Establecer URL de la acción
+    var url = "/Roles/Create"; // Establecer URL de la acción
     $("#contenedor-agregar").load(url);
 });
 
@@ -181,8 +181,8 @@ function LoadGridRoles() {
         bProcessing: true,
         sAjaxSource: '/Roles/get',
         "columns": [
-          { "data": "IDRol" },
-          { "data": "rol" },
+          { "data": "Id" },
+          { "data": "Name" },
           {
               "data": null,
               defaultContent: "<button id='editar' class='btn btn-success btn-sm'" +

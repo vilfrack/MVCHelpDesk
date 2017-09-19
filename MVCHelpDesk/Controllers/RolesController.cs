@@ -1,4 +1,6 @@
-﻿using MVCHelpDesk.Helper;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using MVCHelpDesk.Helper;
 using MVCHelpDesk.Models;
 using MVCHelpDesk.ViewModel;
 using System;
@@ -46,13 +48,16 @@ namespace MVCHelpDesk.Controllers
         {
             try
             {
-                // m.IDTema = m.IDTema == default(Guid) ? Guid.NewGuid() : m.IDTema;
                 bool bsuccess = false;
                 if (ModelState.IsValid)
                 {
-                    //db.Roles.Add(roles);
-                    //db.SaveChanges();
-                    //bsuccess = true;
+                    var RoleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
+                    if (!RoleManager.RoleExists(roles.Name))
+                    {
+                        IdentityResult roleResult;
+                        roleResult = RoleManager.Create(new IdentityRole(roles.Name));
+                        bsuccess = true;
+                    }
                 }
                 return Json(new { success = bsuccess, Errors = getError.GetErrorsFromModelState(ModelState), JsonRequestBehavior.AllowGet });
             }
@@ -62,13 +67,16 @@ namespace MVCHelpDesk.Controllers
             }
         }
         // GET: Users/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(string id)
         {
 
-            ViewRol rol = new ViewRol();
-            //var query = db.Roles.Where(sq => sq.IDRol == id).SingleOrDefault();
-            //var subqueryPerfiles = db.Perfiles.Where(qf => qf.IDUsers == id).SingleOrDefault();
-            return PartialView();
+            var query = db.Roles.Find(id);
+            var viewRol = new ViewRol
+            {
+                Name = query.Name,
+                Id = query.Id
+            };
+            return PartialView(viewRol);
         }
 
         // POST: Users/Edit/5
@@ -78,15 +86,14 @@ namespace MVCHelpDesk.Controllers
             try
             {
                 bool bsuccess = false;
-                //var getRuta = db.Roles.Where(c => c.IDRol == roles.IDRol);
-                //if (ModelState.IsValid)
-                //{
-                //    var rol = db.Roles.Find(roles.IDRol);
-                //    rol.rol = roles.rol;
-                //    db.SaveChanges();
-                //    bsuccess = true;
-
-                //}
+                if (ModelState.IsValid)
+                {
+                    var RoleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
+                    var rol = RoleManager.FindById(roles.Id);
+                    rol.Name = roles.Name;
+                    RoleManager.Update(rol);
+                    bsuccess = true;
+                }
                 return Json(new { success = bsuccess, Errors = getError.GetErrorsFromModelState(ModelState), JsonRequestBehavior.AllowGet });
             }
             catch (Exception ex)
@@ -96,24 +103,20 @@ namespace MVCHelpDesk.Controllers
         }
         // POST: Users/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id)
+        public ActionResult Delete(string id)
         {
             try
             {
                 bool bsuccess = false;
-                string errorMensaje = "";
-                //if (id != 1)
-                //{
-                //    Roles rol = db.Roles.Where(r => r.IDRol == id).Single();
-                //    db.Roles.Remove(rol);
-                //    db.SaveChanges();
-                //}
-                //else
-                //{
-                //    bsuccess = false;
-                //    errorMensaje = "El rol de Administrador no puede borrarse";
-                //}
-                return Json(new { success = bsuccess, mensaje = errorMensaje });
+                var RoleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
+                var rol = RoleManager.FindById(id);
+                if (rol !=null)
+                {
+                    RoleManager.Delete(rol);
+                    bsuccess = true;
+                }
+
+                return Json(new { success = bsuccess });
             }
             catch (Exception ex)
             {
