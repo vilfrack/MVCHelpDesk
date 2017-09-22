@@ -175,6 +175,7 @@
     <Compile Include="Controllers\DashBoardController.cs" />
     <Compile Include="Controllers\DepartamentoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OperationsTaksController.cs" />
     <Compile Include="Controllers\PermisosController.cs" />
@@ -193,8 +194,8 @@
     <Compile Include="Models\PermisoPorRol.cs" />
     <Compile Include="Models\PermisosPorUsuarios.cs" />
     <Compile Include="Models\Status.cs" />
-    <Compile Include="Permisos\AllModulos.cs" />
-    <Compile Include="Permisos\AllPermisos.cs" />
+    <Compile Include="Permiso\AllModulos.cs" />
+    <Compile Include="Permiso\AllPermisos.cs" />
     <Compile Include="ViewModel\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="ViewModel\ManageViewModels.cs" />
@@ -223,6 +224,10 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Images\empleados\6d322aba-5b52-405f-8c51-4a44119ae27a\8.jpg" />
+    <Content Include="Images\empleados\d679f6a9-725f-4736-9346-c08dcef253df\4.jpg" />
+    <Content Include="Images\empleados\eff15d4f-cd5c-497f-b954-a8b54ecd864f\4.jpg" />
+    <Content Include="Images\empleados\f87e608a-5014-48d4-85ce-4a70d55bab9c\8.jpg" />
     <Content Include="Scripts\Apps\Departamento\departamento.js" />
     <Content Include="Scripts\Apps\OperationsTaks\OperationsTaks.js" />
     <Content Include="Scripts\Apps\Roles\roles.js" />
@@ -936,23 +941,17 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Account\Register.cshtml" />
-    <Content Include="Views\Account\ResetPassword.cshtml" />
-    <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
     <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
     <Content Include="Views\Manage\ChangePassword.cshtml" />
     <Content Include="Views\Manage\Index.cshtml" />
     <Content Include="Views\Manage\ManageLogins.cshtml" />
     <Content Include="Views\Manage\SetPassword.cshtml" />
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
-    <Content Include="Views\Shared\Lockout.cshtml" />
-    <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Requerimiento\Create.cshtml" />
     <Content Include="Views\Requerimiento\Delete.cshtml" />
     <Content Include="Views\Requerimiento\Details.cshtml" />
@@ -1008,6 +1007,7 @@
     <Content Include="Views\Usuario\Details.cshtml" />
     <Content Include="Views\Usuario\Create.cshtml" />
     <Content Include="Views\Usuario\Edit.cshtml" />
+    <Content Include="Views\Login\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AllPermisos\" />

@@ -158,13 +158,16 @@
                         @Html.ActionLink("Departamento", "index", "Departamento")
                     </li>
                     <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Usuarios y roles <i class="fa fa-fw fa-caret-down"></i></a>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Sistema <i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="demo" class="collapse">
                             <li>
-                                @Html.ActionLink("Usuarios", "index", "Users")
+                                @Html.ActionLink("Usuarios", "index", "Usuario")
                             </li>
                             <li>
-                                <a href="#">Roles</a>
+                               @Html.ActionLink("Roles", "index", "Roles")
+                            </li>
+                            <li>
+                                @Html.ActionLink("Permisos", "index", "Permisos")
                             </li>
                         </ul>
                     </li>

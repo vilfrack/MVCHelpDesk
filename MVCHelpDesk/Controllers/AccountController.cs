@@ -9,7 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using MVCHelpDesk.Models;
-
+using MVCHelpDesk.ViewModel;
 namespace MVCHelpDesk.Controllers
 {
     [Authorize]
@@ -22,7 +22,7 @@ namespace MVCHelpDesk.Controllers
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;

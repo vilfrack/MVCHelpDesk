@@ -64,6 +64,11 @@ namespace MVCHelpDesk.Migrations
                 new Models.Permisos { PermisoID = 3, Descripcion = "Modificar" },
                 new Models.Permisos { PermisoID = 4, Descripcion = "Eliminar" }
             );
+            //AGREGAMOS LOS PERMISOS PARA LOS MODULOS
+            context.Modulos.AddOrUpdate(
+                new Models.Modulos { ModuloID = 1, Descripcion = "Permiso" },
+                new Models.Modulos { ModuloID = 2, Descripcion = "Requerimiento" }
+            );
         }
     }
 }

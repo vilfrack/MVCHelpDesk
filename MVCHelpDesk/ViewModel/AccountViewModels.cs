@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-
-namespace MVCHelpDesk.Models
+//SE CAMBIA EL NOMBRE DEL namespace
+namespace MVCHelpDesk.ViewModel
 {
     //public class ExternalLoginConfirmationViewModel
     //{
