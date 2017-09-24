@@ -18,3 +18,4 @@ EJECUTADO EL PASO 4, SE DEBE BORRAR LA MIGRACION PARA VOLVERLA A EJECUTAR
 10. Se crea todo lo relacionado a permisos, enum y la clase permisoAtribut
 11. se comienza a crear permisos por modulos
 12. Se comenta los viewmodel de login que no se van a usar
+13. se comenta los metodos que no se van a usar para Account

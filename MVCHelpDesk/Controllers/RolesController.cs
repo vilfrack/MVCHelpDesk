@@ -11,6 +11,7 @@ using System.Web.Mvc;
 
 namespace MVCHelpDesk.Controllers
 {
+    [Authorize]
     public class RolesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

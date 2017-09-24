@@ -8,6 +8,7 @@ using MVCHelpDesk.Models;
 
 namespace MVCHelpDesk.Controllers
 {
+    [Authorize]
     public class DepartamentoController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

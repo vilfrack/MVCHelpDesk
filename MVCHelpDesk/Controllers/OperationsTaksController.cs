@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace MVCHelpDesk.Controllers
 {
+    [Authorize]
     public class OperationsTaksController : Controller
     {
         // GET: OperationsTaks

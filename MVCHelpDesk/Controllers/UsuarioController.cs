@@ -12,6 +12,7 @@ using System.IO;
 
 namespace MVCHelpDesk.Controllers
 {
+    [Authorize]
     public class UsuarioController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
