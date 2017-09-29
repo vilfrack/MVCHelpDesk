@@ -32,6 +32,9 @@ namespace MVCHelpDesk
             bundles.Add(new ScriptBundle("~/bundles/scriptRoles").Include(
                 "~/Scripts/Apps/Roles/roles.js").IncludeDirectory("~/Scripts", ".js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/scriptPermisos").Include(
+                "~/Scripts/Apps/Permisos/Permisos.js").IncludeDirectory("~/Scripts", ".js"));
+
             bundles.Add(new StyleBundle("~/bundles/css").Include(
                 "~/Content/bootstrap-3.3.7-dist/css/bootstrap.css",
 

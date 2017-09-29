@@ -185,6 +185,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper\GetErrors.cs" />
+    <Compile Include="Helper\RolIdentity.cs" />
+    <Compile Include="Helper\UserIdentity.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Departamento.cs" />
     <Compile Include="Models\Files.cs" />
@@ -229,6 +231,7 @@
     <Content Include="Images\empleados\f87e608a-5014-48d4-85ce-4a70d55bab9c\8.jpg" />
     <Content Include="Scripts\Apps\Departamento\departamento.js" />
     <Content Include="Scripts\Apps\OperationsTaks\OperationsTaks.js" />
+    <Content Include="Scripts\Apps\Permisos\Permisos.js" />
     <Content Include="Scripts\Apps\Roles\roles.js" />
     <Content Include="Scripts\Apps\task\task.js" />
     <Content Include="Scripts\Apps\Usuario\Usuario.js" />

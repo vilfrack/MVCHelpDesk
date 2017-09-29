@@ -1,34 +1,19 @@
-﻿@model MVCHelpDesk.Models.Permisos
-
-@{
-    ViewBag.Title = "Details";
-}
-
-<h2>Details</h2>
-
-<div>
-    <h4>Permisos</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Modulo)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Modulo)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Descripcion)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Descripcion)
-        </dd>
-
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.PermisoID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+﻿
+<h1>Usuarios creados</h1>
+<table id="tablePermisos" class="table table-striped table-bordered" cellspacing="0">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Login</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th><span class="glyphicon glyphicon glyphicon-asterisk" aria-hidden="true"></span> Acciones </th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+<script>
+    $(function () {
+        LoadGridUser();
+    });
+</script>

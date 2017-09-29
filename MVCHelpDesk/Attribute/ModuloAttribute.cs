@@ -22,8 +22,8 @@ namespace MVCHelpDesk.Attribute
             {
                 filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new
                 {
-                    controller = "Home",
-                    action = "Index"
+                    controller = "Login",
+                    action = "Account"
                 }));
             }
         }
