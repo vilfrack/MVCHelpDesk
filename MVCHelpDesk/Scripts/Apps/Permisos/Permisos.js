@@ -198,30 +198,53 @@ function LoadGridUser() {
         sAjaxSource: '/Permisos/get',
         "columnDefs": [
             //targets DEBE SER IGUAL AL NUMERO DE LA COLUMNA QUE SE VA A AGRUPAR
-            { "visible": false, "targets": 4 }
+            { "visible": false, "targets": 4 },
+            { "className": 'select-checkbox', "targets": 3 },
+            { "className": 'select-checkbox', "targets": 2 }
         ],
         "columns": [
           { "data": "PermisoID" },
           { "data": "Descripcion" },
-          //{ "data": "UsuarioID" },
-          //{ "data": "RolID" },
-          { "data": "CheekRol" },
-          { "data": "CheekUsuarios" },
-          //{ "data": "ModuloIDPorUsuarios" },
-          //{ "data": "ModuloIDPorRol" },
+          //{ "data": "CheekRol" },
+           {
+               data: "CheekRol",
+               render: function (data, type, row) {
+                   if (type === 'display') {
+                       if (data ==true) {
+                           return '<input type="checkbox" checked>';
+                       }
+                       else {
+                           return '<input type="checkbox">';
+                       }
+                   }
+                   else {
+                       return '<input type="checkbox">';
+                   }
+               },
+               className: "dt-body-center"
+           },
+          //{ "data": "CheekUsuarios" },
+          {
+              data:   "CheekUsuarios",
+              render: function (data, type, row) {
+                  if ( type === 'display' ){
+                      if (data == true) {
+                          return '<input type="checkbox" checked>';
+                      }
+                      else {
+                          return '<input type="checkbox">';
+                      }
+                  }
+                  else {
+                      return '<input type="checkbox">';
+                  }
+              },
+              className: "dt-body-center"
+          },
           { "data": "ModuloRolDes" },
-          //{ "data": "ModuloUsuDes" },
-          //{
-          //    "data": null,
-          //    defaultContent: "<button id='editar' class='btn btn-success btn-sm'" +
-          //                    "data-toggle='modal' data-target='#editModal' ><span class='glyphicon glyphicon-retweet'></span> Editar </button>&nbsp;&nbsp;" +
-          //                      //boton de eliminar
-          //                    "<button id='eliminar' class='btn btn-danger btn-sm'" +
-          //                    "data-toggle='modal' data-target='#borrarModal'><span class='glyphicon glyphicon-trash'></span> Eliminar </button>"
-          //}
         ],
         //4 ES EL NUMERO DE LA COLUMNA QUE SE VA A AGRUPAR
-        "order": [[4, 'asc']],
+        "order": [[3, 'asc']],
         "displayLength": 25,
         "drawCallback": function (settings) {
             var api = this.api();
