@@ -38,59 +38,81 @@ namespace MVCHelpDesk.Controllers
             // SE OBTIENE LOS ROLES POR USUARIO POR MEDIO DE LA CLASE QUE CREAMOS
             List<IdentityRole> ListRolByUser = rolIdentity.GetRolByUser();
 
-            // ES NECESARIO PONER EXACTAMENTE LOS CAMPOS A EXTRAER PORQUE SI NO DA ERROR
-            var varPermisosPorUsuarios = (from p in db.Permisos
-                         join pU in db.PermisosPorUsuarios on p.PermisoID equals pU.PermisoID
-                         into temp
-                         from last in temp.DefaultIfEmpty()
-                         where last.UsuarioID == idUser
-                         select new
-                         {
-                             PermisoID = p.PermisoID,
-                             Descripcion = p.Descripcion,
-                             UsuarioID = last.UsuarioID == null ? false : true,
-                             ModuloID = last.ModuloID.Equals(null) ? false : true
-                         }).ToList();
+            // PermisosPorUsuarios
+            //var varPermisosPorUsuarios = (from p in db.Permisos
+            //             join pU in db.PermisosPorUsuarios on p.PermisoID equals pU.PermisoID
+            //             into temp
+            //             from last in temp.DefaultIfEmpty()
+            //             where last.UsuarioID == idUser
+            //             select new
+            //             {
+            //                 PermisoID = p.PermisoID,
+            //                 Descripcion = p.Descripcion,
+            //                 UsuarioID = last.UsuarioID == null ? false : true,
+            //                 ModuloID = last.ModuloID.Equals(null) ? default(int) : last.ModuloID
+            //             }).ToList();
 
 
-            List<object> listPermisosByRol = new List<object>();
+            List<object> listPermisosRolUser = new List<object>();
+            // PermisosPorRoles
             foreach (var item in ListRolByUser)
             {
-                var varPermisosByRol = (from p in db.Permisos
-                          join pU in db.PermisoPorRol on p.PermisoID equals pU.PermisoID
-                          into temp
-                          from last in temp.DefaultIfEmpty()
-                          where last.RoleID == item.Id
-                          select new
-                          {
-                              PermisoID = p.PermisoID,
-                              Descripcion = p.Descripcion,
-                              CheekRol = last.RoleID == null ? false : true,
-                              CheekModulo = last.ModuloID.Equals(null) ? false : true,
-                              RolID = last.RoleID == null ? default(string) : last.RoleID,
-                              ModuloID = last.ModuloID.Equals(null) ? default(int) : last.ModuloID,
-                          }).ToList();
+                //var varPermisosByRol = (from p in db.Permisos
+                //          join pU in db.PermisoPorRol on p.PermisoID equals pU.PermisoID
+                //          into temp
+                //          from last in temp.DefaultIfEmpty()
+                //          where last.RoleID == item.Id
+                //          select new
+                //          {
+                //              PermisoID = p.PermisoID,
+                //              Descripcion = p.Descripcion,
+                //              CheekRol = last.RoleID == null ? false : true,
+                //              CheekModulo = last.ModuloID.Equals(null) ? false : true,
+                //              RolID = last.RoleID == null ? default(string) : last.RoleID,
+                //              ModuloID = last.ModuloID.Equals(null) ? default(int) : last.ModuloID,
+                //          }).ToList();
 
-                listPermisosByRol.AddRange(varPermisosByRol);
+                var PermisosRolUser = (from p in db.Permisos
+                              join pU in db.PermisosPorUsuarios on p.PermisoID equals pU.PermisoID
+                              //SE ALMACENA EN UNA VARIABLE TEMPORAL tempPorUsuarios
+                              into tempPorUsuarios
+                              //SE HACE EL SEGUNDO JOIN
+                              join pR in db.PermisoPorRol on p.PermisoID equals pR.PermisoID
+                              //SE ALMACENA EN UNA VARIABLE TEMPORAL tempPorRol
+                              into tempPorRol
+                              //SE HACE LA CONSULTA tempPorUsuarios
+                              from lastPorUsuarios in tempPorUsuarios.DefaultIfEmpty()
+                              // EL RESULTADO DE lastPorUsuarios SE RELACIONA CON MODULOS
+                              join mU in db.Modulos on lastPorUsuarios.ModuloID equals mU.ModuloID
+                              //SE HACE LA CONSULTA tempPorRol
+                              from lastPorRol in tempPorRol.DefaultIfEmpty()
+                              join mR in db.Modulos on lastPorRol.ModuloID equals mR.ModuloID
+                              //se hacen los where
+                              where lastPorUsuarios.UsuarioID == idUser || lastPorRol.RoleID == item.Id
+                              select new
+                              {
+                                  PermisoID = p.PermisoID,
+                                  Descripcion = p.Descripcion,
+                                  UsuarioID = lastPorUsuarios.UsuarioID == null ? default(string) : lastPorUsuarios.UsuarioID,
+                                  RolID = lastPorRol.RoleID == null ? default(string) : lastPorRol.RoleID,
+                                  //chek para validar si tienen permisos o no
+                                  CheekRol = lastPorRol.RoleID == null ? false : true,
+                                  CheekUsuarios = lastPorUsuarios.UsuarioID == null ? false : true,
+                                  //MODULOS POR USUARIO Y POR ROL
+                                  ModuloIDPorUsuarios = lastPorUsuarios.ModuloID.Equals(null) ? default(int) : lastPorUsuarios.ModuloID,
+                                  ModuloIDPorRol = lastPorRol.ModuloID.Equals(null) ? default(int) : lastPorRol.ModuloID,
+                                  ModuloRolDes = mR.Descripcion,
+                                  ModuloUsuDes = mU.Descripcion,
+                              }).ToList();
+
+
+                listPermisosRolUser.AddRange(PermisosRolUser);
             }
-
 
             var jsonData = new
             {
-                data = (from p in db.Permisos
-                        join pU in db.PermisosPorUsuarios on p.PermisoID equals pU.PermisoID
-                        into temp
-                        from last in temp.DefaultIfEmpty()
-                        select new
-                        {
-                            PermisoID = p.PermisoID,
-                            Descripcion = p.Descripcion,
-                            UsuarioID = last.UsuarioID == null ? false : true,
-                            ModuloID = last.ModuloID.Equals(null) ? false : true
-                        }).ToList()
-            };//int i = age.HasValue ? age.Value : 0;
-            //String.IsNullOrEmpty(ID.ToString());
-
+                data = listPermisosRolUser
+            };
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
         // GET: Permisos/Create
