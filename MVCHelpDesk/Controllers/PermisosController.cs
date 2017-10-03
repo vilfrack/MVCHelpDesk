@@ -87,28 +87,34 @@ namespace MVCHelpDesk.Controllers
 
                     var VarModulosPermisos = (from modulos in Varmodulos
                                               join pRu in PermisosRolUser on modulos.ModuloID equals pRu.ModuloID into temp
-                                 from tempModulos in temp.DefaultIfEmpty().ToList()
-                                 select new
-                                 {
-                                     Descripcion = modulos.Descripcion,
-                                     ID = modulos.ModuloID,
-                                     Permisos = tempModulos
-                                 }).ToList();
+                                              from tempModulos in temp.DefaultIfEmpty()
+                                            select new
+                                            {
+                                                Descripcion = modulos.Descripcion,
+                                                ID = modulos.ModuloID,
+                                                Permisos = tempModulos,
+
+                                            }).ToList();
 
                     listPermisosRolUser.AddRange(VarModulosPermisos);
                 }
                 List<ViewPermisos> viewPermisos = new List<ViewPermisos>();
+                var varPermisos = db.Permisos.ToList();
                 foreach (var item in listPermisosRolUser)
                 {
                     if (item.Permisos==null)
                     {
-                        viewPermisos.Add(new ViewPermisos
+                        foreach (var itemPermiso in varPermisos)
                         {
-                            ModuloID = item.ID,
-                            ModuloDescripcion = item.Descripcion,
-                            PermisoDescripcion = "trol",
-                            PermisoID = 0
-                        });
+                            viewPermisos.Add(new ViewPermisos
+                            {
+                                ModuloID = item.ID,
+                                ModuloDescripcion = item.Descripcion,
+                                PermisoDescripcion = itemPermiso.Descripcion,
+                                PermisoID = itemPermiso.PermisoID
+                            });
+                        }
+
                     }
                     else
                     {
