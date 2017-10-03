@@ -169,31 +169,6 @@ $("#agregar").click(function () {
 
 //FUNCIONES
 function LoadGridUser() {
-    //$('#tablePermisos').dataTable({
-    //    destroy: true,//PERMITE DESTRUIR LA TABLA PARA VOLVERLA A CREAR
-    //    bProcessing: true,
-    //    sAjaxSource: '/Permisos/get',
-    //    "columns": [
-    //      { "data": "PermisoID" },
-    //      { "data": "Descripcion" },
-    //      { "data": "UsuarioID" },
-    //      { "data": "RolID" },
-    //      { "data": "CheekRol" },
-    //      { "data": "CheekID" },
-    //      { "data": "ModuloIDPorUsuarios" },
-    //      { "data": "ModuloIDPorRol" },
-    //      { "data": "ModuloRolDes" },
-    //      { "data": "ModuloUsuDes" },
-    //      {
-    //          "data": null,
-    //          defaultContent: "<button id='editar' class='btn btn-success btn-sm'" +
-    //                          "data-toggle='modal' data-target='#editModal' ><span class='glyphicon glyphicon-retweet'></span> Editar </button>&nbsp;&nbsp;" +
-    //                            //boton de eliminar
-    //                          "<button id='eliminar' class='btn btn-danger btn-sm'" +
-    //                          "data-toggle='modal' data-target='#borrarModal'><span class='glyphicon glyphicon-trash'></span> Eliminar </button>"
-    //      }
-    //    ]
-    //})
     var table = $('#tablePermisos').DataTable({
         sAjaxSource: '/Permisos/get',
         "columnDefs": [
@@ -204,7 +179,7 @@ function LoadGridUser() {
         ],
         "columns": [
           { "data": "PermisoID" },
-          { "data": "Descripcion" },
+          { "data": "PermisoDescripcion" },
           //{ "data": "CheekRol" },
            {
                data: "CheekRol",
@@ -241,7 +216,7 @@ function LoadGridUser() {
               },
               className: "dt-body-center"
           },
-          { "data": "ModuloRolDes" },
+          { "data": "ModuloDescripcion" },
         ],
         //4 ES EL NUMERO DE LA COLUMNA QUE SE VA A AGRUPAR
         "order": [[3, 'asc']],
@@ -263,33 +238,7 @@ function LoadGridUser() {
         }
 
     });
-
 }
-
-// Order by the grouping
-//var table = $('#example').DataTable({
-//    "columnDefs": [
-//        { "visible": false, "targets": 2 }
-//    ],
-//    "order": [[2, 'asc']],
-//    "displayLength": 25,
-//    "drawCallback": function (settings) {
-//        var api = this.api();
-//        var rows = api.rows({ page: 'current' }).nodes();
-//        var last = null;
-
-//        api.column(2, { page: 'current' }).data().each(function (group, i) {
-//            if (last !== group) {
-//                $(rows).eq(i).before(
-//                    '<tr class="group"><td colspan="5">' + group + '</td></tr>'
-//                );
-
-//                last = group;
-//            }
-//        });
-//    }
-//});
-
 function esconderMensajes() {
     $('#alert_danger').hide();
     $('#alert_success').hide();

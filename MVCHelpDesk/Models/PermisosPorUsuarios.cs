@@ -8,11 +8,11 @@ namespace MVCHelpDesk.Models
         [Key]
         public int PermisoUsuarioID { get; set; }
 
-        public int PermisoID { get; set; }
+        public int? PermisoID { get; set; }
 
         public string UsuarioID { get; set; }
 
-        public int ModuloID { get; set; }
+        public int? ModuloID { get; set; }
 
         public virtual Modulos Modulos { get; set; }
 
