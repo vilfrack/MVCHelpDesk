@@ -31,7 +31,130 @@ namespace MVCHelpDesk.Controllers
         // GET: Permisos/Details/5
         public ActionResult Details()
         {
-            return PartialView();
+            /***************************************************/
+            // SE OBTIENE EL IDUSER POR MEDIO DE LA CLASE QUE CREAMOS
+            string idUser = userIdentity.GetIdUser();
+            // SE OBTIENE LOS ROLES POR USUARIO POR MEDIO DE LA CLASE QUE CREAMOS
+            List<IdentityRole> ListRolByUser = rolIdentity.GetRolByUser();
+
+            List<dynamic> listPermisosRolUser = new List<dynamic>();
+
+
+
+            // PermisosPorRoles
+            foreach (var item in ListRolByUser)
+            {
+                var PermisosRolUser = (from p in db.Permisos
+                                       join pU in db.PermisosPorUsuarios on p.PermisoID equals pU.PermisoID
+                                       //SE ALMACENA EN UNA VARIABLE TEMPORAL tempPorUsuarios
+                                       into tempPorUsuarios
+                                       //SE HACE EL SEGUNDO JOIN
+                                       join pR in db.PermisoPorRol on p.PermisoID equals pR.PermisoID
+                                       //SE ALMACENA EN UNA VARIABLE TEMPORAL tempPorRol
+                                       into tempPorRol
+                                       //SE HACE LA CONSULTA tempPorUsuarios
+                                       from lastPorUsuarios in tempPorUsuarios.DefaultIfEmpty()
+                                           // EL RESULTADO DE lastPorUsuarios SE RELACIONA CON MODULOS
+                                       join mU in db.Modulos on lastPorUsuarios.ModuloID equals mU.ModuloID
+                                       //SE HACE LA CONSULTA tempPorRol
+                                       from lastPorRol in tempPorRol.DefaultIfEmpty()
+                                       join mR in db.Modulos on lastPorRol.ModuloID equals mR.ModuloID
+                                       //se hacen los where
+                                       where lastPorUsuarios.UsuarioID == idUser || lastPorRol.RoleID == item.Id
+                                       select new
+                                       {
+                                           PermisoID = p.PermisoID,
+                                           Descripcion = p.Descripcion,
+                                           UsuarioID = lastPorUsuarios.UsuarioID == null ? default(string) : lastPorUsuarios.UsuarioID,
+                                           RolID = lastPorRol.RoleID == null ? default(string) : lastPorRol.RoleID,
+                                           //chek para validar si tienen permisos o no
+                                           CheekRol = lastPorRol.RoleID == null ? false : true,
+                                           CheekUsuarios = lastPorUsuarios.UsuarioID == null ? false : true,
+                                           //MODULOS POR USUARIO Y POR ROL
+                                           ModuloIDPorUsuarios = lastPorUsuarios.ModuloID.Equals(null) ? default(int) : lastPorUsuarios.ModuloID,
+                                           ModuloIDPorRol = lastPorRol.ModuloID.Equals(null) ? default(int) : lastPorRol.ModuloID,
+                                           ModuloRolDes = mR.Descripcion,
+                                           ModuloUsuDes = mU.Descripcion,
+                                           ModuloID = mU.ModuloID
+                                       }).ToList();
+
+                var Varmodulos = db.Modulos.ToList();
+
+                var VarModulosPermisos = (from modulos in Varmodulos
+                                          join pRu in PermisosRolUser on modulos.ModuloID equals pRu.ModuloID into temp
+                                          from tempModulos in temp.DefaultIfEmpty()
+                                          select new
+                                          {
+                                              Descripcion = modulos.Descripcion,
+                                              ID = modulos.ModuloID,
+                                              Permisos = tempModulos,
+                                          }).ToList();
+
+                listPermisosRolUser.AddRange(VarModulosPermisos);
+            }
+            List<ViewPermisos> viewPermisos = new List<ViewPermisos>();
+            var varPermisos = db.Permisos.ToList();
+            foreach (var item in listPermisosRolUser)
+            {
+                if (item.Permisos == null)
+                {
+                    foreach (var itemPermiso in varPermisos)
+                    {
+                        viewPermisos.Add(new ViewPermisos
+                        {
+                            ModuloID = item.ID,
+                            ModuloDescripcion = item.Descripcion,
+                            CheekRol = false,
+                            CheekUsuarios = false,
+                            PermisoID = itemPermiso.PermisoID,
+                            PermisoDescripcion = itemPermiso.Descripcion,
+                            RolID = string.Empty,
+                            UsuarioID = string.Empty
+                        });
+                    }
+
+                }
+                else
+                {
+                    viewPermisos.Add(new ViewPermisos
+                    {
+                        ModuloID = item.ID,
+                        ModuloDescripcion = item.Descripcion,
+                        CheekRol = item.Permisos.CheekRol == null ? false : true,
+                        CheekUsuarios = item.Permisos.CheekUsuarios == null ? false : true,
+                        PermisoID = item.Permisos.PermisoID,
+                        PermisoDescripcion = item.Permisos.Descripcion,
+                        RolID = item.Permisos.RolID,
+                        UsuarioID = item.Permisos.UsuarioID
+                    });
+                }
+            }
+
+            /***************************************************/
+            var trol = viewPermisos.Distinct();
+            var hola = viewPermisos.Select(s=>s.PermisoDescripcion)
+                                    .Distinct();
+            var modulo = (from s in viewPermisos
+                          select new
+                          {
+                              ModuloID = s.ModuloID,
+                              ModuloDescripcion = s.ModuloDescripcion
+                          }).Distinct();
+            ViewBag.Permisos = (from s in viewPermisos
+                                select new
+                                {
+                                    PermisoID = s.PermisoID,
+                                    PermisoDescripcion = s.PermisoDescripcion
+                                }).Distinct();
+
+            ViewBag.modulo = (from s in viewPermisos
+                              select new
+                              {
+                                  ModuloID = s.ModuloID,
+                                  ModuloDescripcion = s.ModuloDescripcion
+                              }).Distinct().ToList();
+
+            return PartialView(viewPermisos);
         }
         public JsonResult get()
         {
@@ -88,13 +211,12 @@ namespace MVCHelpDesk.Controllers
                     var VarModulosPermisos = (from modulos in Varmodulos
                                               join pRu in PermisosRolUser on modulos.ModuloID equals pRu.ModuloID into temp
                                               from tempModulos in temp.DefaultIfEmpty()
-                                            select new
-                                            {
-                                                Descripcion = modulos.Descripcion,
-                                                ID = modulos.ModuloID,
-                                                Permisos = tempModulos,
-
-                                            }).ToList();
+                                              select new
+                                              {
+                                                  Descripcion = modulos.Descripcion,
+                                                  ID = modulos.ModuloID,
+                                                  Permisos = tempModulos,
+                                              }).ToList();
 
                     listPermisosRolUser.AddRange(VarModulosPermisos);
                 }
@@ -110,8 +232,12 @@ namespace MVCHelpDesk.Controllers
                             {
                                 ModuloID = item.ID,
                                 ModuloDescripcion = item.Descripcion,
+                                CheekRol = false,
+                                CheekUsuarios = false,
+                                PermisoID = itemPermiso.PermisoID,
                                 PermisoDescripcion = itemPermiso.Descripcion,
-                                PermisoID = itemPermiso.PermisoID
+                                RolID = string.Empty,
+                                UsuarioID = idUser
                             });
                         }
 
