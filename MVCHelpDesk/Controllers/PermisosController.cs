@@ -156,6 +156,11 @@ namespace MVCHelpDesk.Controllers
 
             return PartialView(viewPermisos);
         }
+        [HttpPost]
+        public ActionResult Details(string rol,string modulo,string usuario,FormCollection form) {
+
+            return View();
+        }
         public JsonResult get()
         {
             try
