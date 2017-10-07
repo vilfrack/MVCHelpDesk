@@ -156,11 +156,23 @@ namespace MVCHelpDesk.Controllers
 
             return PartialView(viewPermisos);
         }
+        public class ViewModelPrueba
+        {
+            public string PermisoID { get; set; }
+            public string moduloID { get; set; }
+            public string UsuarioPermisoID { get; set; }
+            public string UsuarioModuloID { get; set; }
+            public string IDUsuario { get; set; }
+            public string IDRol { get; set; }
+        }
+
         [HttpPost]
-        public ActionResult Details(string rol,string modulo,string usuario,FormCollection form) {
+        public ActionResult Details(string rol, string modulo, string usuario, List<ViewModelPrueba> list)
+        {
 
             return View();
         }
+
         public JsonResult get()
         {
             try
@@ -381,28 +393,5 @@ namespace MVCHelpDesk.Controllers
 
 
     }
-    public class ViewModelPrueba
-    {
-        public string PermisoID { get; set; }
-        public string Descripcion { get; set; }
-        public string UsuarioID { get; set; }
-        public string RolID { get; set; }
-        public string CheekRol { get; set; }
-        public string CheekUsuarios { get; set; }
-        public string ModuloIDPorUsuarios { get; set; }
-        public string ModuloIDPorRol { get; set; }
-        public string ModuloRolDes { get; set; }
-        public string ModuloUsuDes { get; set; }
-    //public string  { get; set; }
-    //public string  { get; set; }
-    //public string  { get; set; }
-    //public string  { get; set; }
-    //public string  { get; set; }
-    //public string  { get; set; }
-    //public string  { get; set; }
-    //public string  { get; set; }
-    //public string  { get; set; }
-    //public string  { get; set; }
 
-    }
 }
