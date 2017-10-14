@@ -2,34 +2,58 @@
 @{
     SelectList DropRoles = ViewBag.DropRoles;
     SelectList DropUsuario = ViewBag.DropUsuario;
-    ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    string active = "active";
+    string Usuariofade = "";
+    string Rolfade = "";
+    if (ViewBag.Tab == "1")
+    {
+        Rolfade = "in active";
+    }
+    else
+    {
+        Usuariofade = "in active";
+    }
 }
 <h1>Usuarios creados</h1>
 
 @using (Html.BeginForm("Index", "Permisos", FormMethod.Post, new { @id = "frmIndex", @class = "form-horizontal" }))
 {
-    @Html.DropDownList("DropRoles", DropRoles, "Seleccionar", new { @onChange = "DropDownList(1)", @class = "form-control select2-allow-clear" })
-    @Html.DropDownList("DropUsuario", DropUsuario, "Seleccionar", new { @onChange = "DropDownList(2)", @class = "form-control select2-allow-clear" })
-
-
-
-    <td><input type="submit" value="Submit" /></td>
+    <div class="col-sm-6">
+        <label>Seleccionar un Rol</label>
+        @Html.DropDownList("DropRoles", DropRoles, "Seleccionar", new { @onChange = "DropDownList(1)", @class = "form-control select2-allow-clear" })
+    </div>
+    <div class="col-sm-6">
+        <label>Seleccionar un Usuario</label>
+        @Html.DropDownList("DropUsuario", DropUsuario, "Seleccionar", new { @onChange = "DropDownList(2)", @class = "form-control select2-allow-clear" })
+    </div>
 }
 <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#rol" role="tab" data-toggle="tab">Rol</a></li>
-    <li role="presentation"><a href="#usuario" role="tab" data-toggle="tab">usuario</a></li>
+
+    @if (ViewBag.Tab == "1")
+    {
+        <li role="presentation" class="@active"><a href="#rol" role="tab" data-toggle="tab">Rol</a></li>
+        <li role="presentation"><a href="#usuario" role="tab" data-toggle="tab">usuario</a></li>
+    }
+    else
+    {
+        <li role="presentation"><a href="#rol" role="tab" data-toggle="tab">Rol</a></li>
+        <li role="presentation" class="@active"><a href="#usuario" role="tab" data-toggle="tab">usuario</a></li>
+    }
+
+
 
 </ul>
-<div class="tab-content">
-    <div role="tabpanel" class="tab-pane fade in active" id="rol">
-        @* TAB ROL *@
-        <form class="form-horizontal" id="frmPermisos">
+<form class="form-horizontal" id="frmPermisos">
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane fade @Rolfade" id="rol">
+            @* TAB ROL *@
+
 
             <table id="tablePermisos" class="table table-striped table-bordered" cellspacing="0">
 
                 @foreach (var varModulo in Model.Select(s => new { s.ModuloID, s.ModuloDescripcion }).Distinct().ToList())
-            {
+                {
                     <thead style="background-color:#E0F2F1">
                         <tr>
                             <th>@varModulo.ModuloID</th>
@@ -39,9 +63,9 @@
                     </thead>
                     <tbody>
                         @foreach (var itemModel in Model.Where(w => w.ModuloID == varModulo.ModuloID)
-                                .Select(s => new { s.PermisoID, s.PermisoDescripcion, s.CheekRol, s.CheekUsuarios })
-                                .Distinct()
-                                .ToList())
+.Select(s => new { s.PermisoID, s.PermisoDescripcion, s.CheekRol, s.CheekUsuarios })
+.Distinct()
+.ToList())
                         {
                             <tr>
                                 <td>
@@ -62,134 +86,50 @@
                 }
             </table>
             <button type="submit" id="btnSave" class="btn btn-primary btn-group-lg"><i class="fa fa-save"></i> Guardar</button>
-        </form>
-    </div>
-    <div role="tabpanel" class="tab-pane fade" id="usuario">
-        @* TAB USUARIO *@
-        @using (Html.BeginForm("Index", "Permisos", FormMethod.Post, new { @id = "frmSave", @class = "form-horizontal", @role = "form" }))
-        {
-            <table id="tablePermisos" class="table table-striped table-bordered" cellspacing="0">
 
-                @foreach (var varModulo in Model.Select(s => new { s.ModuloID, s.ModuloDescripcion }).Distinct().ToList())
+
+        </div>
+
+        <div role="tabpanel" class="tab-pane fade @Usuariofade" id="usuario">
+            @* TAB USUARIO *@
+                <table id="tablePermisos" class="table table-striped table-bordered" cellspacing="0">
+
+                    @foreach (var varModulo in Model.Select(s => new { s.ModuloID, s.ModuloDescripcion }).Distinct().ToList())
                 {
-                    <thead style="background-color:#E0F2F1">
-                        <tr>
-                            <th>@varModulo.ModuloID</th>
-                            <th>@varModulo.ModuloDescripcion</th>
-                            <th>Usuario</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var itemModel in Model.Where(w => w.ModuloID == varModulo.ModuloID)
-                                    .Select(s => new { s.PermisoID, s.PermisoDescripcion, s.CheekRol, s.CheekUsuarios })
-                                    .Distinct()
-                                    .ToList())
-                        {
+                        <thead style="background-color:#E0F2F1">
                             <tr>
-                                <td>
-                                    <label style="padding-left:20px;">@itemModel.PermisoID</label>
-                                </td>
-                                <td>
-                                    <label style="padding-left:20px;"> @itemModel.PermisoDescripcion</label>
-                                </td>
-                                <td>
-                                    @Html.CheckBox("CheekUsuario", itemModel.CheekUsuarios, new { data_permiso = itemModel.PermisoID, data_modulo = varModulo.ModuloID })
-                                </td>
+                                <th>@varModulo.ModuloID</th>
+                                <th>@varModulo.ModuloDescripcion</th>
+                                <th>Usuario</th>
                             </tr>
-                        }
-                    </tbody>
-                }
-            </table>
-            <button type="submit" id="btnSave" class="btn btn-primary btn-group-lg"><i class="fa fa-save"></i> Guardar</button>
-        }
-    </div>
-
-</div>
-
-
-@*<div>
-    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal" id="agregar">
-        <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Crear Usuario
-    </button>
-</div>
-
-<div>
-    @Html.Action("Details", "Permisos")
-</div>*@
-
-
-@*<div class="modal fade" tabindex="-1" role="dialog" id="myModal" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog  modal-lg" role="document">
-        <div class="modal-content">
-            <form class="form-horizontal" enctype="multipart/form-data" id="formCreate">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Crear un requerimiento</h4>
-                </div>
-                <div class="modal-body">
-                    <div id="contenedor-agregar">
-                        cargando...
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <input type="submit" value="Enviar" class="btn btn-primary" id="btnEnviar">
-                </div>
-            </form>
+                        </thead>
+                        <tbody>
+                            @foreach (var itemModel in Model.Where(w => w.ModuloID == varModulo.ModuloID)
+                .Select(s => new { s.PermisoID, s.PermisoDescripcion, s.CheekRol, s.CheekUsuarios })
+                .Distinct()
+                .ToList())
+                            {
+                                <tr>
+                                    <td>
+                                        <label style="padding-left:20px;">@itemModel.PermisoID</label>
+                                    </td>
+                                    <td>
+                                        <label style="padding-left:20px;"> @itemModel.PermisoDescripcion</label>
+                                    </td>
+                                    <td>
+                                        @Html.CheckBox("CheekUsuario", itemModel.CheekUsuarios, new { data_permiso = itemModel.PermisoID, data_modulo = varModulo.ModuloID })
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    }
+                </table>
+                <button type="submit" id="btnSave" class="btn btn-primary btn-group-lg"><i class="fa fa-save"></i> Guardar</button>
         </div>
     </div>
-</div>*@
+</form>
 
 
-<!--OJO LOS MODALES DEBEN ESTAR EN EL DETAIL NO EN EL INDEX PORQUE SE QUITARA EL .READY DE LOS JS-->
-<!--MODAL PARA EDITAR-->
-
-@*<div class="modal fade" tabindex="-1" role="dialog" id="editModal" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog  modal-lg" role="document" id="modalEdit">
-        <div class="modal-content">
-            <form class="form-horizontal" enctype="multipart/form-data" id="formEdit">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Editar requerimiento</h4>
-                </div>
-                <div class="modal-body">
-                    <div id="contenedor-editar">
-                        cargando...
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <input type="submit" value="Enviar" class="btn btn-primary" id="btnEnviarEditar">
-                </div>
-            </form>
-
-        </div>
-    </div>
-</div>*@
-
-<!--MODAL PARA ELIMINAR-->
-@*<div class="modal fade" tabindex="-1" role="dialog" id="borrarModal" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Eliminar requerimiento</h4>
-            </div>
-            <div class="modal-body">
-                <span class="mensaje"></span>
-                <input type="hidden" id="hdId" value="" />
-                <div id="alert_success_eliminar" class="alert alert-success" role="alert"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" id="btnEliminar" class="btn btn-danger">
-                    <span class="glyphicon glyphicon-trash"></span>
-                    Eliminar
-                </button>
-            </div>
-        </div>
-    </div>
-</div>*@
 
 @Scripts.Render("~/bundles/scriptPermisos")
 <script type="text/javascript">
@@ -204,8 +144,9 @@
     permissionObject.push({
         permisoID: @itemModel.PermisoID,
         moduloID: @varModulo.ModuloID,
-        IDUsuario: "ROL",
-        IDRol: "ROL"
+        IDUsuario: "",
+        IDRol: "",
+        check:true
     });
     </text>
             }
@@ -215,8 +156,9 @@
     permissionObject.push({
         UsuarioPermisoID: @itemModel.PermisoID,
         UsuarioModuloID: @varModulo.ModuloID,
-        IDUsuario: "USUARIO",
-        IDRol: "USUARIO"
+        IDUsuario: "",
+        IDRol: "",
+        check:true
     });
     </text>
             }
@@ -232,15 +174,18 @@
             permissionObject.push({
                 permisoID: permiso,
                 moduloID: modulo,
-                IDUsuario: "USUARIO",
-                IDRol: "ROL"
+                IDUsuario: "",
+                IDRol: $('#DropRoles').val(),
+                check:true
             });
         } else {
             // findIndex NOS PERMITE BUSCAR EL INDICE DEL OBJETO, PASANDOLE LOS VALORES A BUSCAR
             index = permissionObject.findIndex(x => x.permisoID == permiso && x.moduloID == modulo);
             if (index != -1) {
+
+                permissionObject[index].check=false;
                 //.splice PERMITE BORRAR EL INDICE DEL OBJETO
-                permissionObject.splice(index, 1);
+                //permissionObject.splice(index, 1);
             }
         }
     });
@@ -252,8 +197,8 @@
             permissionObject.push({
                 UsuarioPermisoID: permiso,
                 UsuarioModuloID: modulo,
-                IDUsuario: "USUARIO",
-                IDRol: "ROL"
+                IDUsuario: $('#DropUsuario').val(),
+                IDRol: ""
             });
         } else {
             // findIndex NOS PERMITE BUSCAR EL INDICE DEL OBJETO, PASANDOLE LOS VALORES A BUSCAR
@@ -273,7 +218,7 @@
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             type: 'POST',
-            url: '/Permisos/Details',
+            url: '/Permisos/Save',
             data: myParam,
             success: function (data) {
                 if (data.success) {

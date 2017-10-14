@@ -120,7 +120,7 @@ namespace MVCHelpDesk.Controllers
             /*CREAMOS LOS DropDown*/
             ViewBag.DropRoles = new SelectList(db.Roles.ToList(), "Id", "Name");
             ViewBag.DropUsuario = new SelectList(db.Users.ToList(), "Id", "UserName");
-
+            ViewBag.Tab = "1";
 
 
             return View(viewPermisos);
@@ -135,18 +135,66 @@ namespace MVCHelpDesk.Controllers
             if (DropRoles != string.Empty)
             {
                 viewPermisos.AddRange(GeRol(DropRoles));
+                ViewBag.Tab = "1";
             }
             if (DropUsuario != string.Empty)
             {
                 viewPermisos.AddRange(GetUsuario(DropUsuario));
-
+                ViewBag.Tab = "2";
             }
             ViewBag.DropRoles = new SelectList(db.Roles.ToList(), "Id", "Name");
             ViewBag.DropUsuario = new SelectList(db.Users.ToList(), "Id", "UserName");
             return View(viewPermisos.ToList());
 
         }
+        [HttpPost]
+        public ActionResult Save(List<ViewGetPermisos> list) {
 
+            foreach (var varRoles in list)
+            {
+                if (varRoles.IDRol != null && varRoles.check ==true)
+                {
+                    PermisoPorRol permisoRol = new PermisoPorRol();
+                    permisoRol.ModuloID = Convert.ToInt32(varRoles.moduloID);
+                    permisoRol.PermisoID = Convert.ToInt32(varRoles.PermisoID);
+                    permisoRol.RoleID = varRoles.IDRol;
+                    db.PermisoPorRol.Add(permisoRol);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    if (varRoles.IDRol == null && varRoles.check == false)
+                    {
+                        PermisoPorRol permisoRol = db.PermisoPorRol.Where(w => w.ModuloID == varRoles.moduloID && w.PermisoID == varRoles.PermisoID).SingleOrDefault();
+                        db.PermisoPorRol.Remove(permisoRol);
+                        db.SaveChanges();
+                    }
+                }
+
+            }
+            foreach (var varUsuario in list)
+            {
+                if (varUsuario.IDUsuario != null && varUsuario.check == true)
+                {
+                    PermisosPorUsuarios permisoUsuario = new PermisosPorUsuarios();
+                    permisoUsuario.ModuloID = Convert.ToInt32(varUsuario.moduloID);
+                    permisoUsuario.PermisoID = Convert.ToInt32(varUsuario.PermisoID);
+                    permisoUsuario.UsuarioID = varUsuario.IDUsuario;
+                    db.PermisosPorUsuarios.Add(permisoUsuario);
+                      db.SaveChanges();
+                }
+                else
+                {
+                    if (varUsuario.IDRol == null && varUsuario.check == false)
+                    {
+                        PermisosPorUsuarios permisoUsuario = db.PermisosPorUsuarios.Where(w => w.ModuloID == varUsuario.moduloID && w.PermisoID == varUsuario.PermisoID).SingleOrDefault();
+                        db.PermisosPorUsuarios.Remove(permisoUsuario);
+                        db.SaveChanges();
+                    }
+                }
+            }
+            return View();
+        }
         public List<ViewPermisos> GetUsuario(string usuario) {
             List<dynamic> listPermisosRolUser = new List<dynamic>();
             var PermisosRolUser = (from p in db.Permisos
