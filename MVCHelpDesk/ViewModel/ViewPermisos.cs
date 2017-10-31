@@ -25,8 +25,8 @@ namespace MVCHelpDesk.ViewModel
     {
         public int? PermisoID { get; set; }
         public int? moduloID { get; set; }
-        public string UsuarioPermisoID { get; set; }
-        public string UsuarioModuloID { get; set; }
+        public int? UsuarioPermisoID { get; set; }
+        public int? UsuarioModuloID { get; set; }
         public string IDUsuario { get; set; }
         public string IDRol { get; set; }
         public bool check { get; set; }

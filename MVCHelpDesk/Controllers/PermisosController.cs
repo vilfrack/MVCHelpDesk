@@ -4,20 +4,15 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using MVCHelpDesk.Models;
-using MVCHelpDesk.Attribute;
-using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using System.Security.Claims;
-using Microsoft.AspNet.Identity.Owin;
 using MVCHelpDesk.Helper;
 using System.Data.Entity.Validation;
 using MVCHelpDesk.ViewModel;
 namespace MVCHelpDesk.Controllers
 {
-   // [Authorize, ModuloAttribute(modulo = Permisos.AllModulos.Permiso, permisos = Permisos.AllPermisos.ver)]
+    // [Authorize, ModuloAttribute(modulo = Permisos.AllModulos.Permiso, permisos = Permisos.AllPermisos.ver)]
     public class PermisosController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -181,17 +176,17 @@ namespace MVCHelpDesk.Controllers
                 if (varUsuario.IDUsuario != null && varUsuario.check == true)
                 {
                     PermisosPorUsuarios permisoUsuario = new PermisosPorUsuarios();
-                    permisoUsuario.ModuloID = Convert.ToInt32(varUsuario.moduloID);
-                    permisoUsuario.PermisoID = Convert.ToInt32(varUsuario.PermisoID);
+                    permisoUsuario.ModuloID = Convert.ToInt32(varUsuario.UsuarioModuloID);
+                    permisoUsuario.PermisoID = Convert.ToInt32(varUsuario.UsuarioPermisoID);
                     permisoUsuario.UsuarioID = varUsuario.IDUsuario;
                     db.PermisosPorUsuarios.Add(permisoUsuario);
                     db.SaveChanges();
                 }
                 else
                 {
-                    if (varUsuario.IDRol == null && varUsuario.check == false)
+                    if (varUsuario.IDUsuario == null && varUsuario.check == false)
                     {
-                        PermisosPorUsuarios permisoUsuario = db.PermisosPorUsuarios.Where(w => w.ModuloID == varUsuario.moduloID && w.PermisoID == varUsuario.PermisoID).SingleOrDefault();
+                        PermisosPorUsuarios permisoUsuario = db.PermisosPorUsuarios.Where(w => w.ModuloID ==varUsuario.UsuarioModuloID && w.PermisoID == varUsuario.UsuarioPermisoID).SingleOrDefault();
                         if (permisoUsuario !=null)
                         {
                             db.PermisosPorUsuarios.Remove(permisoUsuario);
@@ -203,76 +198,6 @@ namespace MVCHelpDesk.Controllers
             return View();
         }
         public List<ViewPermisos> GetUsuario(string usuario) {
-            //List<dynamic> listPermisosRolUser = new List<dynamic>();
-            //var PermisosRolUser = (from p in db.Permisos
-            //                       join pU in db.PermisosPorUsuarios on p.PermisoID equals pU.PermisoID
-            //                       //SE ALMACENA EN UNA VARIABLE TEMPORAL tempPorUsuarios
-            //                       into tempPorUsuarios
-            //                       ////SE HACE LA CONSULTA tempPorUsuarios
-            //                       from lastPorUsuarios in tempPorUsuarios.DefaultIfEmpty()
-            //                           // EL RESULTADO DE lastPorUsuarios SE RELACIONA CON MODULOS
-            //                       join mU in db.Modulos on lastPorUsuarios.ModuloID equals mU.ModuloID
-            //                       where lastPorUsuarios.UsuarioID == usuario
-            //                       select new
-            //                       {
-            //                           PermisoID = p.PermisoID,
-            //                           Descripcion = p.Descripcion,
-            //                           UsuarioID = lastPorUsuarios.UsuarioID == null ? default(string) : lastPorUsuarios.UsuarioID,
-            //                           CheekUsuarios = lastPorUsuarios.UsuarioID == null ? false : true,
-            //                           ModuloIDPorUsuarios = lastPorUsuarios.ModuloID.Equals(null) ? default(int) : lastPorUsuarios.ModuloID,
-            //                           ModuloUsuDes = mU.Descripcion,
-            //                           ModuloID = mU.ModuloID
-            //                       }).ToList();
-            //var Varmodulos = db.Modulos.ToList();
-
-            //var VarModulosPermisos = (from modulos in Varmodulos
-            //                          join pRu in PermisosRolUser on modulos.ModuloID equals pRu.ModuloID into temp
-            //                          from tempModulos in temp.DefaultIfEmpty()
-            //                          select new
-            //                          {
-            //                              Descripcion = modulos.Descripcion,
-            //                              ID = modulos.ModuloID,
-            //                              Permisos = tempModulos,
-            //                          }).ToList();
-
-            //listPermisosRolUser.AddRange(VarModulosPermisos);
-            //List<ViewPermisos> viewPermisos = new List<ViewPermisos>();
-            //var varPermisos = db.Permisos.ToList();
-            //foreach (var item in listPermisosRolUser)
-            //{
-            //    if (item.Permisos == null)
-            //    {
-            //        foreach (var itemPermiso in varPermisos)
-            //        {
-            //            viewPermisos.Add(new ViewPermisos
-            //            {
-            //                ModuloID = item.ID,
-            //                ModuloDescripcion = item.Descripcion,
-            //                CheekRol = false,
-            //                CheekUsuarios = false,
-            //                PermisoID = itemPermiso.PermisoID,
-            //                PermisoDescripcion = itemPermiso.Descripcion,
-            //                RolID = string.Empty,
-            //                UsuarioID = string.Empty
-            //            });
-            //        }
-
-            //    }
-            //    else
-            //    {
-            //        viewPermisos.Add(new ViewPermisos
-            //        {
-            //            ModuloID = item.ID,
-            //            ModuloDescripcion = item.Descripcion,
-            //            CheekUsuarios = item.Permisos.CheekUsuarios == null ? false : true,
-            //            PermisoID = item.Permisos.PermisoID,
-            //            PermisoDescripcion = item.Permisos.Descripcion,
-            //            UsuarioID = item.Permisos.UsuarioID
-            //        });
-            //    }
-            //}
-            //return viewPermisos.ToList();
-            // SE OBTIENE LOS ROLES POR USUARIO POR MEDIO DE LA CLASE QUE CREAMOS
             List<IdentityRole> ListRolByUser = rolIdentity.GetRolByUser();
 
             List<dynamic> listPermisosRolUser = new List<dynamic>();
@@ -776,15 +701,6 @@ namespace MVCHelpDesk.Controllers
         }
 
 
-        /*
-         */
-        //[HttpPost]
-        //public ActionResult Details(List<ViewGetPermisos> list)
-        //{
-
-        //    return View();
-        //}
-
         public JsonResult get()
         {
             try
@@ -910,19 +826,12 @@ namespace MVCHelpDesk.Controllers
                 };
                 return Json(jsonData, JsonRequestBehavior.AllowGet);
             }
-
-
-
         }
         // GET: Permisos/Create
         public ActionResult Create()
         {
             return View();
         }
-
-        // POST: Permisos/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "PermisoID,Modulo,Descripcion")] Models.Permisos permisos)

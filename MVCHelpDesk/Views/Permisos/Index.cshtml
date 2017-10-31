@@ -198,14 +198,16 @@
                 UsuarioPermisoID: permiso,
                 UsuarioModuloID: modulo,
                 IDUsuario: $('#DropUsuario').val(),
-                IDRol: ""
+                IDRol: "",
+                check:true
             });
         } else {
             // findIndex NOS PERMITE BUSCAR EL INDICE DEL OBJETO, PASANDOLE LOS VALORES A BUSCAR
             index = permissionObject.findIndex(x => x.UsuarioPermisoID == permiso && x.UsuarioModuloID == modulo);
             if (index != -1) {
+                permissionObject[index].check=false;
                 //.splice PERMITE BORRAR EL INDICE DEL OBJETO
-                permissionObject.splice(index, 1);
+                //permissionObject.splice(index, 1);
             }
         }
     });
