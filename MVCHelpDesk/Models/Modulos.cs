@@ -9,7 +9,7 @@ namespace MVCHelpDesk.Models
     public class Modulos
     {
         [Key]
-        public int ModuloID { get; set; }
+        public int? ModuloID { get; set; }
         public string Descripcion { get; set; }
 
         public virtual ICollection<PermisoPorRol> PermisoPorRol { get; set; }
