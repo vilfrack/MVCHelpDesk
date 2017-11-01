@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace MVCHelpDesk.ViewModel
 {
@@ -35,6 +36,8 @@ namespace MVCHelpDesk.ViewModel
         [DataType(DataType.EmailAddress)]
         [EmailAddress(ErrorMessage = "Direccion del {0} es invalida")]
         public string Email { get; set; }
+
+        public List<string> rol { get; set; }
 
         public string rutaImg { get; set; }
     }

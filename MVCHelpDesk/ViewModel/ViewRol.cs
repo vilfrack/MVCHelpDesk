@@ -8,4 +8,10 @@ namespace MVCHelpDesk.ViewModel
         [Required]
         public string Name { get; set; }
     }
+    public class RolDto
+    {
+        public string Name { set; get; }
+        public string Id { set; get; }
+        public bool check { set; get; }
+    }
 }

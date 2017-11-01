@@ -9,6 +9,8 @@ using MVCHelpDesk.Helper;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity;
 using System.IO;
+using System.Data.SqlClient;
+using System.Data.Entity;
 
 namespace MVCHelpDesk.Controllers
 {
@@ -50,7 +52,19 @@ namespace MVCHelpDesk.Controllers
         // GET: Usuario/Create
         public ActionResult Create()
         {
-            return PartialView();
+            List<ViewRol> Rol = new List<ViewRol>();
+            var varRol = db.Roles.Select(s => new { Id = s.Id, Name = s.Name }).ToList();
+            foreach (var item in varRol)
+            {
+
+                var viewRol = new ViewRol
+                {
+                    Name = item.Name,
+                    Id = item.Id
+                };
+                Rol.Add(viewRol);
+            }
+            return PartialView(Rol);
         }
 
         // POST: Usuario/Create
@@ -70,7 +84,7 @@ namespace MVCHelpDesk.Controllers
                         {
                             Email = UserPerfil.Email,
                             PasswordHash = UserPerfil.Password,
-                            UserName = UserPerfil.Email
+                            UserName = UserPerfil.Email,
                         };
                         userManager.Create(userToInsert, UserPerfil.Password);
                         string ruta = string.Empty;
@@ -87,6 +101,15 @@ namespace MVCHelpDesk.Controllers
                         };
                         db.Perfiles.Add(perfiles);
                         db.SaveChanges();
+                        //agregar los roles al usuario
+                        var roleStore = new RoleStore<IdentityRole>(db);
+                        var roleManager = new RoleManager<IdentityRole>(roleStore);
+                        foreach (var varRol in UserPerfil.rol)
+                        {
+                           var rolName= roleManager.FindById(varRol);
+                            //permite hacer el insert en AspNetUserRoles
+                            userManager.AddToRole(userToInsert.Id, rolName.Name);
+                        }
                         bsuccess = true;
                     }
                 }
@@ -130,6 +153,15 @@ namespace MVCHelpDesk.Controllers
                             Ruta = p.rutaImg
                         }).SingleOrDefault();
 
+
+            var roles = db.Users
+                    .Where(u => u.Id == id)
+                    .SelectMany(u => u.Roles)
+                    .Join(db.Roles, ur => ur.RoleId, r => r.Id, (ur, r) => r)
+                    .Select(s=>s.Id)
+                    .ToList();
+
+
             var userPerfil = new ViewUserPerfil
             {
                 IDPerfil = query.IDPerfil,
@@ -138,11 +170,35 @@ namespace MVCHelpDesk.Controllers
                 Nombre = query.Nombre,
                 Apellido = query.Apellido,
                 Password = query.Password,
-                rutaImg = query.Ruta
+                rutaImg = query.Ruta,
             };
+            List<RolDto> RolDto = new List<RolDto>();
+
+            foreach (var item in db.Roles.ToList())
+            {
+                //agregamos todos los roles a userDto
+                var datos = new RolDto
+                {
+                    Name = item.Name,
+                    Id = item.Id,
+                    check = false
+                };
+                RolDto.Add(datos);
+            }
+            //ASIGANAMOS LOS ROLES QUE EXISTEN PARA ESE USUARIO Y LES CAMBIAMOS EL CHEK A TRUE
+            for (int i = 0; i < roles.Count; i++)
+            {
+                foreach (var item in RolDto.Where(d => d.Id == roles[i]).ToList())
+                {
+                    item.check = true;
+                }
+            }
+
+            ViewBag.roles = RolDto.ToList();
 
             return PartialView(userPerfil);
         }
+
 
         // POST: Usuario/Edit/5
         [HttpPost]
