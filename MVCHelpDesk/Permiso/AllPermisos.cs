@@ -7,9 +7,9 @@ namespace MVCHelpDesk.Permisos
 {
     public enum AllPermisos
     {
-        crear = 1,
-        ver = 2,
-        editar = 3,
-        eliminar = 4,
+        Ver = 1,
+        Crear = 2,
+        Editar = 3,
+        Eliminar = 4,
     }
 }

@@ -8,6 +8,8 @@ namespace MVCHelpDesk.Permisos
     public enum AllModulos
     {
         Permiso =1,
-        Requerimiento=2
+        Requerimiento=2,
+        prueba = 3
     }
+
 }

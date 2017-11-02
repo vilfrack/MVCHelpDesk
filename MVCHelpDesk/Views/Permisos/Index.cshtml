@@ -184,6 +184,7 @@
             if (index != -1) {
 
                 permissionObject[index].check=false;
+                permissionObject[index].IDRol=$('#DropRoles').val()
                 //.splice PERMITE BORRAR EL INDICE DEL OBJETO
                 //permissionObject.splice(index, 1);
             }
@@ -206,6 +207,7 @@
             index = permissionObject.findIndex(x => x.UsuarioPermisoID == permiso && x.UsuarioModuloID == modulo);
             if (index != -1) {
                 permissionObject[index].check=false;
+                permissionObject[index].IDUsuario=$('#DropUsuario').val()
                 //.splice PERMITE BORRAR EL INDICE DEL OBJETO
                 //permissionObject.splice(index, 1);
             }

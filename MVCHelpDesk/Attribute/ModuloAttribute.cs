@@ -22,8 +22,8 @@ namespace MVCHelpDesk.Attribute
             {
                 filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new
                 {
-                    controller = "Login",
-                    action = "Account"
+                    controller = "Account",
+                    action = "Login"
                 }));
             }
         }
@@ -46,14 +46,14 @@ namespace MVCHelpDesk.Attribute
             int intModulo = (int)modulo;
             int intPermisos = (int)permisos;
 
-            var s = (from user in db.Users
-                     join permisoUsuario in db.PermisosPorUsuarios on user.Id equals permisoUsuario.UsuarioID
-                     join per in db.Permisos on permisoUsuario.PermisoID equals per.PermisoID
-                     join m in db.Modulos on permisoUsuario.ModuloID equals m.ModuloID
-                     where m.ModuloID == intModulo && permisoUsuario.PermisoID == intPermisos
-                     select new { permisos = permisoUsuario.PermisoID }).Any();
+            var VarPermisoUsuario = (from user in db.Users
+                                     join permisoUsuario in db.PermisosPorUsuarios on user.Id equals permisoUsuario.UsuarioID
+                                     join per in db.Permisos on permisoUsuario.PermisoID equals per.PermisoID
+                                     join m in db.Modulos on permisoUsuario.ModuloID equals m.ModuloID
+                                     where m.ModuloID == intModulo && permisoUsuario.PermisoID == intPermisos
+                                     select new { permisos = permisoUsuario.PermisoID }).Any();
 
-            return s;
+            return VarPermisoUsuario;
         }
     }
 }

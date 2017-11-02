@@ -178,6 +178,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OperationsTaksController.cs" />
     <Compile Include="Controllers\PermisosController.cs" />
+    <Compile Include="Controllers\PruebaController.cs" />
     <Compile Include="Controllers\RequerimientoController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
@@ -1008,6 +1009,11 @@
     <Content Include="Views\Usuario\Details.cshtml" />
     <Content Include="Views\Usuario\Create.cshtml" />
     <Content Include="Views\Usuario\Edit.cshtml" />
+    <Content Include="Views\Prueba\Create.cshtml" />
+    <Content Include="Views\Prueba\Delete.cshtml" />
+    <Content Include="Views\Prueba\Details.cshtml" />
+    <Content Include="Views\Prueba\Edit.cshtml" />
+    <Content Include="Views\Prueba\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AllPermisos\" />

@@ -184,9 +184,9 @@ namespace MVCHelpDesk.Controllers
                 }
                 else
                 {
-                    if (varUsuario.IDUsuario == null && varUsuario.check == false)
+                    if (varUsuario.check == false)
                     {
-                        PermisosPorUsuarios permisoUsuario = db.PermisosPorUsuarios.Where(w => w.ModuloID ==varUsuario.UsuarioModuloID && w.PermisoID == varUsuario.UsuarioPermisoID).SingleOrDefault();
+                        PermisosPorUsuarios permisoUsuario = db.PermisosPorUsuarios.Where(w => w.ModuloID ==varUsuario.UsuarioModuloID && w.PermisoID == varUsuario.UsuarioPermisoID && w.UsuarioID ==varUsuario.IDUsuario).SingleOrDefault();
                         if (permisoUsuario !=null)
                         {
                             db.PermisosPorUsuarios.Remove(permisoUsuario);

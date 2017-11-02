@@ -17,7 +17,7 @@ namespace MVCHelpDesk.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Requerimiento
-        [PermisoAttribute(permisos = AllPermisos.ver)]
+        [PermisoAttribute(permisos = AllPermisos.Ver)]
         public ActionResult Index()
         {
             return View(db.Requerimiento.ToList());

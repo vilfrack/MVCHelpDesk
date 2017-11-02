@@ -193,9 +193,7 @@ namespace MVCHelpDesk.Controllers
                     item.check = true;
                 }
             }
-
             ViewBag.roles = RolDto.ToList();
-
             return PartialView(userPerfil);
         }
 
@@ -249,6 +247,24 @@ namespace MVCHelpDesk.Controllers
                     perfiles.rutaImg = ruta;
 
                     db.SaveChanges();
+                    //CAMBIAMOS LA INFORMACION DE LOS ROLES
+                    var roleStore = new RoleStore<IdentityRole>(db);
+                    var roleManager = new RoleManager<IdentityRole>(roleStore);
+
+                    //eliminamos los roles
+                    var roles =  userManager.GetRoles(usu.Id);
+                    userManager.RemoveFromRoles(usu.Id, roles.ToArray());
+
+                    if (userPerfil.rol != null)
+                    {
+                        foreach (var varRol in userPerfil.rol)
+                        {
+                            var rolName = roleManager.FindById(varRol);
+                            //permite hacer el insert en AspNetUserRoles
+                            userManager.AddToRole(usu.Id, rolName.Name);
+                        }
+                    }
+
                     bsuccess = true;
 
                 }
