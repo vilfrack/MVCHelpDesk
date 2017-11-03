@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MVCHelpDesk.ViewModel.ViewPermisos>
+﻿@*@*@model IEnumerable<MVCHelpDesk.ViewModel.ViewPermisos>
 @{
     SelectList DropRoles = ViewBag.DropRoles;
     SelectList DropUsuario = ViewBag.DropUsuario;
@@ -59,7 +59,7 @@
                 </tbody>
                 }
             </table>
-            <button type="submit" id="btnSave" class="btn btn-primary btn-group-lg"><i class="fa fa-save"></i> Guardar</button>
+            <button type="submit" id="btnSaveRol" class="btn btn-primary btn-group-lg"><i class="fa fa-save"></i> Guardar rol</button>
         </form>
     </div>
     <div role="tabpanel" class="tab-pane fade" id="usuario">
@@ -98,7 +98,7 @@
                 </tbody>
         }
     </table>
-    <button type="submit" id="btnSave" class="btn btn-primary btn-group-lg"><i class="fa fa-save"></i> Guardar</button>
+    <button type="submit" id="btnSave" class="btn btn-primary btn-group-lg"><i class="fa fa-save"></i> Guardar usuario</button>
 }
     </div>
 
@@ -178,33 +178,35 @@
         }
     });
     $("#frmPermisos").submit(function (e) {
-        var myParam = permissionObject;
+        alert('permiso realizado');
 
-        myParam = JSON.stringify({ 'list': myParam });
-        // myParam = JSON.stringify({ 'list': hola });
-        $.ajax({
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            type: 'POST',
-            url: '/Permisos/Details',
-            data: myParam,
-            success: function (data) {
-                if (data.success) {
+        //var myParam = permissionObject;
 
-                }
-                else {
-                    //VA A CAPTURAR TODOS LOS ERRORES ENVIADOS DEL CONTROLADOR
-                    $.each(data.Errors, function (key, value) {
+        //myParam = JSON.stringify({ 'list': myParam });
+        //// myParam = JSON.stringify({ 'list': hola });
+        //$.ajax({
+        //    contentType: 'application/json; charset=utf-8',
+        //    dataType: 'json',
+        //    type: 'POST',
+        //    url: '/Permisos/Details',
+        //    data: myParam,
+        //    success: function (data) {
+        //        if (data.success) {
 
-                    });
-                }
-            },
-            error: function (data) {
-                $('#alert_danger').html(data);
-                $('#alert_danger').show("fast");
-            },
+        //        }
+        //        else {
+        //            //VA A CAPTURAR TODOS LOS ERRORES ENVIADOS DEL CONTROLADOR
+        //            $.each(data.Errors, function (key, value) {
 
-        });
+        //            });
+        //        }
+        //    },
+        //    error: function (data) {
+        //        $('#alert_danger').html(data);
+        //        $('#alert_danger').show("fast");
+        //    },
+
+        //});
     });
 
     function submitForm(formId) {
@@ -218,4 +220,4 @@
         }
         document.getElementById('frmIndex').submit();
     }
-</script>
+</script>*@*@

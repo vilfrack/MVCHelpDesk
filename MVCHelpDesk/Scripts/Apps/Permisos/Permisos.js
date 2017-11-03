@@ -180,7 +180,7 @@
 //});
 $('#frm-example').on('submit', function (e) {
     var form = this;
-
+    alert('sd');
     var rows_selected = table.column(0).checkboxes.selected();
 
     // Iterate over all selected checkboxes
