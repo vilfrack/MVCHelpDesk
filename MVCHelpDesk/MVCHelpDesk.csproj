@@ -176,6 +176,7 @@
     <Compile Include="Controllers\DepartamentoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ModulosController.cs" />
     <Compile Include="Controllers\OperationsTaksController.cs" />
     <Compile Include="Controllers\PermisosController.cs" />
     <Compile Include="Controllers\PruebaController.cs" />
@@ -232,6 +233,7 @@
     <Content Include="Images\empleados\eff15d4f-cd5c-497f-b954-a8b54ecd864f\4.jpg" />
     <Content Include="Images\empleados\f87e608a-5014-48d4-85ce-4a70d55bab9c\8.jpg" />
     <Content Include="Scripts\Apps\Departamento\departamento.js" />
+    <Content Include="Scripts\Apps\Modulos\Modulos.js" />
     <Content Include="Scripts\Apps\OperationsTaks\OperationsTaks.js" />
     <Content Include="Scripts\Apps\Permisos\Permisos.js" />
     <Content Include="Scripts\Apps\Roles\roles.js" />
@@ -1014,6 +1016,10 @@
     <Content Include="Views\Prueba\Details.cshtml" />
     <Content Include="Views\Prueba\Edit.cshtml" />
     <Content Include="Views\Prueba\Index.cshtml" />
+    <Content Include="Views\Modulos\Index.cshtml" />
+    <Content Include="Views\Modulos\Details.cshtml" />
+    <Content Include="Views\Modulos\Create.cshtml" />
+    <Content Include="Views\Modulos\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AllPermisos\" />

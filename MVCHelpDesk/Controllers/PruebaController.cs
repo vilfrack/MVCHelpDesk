@@ -7,12 +7,12 @@ using MVCHelpDesk.Attribute;
 
 namespace MVCHelpDesk.Controllers
 {
-    [Authorize, ModuloAttribute(modulo = Permisos.AllModulos.Permiso, permisos = Permisos.AllPermisos.Ver)]
+   [Authorize]
     public class PruebaController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        [ModuloAttribute(permisos = Permisos.AllPermisos.Ver)]
+        [ModuloAttribute(modulo = Permisos.AllModulos.prueba, permisos = Permisos.AllPermisos.Ver)]
         public ActionResult Index()
         {
             return View(db.Modulos.ToList());
@@ -33,7 +33,7 @@ namespace MVCHelpDesk.Controllers
             return View(modulos);
         }
 
-        [ModuloAttribute(permisos = Permisos.AllPermisos.Crear)]
+        [ModuloAttribute(modulo = Permisos.AllModulos.prueba, permisos = Permisos.AllPermisos.Crear)]
         public ActionResult Create()
         {
             return View();
@@ -56,7 +56,7 @@ namespace MVCHelpDesk.Controllers
             return View(modulos);
         }
 
-        [ModuloAttribute(permisos = Permisos.AllPermisos.Editar)]
+        [ModuloAttribute(modulo = Permisos.AllModulos.prueba, permisos = Permisos.AllPermisos.Editar)]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -87,7 +87,7 @@ namespace MVCHelpDesk.Controllers
             return View(modulos);
         }
 
-        [ModuloAttribute(permisos = Permisos.AllPermisos.Eliminar)]
+       [ModuloAttribute(modulo = Permisos.AllModulos.prueba, permisos = Permisos.AllPermisos.Eliminar)]
         public ActionResult Delete(int? id)
         {
             if (id == null)

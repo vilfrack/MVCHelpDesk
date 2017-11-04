@@ -70,9 +70,11 @@ namespace MVCHelpDesk.Controllers
                     }
                     else
                     {
-                        if (varRoles.IDRol == null && varRoles.check == false)
+                        if (varRoles.check == false)
                         {
-                            PermisoPorRol permisoRol = db.PermisoPorRol.Where(w => w.ModuloID == varRoles.moduloID && w.PermisoID == varRoles.PermisoID).SingleOrDefault();
+                            PermisoPorRol permisoRol = db.PermisoPorRol.Where(w => w.ModuloID == varRoles.moduloID &&
+                                                                              w.PermisoID == varRoles.PermisoID &&
+                                                                              w.RoleID == varRoles.IDRol).SingleOrDefault();
                             if (permisoRol != null)
                             {
                                 db.PermisoPorRol.Remove(permisoRol);
@@ -107,7 +109,8 @@ namespace MVCHelpDesk.Controllers
                         }
                     }
                 }
-                return Json(new { success = true, JsonRequestBehavior.AllowGet });
+            //https://stackoverflow.com/questions/8464677/why-is-jsonrequestbehavior-needed
+            return Json(new { success = true, JsonRequestBehavior.AllowGet });
         }
         public List<ViewPermisos> GetUsuario(string usuario) {
             List<IdentityRole> ListRolByUser = rolIdentity.GetRolByUser();

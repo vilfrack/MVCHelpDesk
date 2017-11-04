@@ -9,7 +9,7 @@ namespace MVCHelpDesk.Permisos
     {
         Permiso =1,
         Requerimiento=2,
-        prueba = 3
+        prueba = 3,
     }
 
 }
