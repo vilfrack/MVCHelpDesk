@@ -1,6 +1,4 @@
-﻿$(function () {
-    //esconderMensajes();
-});
+﻿
 //CUANDO CERREMOS EL MODAL
 $("button[data-dismiss='modal']").click(function () {
     $('#login').val('');
@@ -78,6 +76,7 @@ $("#formEdit").submit(function (e) {
                     $("#ErrorEdit_" + key).html('');
                     $("#divEdit_" + key).removeClass(" has-error has-feedback");
                 });
+                $("#btnEnviar").prop('disabled', true);
                 $('#alert_success').show("fast");
                 $('#alert_success').show("fast");
                 $('#alert_danger').hide();
@@ -132,7 +131,7 @@ $("#formCreate").submit(function (e) {
                     $("#div_" + key).removeClass(" has-error has-feedback");
                 });
                 $('#alert_success').show("fast");
-                $("#btnEnviarEditar").prop('disabled', true);
+                $("#btnEnviar").prop('disabled', true);
                 $('#alert_danger').hide();
                 LoadGridDepartamento();
             }

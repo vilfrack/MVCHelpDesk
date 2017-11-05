@@ -17,8 +17,6 @@ namespace MVCHelpDesk.Attribute
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            base.OnActionExecuting(filterContext);
-
             if (!PermisoByRol() && !PermisoByUser())
             {
                 filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new
@@ -27,6 +25,7 @@ namespace MVCHelpDesk.Attribute
                     action = "Login"
                 }));
             }
+            base.OnActionExecuting(filterContext);
         }
         public bool PermisoByRol()
         {

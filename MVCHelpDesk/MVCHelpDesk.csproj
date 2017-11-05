@@ -197,6 +197,7 @@
     <Compile Include="Models\PermisoPorRol.cs" />
     <Compile Include="Models\PermisosPorUsuarios.cs" />
     <Compile Include="Models\Status.cs" />
+    <Compile Include="Models\Tasks.cs" />
     <Compile Include="Permiso\AllModulos.cs" />
     <Compile Include="Permiso\AllPermisos.cs" />
     <Compile Include="ViewModel\AccountViewModels.cs" />

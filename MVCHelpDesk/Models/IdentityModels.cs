@@ -49,6 +49,7 @@ namespace MVCHelpDesk.Models
 
         public DbSet<Perfiles> Perfiles { get; set; }
 
+        public DbSet<Tasks> Tasks { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
