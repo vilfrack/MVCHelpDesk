@@ -18,19 +18,19 @@ namespace MVCHelpDesk.Controllers
     public class UsuarioController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private Helper.Helpers helper = new Helpers();
         private GetErrors errors = new GetErrors();
-        // GET: Usuario
+
         public ActionResult Index()
         {
-            ApplicationDbContext sd = new ApplicationDbContext();
             return View();
         }
 
-        // GET: Usuario/Details/5
         public ActionResult Details()
         {
             return PartialView();
         }
+
         public JsonResult get()
         {
 
@@ -49,7 +49,7 @@ namespace MVCHelpDesk.Controllers
         };
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
-        // GET: Usuario/Create
+
         public ActionResult Create()
         {
             List<ViewRol> Rol = new List<ViewRol>();
@@ -64,10 +64,10 @@ namespace MVCHelpDesk.Controllers
                 };
                 Rol.Add(viewRol);
             }
+            ViewBag.Depatarmento = new SelectList(helper.GetDepartamento(), "IDDepartamento", "departamento");
             return PartialView(Rol);
         }
 
-        // POST: Usuario/Create
         [HttpPost]
         public JsonResult Create(ViewUserPerfil UserPerfil, HttpPostedFileBase file)
         {
@@ -97,7 +97,8 @@ namespace MVCHelpDesk.Controllers
                             Nombre = UserPerfil.Nombre,
                             Apellido = UserPerfil.Apellido,
                             UsuarioID = userToInsert.Id,
-                            rutaImg = ruta
+                            rutaImg = ruta,
+                            IDDepartamento = UserPerfil.departamento,
                         };
                         db.Perfiles.Add(perfiles);
                         db.SaveChanges();
@@ -121,6 +122,7 @@ namespace MVCHelpDesk.Controllers
                 return Json(new { success = false, Errors = errors.GetErrorsFromModelState(ModelState), JsonRequestBehavior.AllowGet });
             }
         }
+
         private string SaveUploadedFile(HttpPostedFileBase file, string id)
         {
             var originalDirectory = new DirectoryInfo(string.Format("~/Images/empleados/" + id));
@@ -137,7 +139,7 @@ namespace MVCHelpDesk.Controllers
             file.SaveAs(path);
             return ruta_virtual+"/"+ file.FileName;
         }
-        // GET: Usuario/Edit/5
+
         public ActionResult Edit(string id)
         {
             var query = (from u in db.Users
@@ -150,7 +152,8 @@ namespace MVCHelpDesk.Controllers
                             Nombre = p.Nombre,
                             Apellido = p.Apellido,
                             IDPerfil = p.IDPerfil,
-                            Ruta = p.rutaImg
+                            Ruta = p.rutaImg,
+                            IDDepartamento = p.IDDepartamento
                         }).SingleOrDefault();
 
 
@@ -171,6 +174,8 @@ namespace MVCHelpDesk.Controllers
                 Apellido = query.Apellido,
                 Password = query.Password,
                 rutaImg = query.Ruta,
+                departamento = query.IDDepartamento
+               // Vendor = new SelectList(helper.GetDepartamento(), "IDDepartamento", "departamento")
             };
             List<RolDto> RolDto = new List<RolDto>();
 
@@ -194,11 +199,10 @@ namespace MVCHelpDesk.Controllers
                 }
             }
             ViewBag.roles = RolDto.ToList();
+            ViewBag.Depatarmento = new SelectList(helper.GetDepartamento(), "IDDepartamento", "departamento");
             return PartialView(userPerfil);
         }
 
-
-        // POST: Usuario/Edit/5
         [HttpPost]
         public ActionResult Edit(ViewUserPerfil userPerfil, HttpPostedFileBase FileEdit)
         {
@@ -245,7 +249,7 @@ namespace MVCHelpDesk.Controllers
                     perfiles.Nombre = userPerfil.Nombre;
                     perfiles.Apellido = userPerfil.Apellido;
                     perfiles.rutaImg = ruta;
-
+                    perfiles.IDDepartamento = userPerfil.departamento;
                     db.SaveChanges();
                     //CAMBIAMOS LA INFORMACION DE LOS ROLES
                     var roleStore = new RoleStore<IdentityRole>(db);
@@ -275,7 +279,7 @@ namespace MVCHelpDesk.Controllers
                 return Json(new { success = false, Errors = errors.GetErrorsFromModelState(ModelState), JsonRequestBehavior.AllowGet });
             }
         }
-        // POST: Usuario/Delete/5
+
         [HttpPost]
         public ActionResult Delete(string id)
         {

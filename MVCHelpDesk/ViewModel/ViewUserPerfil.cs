@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace MVCHelpDesk.ViewModel
 {
@@ -36,6 +37,9 @@ namespace MVCHelpDesk.ViewModel
         [DataType(DataType.EmailAddress)]
         [EmailAddress(ErrorMessage = "Direccion del {0} es invalida")]
         public string Email { get; set; }
+
+        [Required(ErrorMessage = "Debe seleccionar un departamento")]
+        public int? departamento { get; set; }
 
         public List<string> rol { get; set; }
 

@@ -1,4 +1,7 @@
 ﻿@model IEnumerable<MVCHelpDesk.ViewModel.ViewRol>
+@{
+    SelectList DropDepartamento = ViewBag.Depatarmento;
+}
     @* EL DIV PERMITE CAMBIAR DE COLOR Y DEBE SER LLAMADO IGUAL COMO ESTA EN EL MODEL *@
     <div id="div_Email" class="form-group">
         <label class="col-sm-2 control-label">Email</label>
@@ -32,6 +35,14 @@
             <label id="Error_Apellido" class="control-label"></label>
         </div>
     </div>
+<div id="div_departamento" class="form-group">
+    <label class="col-sm-2 control-label">Departamento</label>
+    <div class="col-sm-10">
+        @Html.DropDownList("Departamento", DropDepartamento, "Seleccionar", new { @class = "form-control select2-allow-clear" })
+        <label id="Error_departamento" class="control-label"></label>
+    </div>
+</div>
+
 @* LOS ROLES SE AGREGAN DESPUES DE QUE SE PUEDAN INSERTAR ROLES *@
     <div class="form-group">
         <label class="col-sm-2 control-label">Rol</label>
