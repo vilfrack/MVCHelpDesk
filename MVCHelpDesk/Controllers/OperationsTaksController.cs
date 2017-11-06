@@ -15,6 +15,7 @@ namespace MVCHelpDesk.Controllers
     {
         private Helper.Helpers helper = new Helpers();
         private ApplicationDbContext db = new ApplicationDbContext();
+        private GetErrors getError = new GetErrors();
         // GET: OperationsTaks
         public ActionResult Index()
         {
@@ -32,14 +33,16 @@ namespace MVCHelpDesk.Controllers
             var status = db.Status.ToList();
             var jsonData = new
             {
-                data = (from query in tabla
-                        join sta in status on query.StatusID equals sta.StatusID
+                data = (from query in db.Tasks
+                        join sta in db.Status on query.StatusID equals sta.StatusID
+                        join dep in db.Departamento on query.IDDepartamento equals dep.IDDepartamento
                         select new
                         {
                             Titulo = query.Titulo,
                             FechaCreacion = query.FechaCreacion,
                             Status = sta.nombre,
-                            TaskID = query.TaskID
+                            TaskID = query.TaskID,
+                            Departamento = dep.departamento
                         }).ToList()
             };
             return Json(jsonData, JsonRequestBehavior.AllowGet);
@@ -73,11 +76,11 @@ namespace MVCHelpDesk.Controllers
 
 
                 }
-                return Json(new { success = bsuccess, Errors = GetErrorsFromModelState(), JsonRequestBehavior.AllowGet });
+                return Json(new { success = bsuccess, Errors = getError.GetErrorsFromModelState(ModelState), JsonRequestBehavior.AllowGet });
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, Errors = GetErrorsFromModelState(), JsonRequestBehavior.AllowGet });
+                return Json(new { success = false, Errors = getError.GetErrorsFromModelState(ModelState), JsonRequestBehavior.AllowGet });
             }
         }
         //SaveUploadedFile DEBE ESTAR EN LA CLASE HELPER
@@ -117,25 +120,7 @@ namespace MVCHelpDesk.Controllers
             }
         }
         //GetErrorsFromModelState DEBE ESTAR EN LA CLASE HELPER
-        public Dictionary<string, object> GetErrorsFromModelState()
-        {
 
-            var errors = new Dictionary<string, object>();
-            foreach (var key in ModelState.Keys)
-            {
-                // Only send the errors to the client.
-                if (ModelState[key].Errors.Count > 0)
-                {
-                    errors[key] = ModelState[key].Errors;
-                }
-                else
-                {
-                    errors[key] = "true";
-                }
-            }
-
-            return errors;
-        }
         [HttpGet]
         public ActionResult Edit(int id)
         {
@@ -179,11 +164,11 @@ namespace MVCHelpDesk.Controllers
                         SaveUploadedFile(FileEdit, tasks.TaskID);
                     }
                 }
-                return Json(new { success = bsuccess, Errors = GetErrorsFromModelState(), JsonRequestBehavior.AllowGet });
+                return Json(new { success = bsuccess, Errors = getError.GetErrorsFromModelState(ModelState), JsonRequestBehavior.AllowGet });
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, Errors = GetErrorsFromModelState(), JsonRequestBehavior.AllowGet });
+                return Json(new { success = false, Errors = getError.GetErrorsFromModelState(ModelState), JsonRequestBehavior.AllowGet });
             }
         }
         [HttpPost]

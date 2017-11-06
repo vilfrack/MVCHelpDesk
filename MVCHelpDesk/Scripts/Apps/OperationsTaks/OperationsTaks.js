@@ -157,6 +157,7 @@ function LoadGrid() {
           { "data": "TaskID" },
           { "data": "Titulo" },
           { "data": "Status" },
+          { "data": "Departamento" },
           {
               "data": "FechaCreacion",
               "render": function (jsonDate) {
@@ -166,7 +167,7 @@ function LoadGrid() {
                   //https://www.youtube.com/watch?v=TgD24a9gxXw   explicacion de como cambiar el formato fecha
               }
           },
-          
+
           {
               "data": null,
               defaultContent: "<button id='editar' class='btn btn-success btn-sm'" +
