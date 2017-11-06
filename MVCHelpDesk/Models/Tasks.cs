@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MVCHelpDesk.Models
 {
@@ -21,11 +22,14 @@ namespace MVCHelpDesk.Models
 
         public int? StatusID { get; set; }
 
-
+        [Required(ErrorMessage = "Debe seleccionar un departamento")]
+        public int? IDDepartamento { get; set; }
 
         public virtual ICollection<Files> Files { get; set; }
 
         public virtual Status Status { get; set; }
 
+        [ForeignKey("IDDepartamento")]
+        public virtual Departamento Departamento { get; set; }
     }
 }

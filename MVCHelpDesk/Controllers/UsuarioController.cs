@@ -9,8 +9,6 @@ using MVCHelpDesk.Helper;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity;
 using System.IO;
-using System.Data.SqlClient;
-using System.Data.Entity;
 
 namespace MVCHelpDesk.Controllers
 {

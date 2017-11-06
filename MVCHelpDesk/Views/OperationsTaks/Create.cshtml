@@ -1,5 +1,7 @@
 ﻿
-
+@{
+    SelectList DropDepartamento = ViewBag.Depatarmento;
+}
 <div id="div_Titulo" class="form-group">
     <label class="col-sm-2 control-label">Titulo</label>
     <div class="col-sm-10">
@@ -16,7 +18,13 @@
         <label id="Error_Descripcion" class="control-label" for="inputError2"></label>
     </div>
 </div>
-
+<div id="div_departamento" class="form-group">
+    <label class="col-sm-2 control-label">Departamento</label>
+    <div class="col-sm-10">
+        @Html.DropDownList("IDDepartamento", DropDepartamento, "Seleccionar", new { @class = "form-control" })
+        <label id="Error_departamento" class="control-label"></label>
+    </div>
+</div>
 @* drag and drop *@
 <div class="form-group">
 

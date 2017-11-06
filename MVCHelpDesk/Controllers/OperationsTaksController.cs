@@ -6,12 +6,14 @@ using System.Web.Mvc;
 using MVCHelpDesk.Models;
 using System.IO;
 using MVCHelpDesk.ViewModel;
+using MVCHelpDesk.Helper;
 
 namespace MVCHelpDesk.Controllers
 {
     [Authorize]
     public class OperationsTaksController : Controller
     {
+        private Helper.Helpers helper = new Helpers();
         private ApplicationDbContext db = new ApplicationDbContext();
         // GET: OperationsTaks
         public ActionResult Index()
@@ -44,6 +46,7 @@ namespace MVCHelpDesk.Controllers
         }
         public ActionResult Create()
         {
+            ViewBag.Depatarmento = new SelectList(helper.GetDepartamento(), "IDDepartamento", "departamento");
             return PartialView();
         }
         [HttpPost]
@@ -147,11 +150,13 @@ namespace MVCHelpDesk.Controllers
             TaskFiles.Descripcion = subquery.Descripcion;
             TaskFiles.ruta_virtual = new List<string>();
             TaskFiles.IDFiles = new List<int>();
+            TaskFiles.IDDepartamento = subquery.IDDepartamento;
             foreach (var item in subqueryFile)
             {
                 TaskFiles.ruta_virtual.Add(item.ruta_virtual);
                 TaskFiles.IDFiles.Add(item.IDFiles);
             }
+            ViewBag.Depatarmento = new SelectList(helper.GetDepartamento(), "IDDepartamento", "departamento");
             return PartialView(TaskFiles);
         }
 
@@ -166,6 +171,7 @@ namespace MVCHelpDesk.Controllers
                     var result = db.Tasks.Find(tasks.TaskID);
                     result.Titulo = tasks.Titulo;
                     result.Descripcion = tasks.Descripcion;
+                    result.IDDepartamento = tasks.IDDepartamento;
                     db.SaveChanges();
                     bsuccess = true;
                     if (FileEdit.Count() > 0)
