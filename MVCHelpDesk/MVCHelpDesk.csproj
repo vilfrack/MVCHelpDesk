@@ -175,6 +175,7 @@
     <Compile Include="Controllers\DashBoardController.cs" />
     <Compile Include="Controllers\DepartamentoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\KanbanController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ModulosController.cs" />
     <Compile Include="Controllers\OperationsTaksController.cs" />
@@ -1022,6 +1023,8 @@
     <Content Include="Views\Modulos\Details.cshtml" />
     <Content Include="Views\Modulos\Create.cshtml" />
     <Content Include="Views\Modulos\Edit.cshtml" />
+    <Content Include="Views\Kanban\Index.cshtml" />
+    <Content Include="Views\Kanban\detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AllPermisos\" />

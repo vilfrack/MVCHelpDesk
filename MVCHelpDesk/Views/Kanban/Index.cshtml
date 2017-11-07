@@ -1,0 +1,138 @@
+﻿@model IEnumerable<MVCHelpDesk.Models.Tasks>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Task</h2>
+<div class="row">
+    <section id="contenido">
+        <div class="contenedor">
+            <div class="panel panel-primary">
+                <!--SE CMENZARA CON TICKTS ASIGNADOS -->
+                <div class="panel-heading">Tickets asignados</div>
+                <div class="panel-body" id="divAsignados">
+                    <div class="column">
+                        @foreach (var item in Model)
+                        {
+                            if (item.StatusID == 1)
+                            {
+                                <div class="portlet" id="@item.TaskID">
+                                    <div class="portlet-content">
+                                        <div class="postit-container">
+                                            <div id="index_0" class="panel panel-success">
+                                                <div class="panel-heading">@item.Titulo</div>
+                                                <div class="panel-body" onclick="getID(@item.TaskID);">
+                                                    @item.Descripcion
+                                                </div>
+                                                <div class="panel-footer panel-custom">Panel footer</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="contenedor">
+            <div class="panel panel-info">
+                <div class="panel-heading">Tickets en desarrollo</div>
+                <div class="panel-body" id="divDesarrollo">
+                    <div class="column">
+                        @foreach (var item in Model)
+                        {
+                            if (item.StatusID == 2)
+                            {
+                                <div class="portlet" id="@item.TaskID">
+                                    <div class="portlet-content">
+                                        <div class="postit-container">
+                                            <div id="index_0" class="panel panel-danger">
+                                                <div class="panel-heading">@item.Titulo</div>
+                                                <div class="panel-body">
+                                                    @item.Descripcion
+                                                </div>
+                                                <div class="panel-footer panel-custom">Panel footer</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="contenedor">
+            <div class="panel panel-success">
+                <div class="panel-heading">Tickets en prueba/realizados</div>
+                <div class="panel-body" id="divRealizados">
+                    <div class="column">
+                        @foreach (var item in Model)
+                        {
+                            if (item.StatusID == 3)
+                            {
+                                <div class="portlet" id="@item.TaskID">
+                                    <div class="portlet-content">
+                                        <div class="postit-container">
+                                            <div id="index_0" class="panel panel-primary">
+                                                <div class="panel-heading">@item.Titulo</div>
+                                                <div class="panel-body">
+                                                    @item.Descripcion
+                                                </div>
+                                                <div class="panel-footer panel-custom">Panel footer</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="contenedor">
+            <div class="panel panel-danger">
+                <div class="panel-heading">Tickets rechazados</div>
+                <div class="panel-body" id="divRechazados">
+                    <div class="column">
+                        @foreach (var item in Model)
+                        {
+                            if (item.StatusID == 4)
+                            {
+                                <div class="portlet" id="@item.TaskID">
+                                    <div class="portlet-content">
+                                        <div class="postit-container">
+                                            <div id="index_0" class="panel panel-primary">
+                                                <div class="panel-heading">@item.Titulo</div>
+                                                <div class="panel-body">
+                                                    @item.Descripcion
+                                                </div>
+                                                <div class="panel-footer panel-custom">Panel footer</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- MODAL-->
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div id="contenedor-modal">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
