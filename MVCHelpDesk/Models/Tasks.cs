@@ -22,6 +22,8 @@ namespace MVCHelpDesk.Models
 
         public int? StatusID { get; set; }
 
+        public string UsuarioID { get; set; }
+
         [Required(ErrorMessage = "Debe seleccionar un departamento")]
         public int? IDDepartamento { get; set; }
 

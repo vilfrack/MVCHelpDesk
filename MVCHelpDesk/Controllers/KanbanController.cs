@@ -10,6 +10,7 @@ namespace MVCHelpDesk.Controllers
 {
     public class KanbanController : Controller
     {
+
         private ApplicationDbContext db = new ApplicationDbContext();
         public ActionResult Index()
         {
@@ -57,7 +58,8 @@ namespace MVCHelpDesk.Controllers
                                 FechaCreacion = tas.FechaCreacion,
                                 Status = sta.nombre,
                                 Descripcion = tas.Descripcion,
-                                TaskID = tas.TaskID
+                                TaskID = tas.TaskID,
+                                UsuarioID = tas.UsuarioID
                             }).SingleOrDefault();
 
             var subqueryFile = db.Files.Where(qf => qf.IDFiles == id).ToList();
@@ -67,6 +69,7 @@ namespace MVCHelpDesk.Controllers
             TaskFiles.ruta_virtual = new List<string>();
             TaskFiles.IDFiles = new List<int>();
             TaskFiles.status = subquery.Status;
+            TaskFiles.UsuarioID = subquery.UsuarioID;
             foreach (var item in subqueryFile)
             {
                 TaskFiles.ruta_virtual.Add(item.ruta_virtual);

@@ -14,6 +14,7 @@ namespace MVCHelpDesk.Controllers
     public class OperationsTaksController : Controller
     {
         private Helper.Helpers helper = new Helpers();
+        private Helper.UserIdentity user = new UserIdentity();
         private ApplicationDbContext db = new ApplicationDbContext();
         private GetErrors getError = new GetErrors();
         // GET: OperationsTaks
@@ -65,8 +66,9 @@ namespace MVCHelpDesk.Controllers
 
                     //  tasks.ruta_foto = CrearDirectorio(IDRuta);
                     tasks.FechaCreacion = DateTime.Now.Date;
-                    tasks.FechaFinalizacion = DateTime.Now.Date;
+                    //tasks.FechaFinalizacion = DateTime.Now.Date;
                     tasks.StatusID = 1;
+                    tasks.UsuarioID = user.GetIdUser();
                     db.Tasks.Add(tasks);
                     db.SaveChanges();
                     var getLast = db.Tasks.OrderByDescending(u => u.TaskID).FirstOrDefault();
