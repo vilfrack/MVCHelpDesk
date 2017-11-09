@@ -2,10 +2,14 @@
 
 
 @Html.HiddenFor(m => m.TaskID, new { id = "TaskID" })
-<div class="modal-header">
+
+@Styles.Render("~/bundles/KanbanCss")
+<div id="contenedor">
+    <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="myModalLabel">@Html.DisplayFor(m => m.Titulo)</h4><br />
-    <label>Estado: @Html.DisplayFor(m => m.status)</label>
+    <h4 class="modal-title" id="myModalLabel">@Html.DisplayFor(m => m.Titulo)</h4>
+    <label>Estado: @Html.DisplayFor(m => m.status)</label><br />
+    <label>Numero del caso: @Html.DisplayFor(m => m.TaskID)</label>
 </div>
 <div class="modal-body">
 
@@ -13,9 +17,7 @@
         <div class="col-sm-7">
             <div id="div_Titulo">
                 <div>
-                    <label>Numero del caso: @Html.DisplayFor(m => m.TaskID)</label>
                     <label>Creado por : Iniciales o foto del que creo el requerimiento</label>
-
                 </div>
             </div>
             @* EL DIV PERMITE CAMBIAR DE COLOR Y DEBE SER LLAMADO IGUAL COMO ESTA EN EL MODEL *@
@@ -38,13 +40,21 @@
 
             </div>
 
-
+            <div>
+                <label>Agregar Comentario</label>
+                <textarea id="Comentario" class="form-control" name="Comentario" rows="3" placeholder="Comentario"></textarea>
+            </div>
 
             <div id="alert_success_editar" class="alert alert-success" role="alert">Informacion procesada satisfactoriamente</div>
             <div id="alert_danger_editar" class="alert alert-danger" role="alert"></div>
         </div>
         <div class="col-sm-2">
-            <h2>PRUEBA</h2>
+            <h4>Opciones</h4>
+            <button type="button" class="btn btn-default btn-block">Asignar</button>
+            @*<button type="button" class="btn btn-default btn-block">Crear actividades</button>*@
+            @*<button type="button" class="btn btn-default btn-block">Adjuntar</button>*@
+            <button type="button" class="btn btn-default btn-block">Fecha de entrega</button>
+
         </div>
     </div>
 
@@ -53,6 +63,8 @@
     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
     <button type="button" class="btn btn-primary">Save changes</button>
 </div>
+</div>
+
 
 
 

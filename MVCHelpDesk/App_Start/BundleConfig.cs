@@ -47,6 +47,9 @@ namespace MVCHelpDesk
                  "~/Content/morris.css"
                 ).IncludeDirectory("~/Content", ".css"));
 
+            bundles.Add(new ScriptBundle("~/bundles/KanbanCss").Include(
+                "~/Content/kanban.css").IncludeDirectory("~/Content", ".css"));
+
             bundles.Add(new StyleBundle("~/bundles/cssLogin").Include(
                 "~/Content/bootstrap-3.3.7-dist/css/bootstrap.css",
                 "~/Content/main.css"

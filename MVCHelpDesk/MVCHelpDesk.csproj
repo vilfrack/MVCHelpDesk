@@ -225,6 +225,7 @@
     <Content Include="Content\bootstrap-3.3.7-dist\js\npm.js" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\fileinput.css" />
+    <Content Include="Content\kanban.css" />
     <Content Include="Content\main.css" />
     <Content Include="Content\morris.css" />
     <Content Include="Content\sb-admin.css" />
