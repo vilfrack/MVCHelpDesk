@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using MVCHelpDesk.Models;
+using System.Collections.Generic;
 namespace MVCHelpDesk.ViewModel
 {
     public class ViewTaskFile
@@ -24,5 +25,7 @@ namespace MVCHelpDesk.ViewModel
         public string UsuarioID { get; set; }
 
         public string Foto { get; set; }
+        //SE LLAMA A LA VIEWMODEL QUE ESTA EN VIEWCOMENTARIO
+        public List<ViewComentarioPerfiles> ComentarioPerfiles { get; set; }
     }
 }

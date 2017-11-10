@@ -7,24 +7,24 @@
 <div id="contenedor">
     <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="myModalLabel">@Html.DisplayFor(m => m.Titulo)</h4>
+    <h4 class="modal-title" id="myModalLabel">Caso #@Html.DisplayFor(m => m.TaskID)  @Html.DisplayFor(m => m.Titulo)</h4>
     <label>Estado: @Html.DisplayFor(m => m.status)</label><br />
-    <label>Numero del caso: @Html.DisplayFor(m => m.TaskID)</label>
-        <label>Creado por:</label><img src="@Url.Content(Model.Foto)" class="img-circle"/>
+    @*<label>Numero del caso: @Html.DisplayFor(m => m.TaskID)</label>*@
 </div>
 <div class="modal-body">
     <div class="container">
         <div class="col-sm-7">
-            <div id="div_Titulo">
+            <div id="div_Titulo" class="form-group">
                 <div>
-                    <label>Creado por : Iniciales o foto del que creo el requerimiento</label>
+                    <label>Creado por</label><br />
+                    <img src="@Url.Content(Model.Foto)" class="img-circle FotoPerfil" />
                 </div>
             </div>
             @* EL DIV PERMITE CAMBIAR DE COLOR Y DEBE SER LLAMADO IGUAL COMO ESTA EN EL MODEL *@
             <div id="div_Descripcion" class="form-group">
                 <div>
                     <label>Descripcion del requerimiento</label>
-                    @Html.TextAreaFor(m => m.Descripcion, new { Class = "form-control", placeholder = "Descripcion", id = "txtDescripcion", rows = 3 })
+                    @Html.TextAreaFor(m => m.Descripcion, new { Class = "form-control", placeholder = "Descripcion", id = "txtDescripcion", rows = 3, @readonly = true })
                     <label id="Error_Descripcion" class="control-label" for="inputError2"></label>
                 </div>
             </div>
@@ -40,14 +40,23 @@
                 <textarea id="Comentario" class="form-control" name="Comentario" rows="3" placeholder="Comentario"></textarea>
             </div>
 
-            <div id="alert_success_editar" class="alert alert-success" role="alert">Informacion procesada satisfactoriamente</div>
-            <div id="alert_danger_editar" class="alert alert-danger" role="alert"></div>
+            <div id="alert_success" class="alert alert-success" role="alert">Informacion procesada satisfactoriamente</div>
+            <div id="alert_danger" class="alert alert-danger" role="alert"></div>
+
+            <div id="VisorComentarios">
+                @foreach (var item in Model.ComentarioPerfiles)
+                {
+                    <img src="@Url.Content(item.rutaImg)" class="img-circle FotoPerfil" />
+                    <label>@item.Nombre</label>
+                    <label>@item.Apellido</label>
+                    <label>@item.Comentario</label>
+                }
+            </div>
+
         </div>
         <div class="col-sm-2">
             <h4>Opciones</h4>
             <button type="button" class="btn btn-default btn-block">Asignar</button>
-            @*<button type="button" class="btn btn-default btn-block">Crear actividades</button>*@
-            @*<button type="button" class="btn btn-default btn-block">Adjuntar</button>*@
             <button type="button" class="btn btn-default btn-block">Fecha de entrega</button>
 
         </div>
@@ -56,7 +65,7 @@
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-    <button type="button" class="btn btn-primary">Save changes</button>
+    <button type="button" id="btnEnviar" class="btn btn-primary">Save changes</button>
 </div>
 </div>
 
@@ -104,5 +113,35 @@
     });
 
 
-    editar();
+    $("#btnEnviar").click(function () {
+
+        var params = {
+            TaskID: @Html.DisplayFor(m => m.TaskID),
+            Comentario : $('#Comentario').val(),
+        };
+        $.ajax({
+            type: "POST",
+            url: "/Kanban/Save",
+            data: params,
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                if (data.success == true) {
+                    $('#alert_success').show();
+                    $('#alert_danger').hide();
+                }
+                else {
+                    $('#alert_danger').show();
+                    $('#alert_success').hide();
+                }
+            },
+            error: function (data) {
+
+            },
+
+        });
+    });
+
+    $('#alert_danger').hide();
+    $('#alert_success').hide();
 </script>

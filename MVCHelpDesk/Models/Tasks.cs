@@ -33,5 +33,7 @@ namespace MVCHelpDesk.Models
 
         [ForeignKey("IDDepartamento")]
         public virtual Departamento Departamento { get; set; }
+
+        public virtual ICollection<Comentarios> Comentarios { get; set; }
     }
 }

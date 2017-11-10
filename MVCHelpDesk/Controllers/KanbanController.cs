@@ -6,12 +6,12 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-
+using MVCHelpDesk.Helper;
 namespace MVCHelpDesk.Controllers
 {
     public class KanbanController : Controller
     {
-
+        private Helper.UserIdentity usuario = new UserIdentity();
         private ApplicationDbContext db = new ApplicationDbContext();
         public ActionResult Index()
         {
@@ -61,7 +61,7 @@ namespace MVCHelpDesk.Controllers
                                 Descripcion = tas.Descripcion,
                                 TaskID = tas.TaskID,
                                 //
-                                UsuarioID = tas.UsuarioID
+                                UsuarioID = tas.UsuarioID,
                             }).SingleOrDefault();
 
             var subqueryFile = db.Files.Where(qf => qf.IDFiles == id).ToList();
@@ -80,12 +80,37 @@ namespace MVCHelpDesk.Controllers
                 TaskFiles.ruta_virtual.Add(item.ruta_virtual);
                 TaskFiles.IDFiles.Add(item.IDFiles);
             }
+            TaskFiles.ComentarioPerfiles = new List<ViewComentarioPerfiles>();
+            foreach (var item in db.Comentarios.Where(w=>w.TaskID==TaskFiles.TaskID).ToList())
+            {
+                TaskFiles.ComentarioPerfiles.Add(new ViewComentarioPerfiles
+                {
+                    Nombre = db.Perfiles.Where(w=>w.UsuarioID==TaskFiles.UsuarioID).Select(s=>s.Nombre).SingleOrDefault(),
+                    Apellido = db.Perfiles.Where(w => w.UsuarioID == TaskFiles.UsuarioID).Select(s => s.Apellido).SingleOrDefault(),
+                    rutaImg = db.Perfiles.Where(w => w.UsuarioID == TaskFiles.UsuarioID).Select(s => s.rutaImg).SingleOrDefault(),
+                    Comentario = item.Comentario
+                });
+            }
+
+
+
             return PartialView(TaskFiles);
         }
-        //[HttpPost]
-        //public ActionResult AddTask()
-        //{
-        //    return View();
-        //}
+        [HttpPost]
+        public JsonResult Save(ViewComentario viewComentario)
+        {
+            bool bsuccess = false;
+            if (ModelState.IsValid)
+            {
+                Comentarios coment = new Comentarios();
+                coment.Comentario = viewComentario.Comentario;
+                coment.TaskID = Convert.ToInt32(viewComentario.TaskID);
+                coment.UsuarioID = usuario.GetIdUser();
+                db.Comentarios.Add(coment);
+                db.SaveChanges();
+                bsuccess = true;
+            }
+            return Json(new { success = bsuccess, JsonRequestBehavior.AllowGet });
+        }
     }
 }
