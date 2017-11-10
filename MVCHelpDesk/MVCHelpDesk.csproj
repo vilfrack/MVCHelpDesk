@@ -236,6 +236,7 @@
     <Content Include="Images\empleados\d679f6a9-725f-4736-9346-c08dcef253df\4.jpg" />
     <Content Include="Images\empleados\eff15d4f-cd5c-497f-b954-a8b54ecd864f\4.jpg" />
     <Content Include="Images\empleados\f87e608a-5014-48d4-85ce-4a70d55bab9c\8.jpg" />
+    <Content Include="Images\empleados\perfil.jpg" />
     <Content Include="Scripts\Apps\Departamento\departamento.js" />
     <Content Include="Scripts\Apps\Modulos\Modulos.js" />
     <Content Include="Scripts\Apps\OperationsTaks\OperationsTaks.js" />

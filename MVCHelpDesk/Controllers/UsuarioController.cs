@@ -90,6 +90,10 @@ namespace MVCHelpDesk.Controllers
                         {
                            ruta= SaveUploadedFile(file, userToInsert.Id);
                         }
+                        else
+                        {
+                            ruta = "~/Images/empleados/perfil.jpg";
+                        }
                         var perfiles = new Perfiles
                         {
                             Nombre = UserPerfil.Nombre,

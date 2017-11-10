@@ -2,6 +2,7 @@
 using MVCHelpDesk.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -59,10 +60,13 @@ namespace MVCHelpDesk.Controllers
                                 Status = sta.nombre,
                                 Descripcion = tas.Descripcion,
                                 TaskID = tas.TaskID,
+                                //
                                 UsuarioID = tas.UsuarioID
                             }).SingleOrDefault();
 
             var subqueryFile = db.Files.Where(qf => qf.IDFiles == id).ToList();
+            string FotoPredefinida = "~/Images/empleados/perfil.jpg";
+            string FotoPerfil = db.Perfiles.Where(w => w.UsuarioID == subquery.UsuarioID).Select(s => s.rutaImg).SingleOrDefault() == null ? FotoPredefinida : db.Perfiles.Where(w => w.UsuarioID == subquery.UsuarioID).Select(s => s.rutaImg).SingleOrDefault();
             TaskFiles.TaskID = id;
             TaskFiles.Titulo = subquery.Titulo;
             TaskFiles.Descripcion = subquery.Descripcion;
@@ -70,6 +74,7 @@ namespace MVCHelpDesk.Controllers
             TaskFiles.IDFiles = new List<int>();
             TaskFiles.status = subquery.Status;
             TaskFiles.UsuarioID = subquery.UsuarioID;
+            TaskFiles.Foto = FotoPerfil;
             foreach (var item in subqueryFile)
             {
                 TaskFiles.ruta_virtual.Add(item.ruta_virtual);

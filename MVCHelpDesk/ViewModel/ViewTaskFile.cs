@@ -22,5 +22,7 @@ namespace MVCHelpDesk.ViewModel
         public int? IDDepartamento { get; set; }
 
         public string UsuarioID { get; set; }
+
+        public string Foto { get; set; }
     }
 }

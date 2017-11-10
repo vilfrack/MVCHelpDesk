@@ -10,10 +10,9 @@
     <h4 class="modal-title" id="myModalLabel">@Html.DisplayFor(m => m.Titulo)</h4>
     <label>Estado: @Html.DisplayFor(m => m.status)</label><br />
     <label>Numero del caso: @Html.DisplayFor(m => m.TaskID)</label>
-        <label>Numero del caso: @Html.DisplayFor(m => m.UsuarioID)</label>
+        <label>Creado por:</label><img src="@Url.Content(Model.Foto)" class="img-circle"/>
 </div>
 <div class="modal-body">
-
     <div class="container">
         <div class="col-sm-7">
             <div id="div_Titulo">
@@ -26,21 +25,16 @@
                 <div>
                     <label>Descripcion del requerimiento</label>
                     @Html.TextAreaFor(m => m.Descripcion, new { Class = "form-control", placeholder = "Descripcion", id = "txtDescripcion", rows = 3 })
-
                     <label id="Error_Descripcion" class="control-label" for="inputError2"></label>
                 </div>
             </div>
 
             <div class="form-group">
-
-
                 <div>
                     <label>Archivos adjuntos</label>
                     <input id="FileEdit" name="FileEdit" type="file" multiple>
                 </div>
-
             </div>
-
             <div>
                 <label>Agregar Comentario</label>
                 <textarea id="Comentario" class="form-control" name="Comentario" rows="3" placeholder="Comentario"></textarea>
