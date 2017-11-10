@@ -85,9 +85,9 @@ namespace MVCHelpDesk.Controllers
             {
                 TaskFiles.ComentarioPerfiles.Add(new ViewComentarioPerfiles
                 {
-                    Nombre = db.Perfiles.Where(w=>w.UsuarioID==TaskFiles.UsuarioID).Select(s=>s.Nombre).SingleOrDefault(),
-                    Apellido = db.Perfiles.Where(w => w.UsuarioID == TaskFiles.UsuarioID).Select(s => s.Apellido).SingleOrDefault(),
-                    rutaImg = db.Perfiles.Where(w => w.UsuarioID == TaskFiles.UsuarioID).Select(s => s.rutaImg).SingleOrDefault(),
+                    Nombre = db.Perfiles.Where(w=>w.UsuarioID==item.UsuarioID).Select(s=>s.Nombre).SingleOrDefault(),
+                    Apellido = db.Perfiles.Where(w => w.UsuarioID == item.UsuarioID).Select(s => s.Apellido).SingleOrDefault(),
+                    rutaImg = db.Perfiles.Where(w => w.UsuarioID == item.UsuarioID).Select(s => s.rutaImg).SingleOrDefault(),
                     Comentario = item.Comentario
                 });
             }

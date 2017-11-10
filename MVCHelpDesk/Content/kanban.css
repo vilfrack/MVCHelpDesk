@@ -10,3 +10,7 @@ background:#f1f1f1;
     width:30px;
     height:30px;
 }
+.bordes {
+ border-top: 0.1px solid #747373;
+ border-bottom: 0.1px solid #747373;
+}

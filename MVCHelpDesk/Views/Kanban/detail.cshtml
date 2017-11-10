@@ -46,10 +46,13 @@
             <div id="VisorComentarios">
                 @foreach (var item in Model.ComentarioPerfiles)
                 {
-                    <img src="@Url.Content(item.rutaImg)" class="img-circle FotoPerfil" />
-                    <label>@item.Nombre</label>
-                    <label>@item.Apellido</label>
-                    <label>@item.Comentario</label>
+                    <div class="bordes">
+                        <img src="@Url.Content(item.rutaImg)" class="img-circle FotoPerfil" />
+                        <label>@item.Nombre</label>
+                        <label>@item.Apellido</label>
+                        <label>@item.Comentario</label>
+                    </div>
+
                 }
             </div>
 
