@@ -18,6 +18,8 @@ namespace MVCHelpDesk.Models
 
         public int TaskID { get; set; }
 
+        public DateTime Fecha { get; set; }
+
         [ForeignKey("TaskID")]
         public virtual Tasks Tasks { get; set; }
 

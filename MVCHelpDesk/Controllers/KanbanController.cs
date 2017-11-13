@@ -88,7 +88,8 @@ namespace MVCHelpDesk.Controllers
                     Nombre = db.Perfiles.Where(w=>w.UsuarioID==item.UsuarioID).Select(s=>s.Nombre).SingleOrDefault(),
                     Apellido = db.Perfiles.Where(w => w.UsuarioID == item.UsuarioID).Select(s => s.Apellido).SingleOrDefault(),
                     rutaImg = db.Perfiles.Where(w => w.UsuarioID == item.UsuarioID).Select(s => s.rutaImg).SingleOrDefault(),
-                    Comentario = item.Comentario
+                    Comentario = item.Comentario,
+                    Fecha = item.Fecha
                 });
             }
 
@@ -97,7 +98,7 @@ namespace MVCHelpDesk.Controllers
             return PartialView(TaskFiles);
         }
         [HttpPost]
-        public JsonResult Save(ViewComentario viewComentario)
+        public JsonResult Save(ViewComentario viewComentario, HttpPostedFileBase[] File)
         {
             bool bsuccess = false;
             if (ModelState.IsValid)
@@ -106,11 +107,18 @@ namespace MVCHelpDesk.Controllers
                 coment.Comentario = viewComentario.Comentario;
                 coment.TaskID = Convert.ToInt32(viewComentario.TaskID);
                 coment.UsuarioID = usuario.GetIdUser();
+                coment.Fecha = DateTime.Now;
                 db.Comentarios.Add(coment);
                 db.SaveChanges();
                 bsuccess = true;
             }
+            if (File !=null)
+            {
+
+                bsuccess = true;
+            }
             return Json(new { success = bsuccess, JsonRequestBehavior.AllowGet });
         }
+
     }
 }

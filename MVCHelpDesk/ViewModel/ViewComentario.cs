@@ -1,4 +1,5 @@
 ﻿using MVCHelpDesk.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -19,5 +20,6 @@ namespace MVCHelpDesk.ViewModel
         public string Apellido { get; set; }
         public string rutaImg { get; set; }
         public string Comentario { get; set; }
+        public DateTime? Fecha { get; set; }
     }
 }

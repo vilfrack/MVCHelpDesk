@@ -11,6 +11,11 @@ background:#f1f1f1;
     height:30px;
 }
 .bordes {
- border-top: 0.1px solid #747373;
- border-bottom: 0.1px solid #747373;
+      color:rgba(117, 116, 116, 0.83);
+ border-top: 0.1px solid rgba(116, 115, 115, 0.78);
+ border-bottom: 0.1px solid rgba(116, 115, 115, 0.78);
+ padding: 5px 0 5px 0;
+}
+.Comentario {
+    margin-bottom:5px;
 }
