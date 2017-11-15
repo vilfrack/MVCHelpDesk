@@ -17,7 +17,7 @@ namespace MVCHelpDesk.Attribute
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (!PermisoByRol() && !PermisoByUser())
+            if (!PermisoByRol(this.modulo,this.permisos) && !PermisoByUser(this.modulo, this.permisos))
             {
                 filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new
                 {
@@ -27,7 +27,7 @@ namespace MVCHelpDesk.Attribute
             }
             base.OnActionExecuting(filterContext);
         }
-        public bool PermisoByRol()
+        public bool PermisoByRol(AllModulos modulo, AllPermisos permisos)
         {
             int intModulo = (int)modulo;
             int intPermisos = (int)permisos;
@@ -41,7 +41,7 @@ namespace MVCHelpDesk.Attribute
 
             return permisoRol;
         }
-        public bool PermisoByUser()
+        public bool PermisoByUser(AllModulos modulo, AllPermisos permisos)
         {
             int intModulo = (int)modulo;
             int intPermisos = (int)permisos;

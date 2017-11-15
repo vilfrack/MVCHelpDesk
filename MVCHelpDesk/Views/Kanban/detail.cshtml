@@ -1,7 +1,18 @@
 ﻿@model MVCHelpDesk.ViewModel.ViewTaskFile
 
+@{
+    //CREAMOS UNA INSTANCIA PARA VALIDAR EL PERMISO DE ASIGNAR
+    MVCHelpDesk.Helper.UserIdentity userIdentity = new MVCHelpDesk.Helper.UserIdentity();
+}
 
 @Html.HiddenFor(m => m.TaskID, new { id = "TaskID" })
+
+<style>
+    #hiddenField{
+    display: none;
+}
+</style>
+
 
 @Styles.Render("~/bundles/KanbanCss")
 <form class="form-horizontal" enctype="multipart/form-data" id="formKanban">
@@ -46,7 +57,7 @@
 
                     <div>
                         @foreach (var item in Model.ComentarioPerfiles)
-                    {
+                        {//esto debe traerse por ajax
                             <div class="bordes">
                                 <img src="@Url.Content(item.rutaImg)" class="img-circle FotoPerfil" />
                                 <label>@item.Nombre</label>
@@ -55,15 +66,20 @@
                                 <label>@item.Comentario</label>
                             </div>
 
-                    }
+                        }
                     </div>
                 </div>
                 @Html.HiddenFor(model => model.TaskID)
                 <div class="col-sm-2">
                     <h4>Opciones</h4>
-                    <button type="button" class="btn btn-default btn-block">Asignar</button>
-                    <button type="button" class="btn btn-default btn-block">Fecha de entrega</button>
 
+                    @if (userIdentity.ValidarPermiso(MVCHelpDesk.Permisos.AllPermisos.Asignar,MVCHelpDesk.Permisos.AllModulos.Requerimiento))
+                    {
+                        <button type="button" class="btn btn-default btn-block">Asignar</button>
+                    }
+                    @*<button type="button" id="datepicker" class="btn btn-default btn-block">Fecha de entrega</button>*@
+
+                    <input type="input" id="hiddenField" class="btn btn-default btn-block" />
                 </div>
             </div>
 
@@ -75,97 +91,104 @@
     </div>
 </form>
 
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+<script>
 
-    <script>
+    $(function () {
+        $("#hiddenField").datepicker({
+            showOn: "button",
+            buttonText: "day"
+        });
+    });
 
-        $('#File').fileinput({
-            uploadUrl: '/file-upload-batch/2',
-            language: 'es',
-            overwriteInitial: false,
-            initialPreviewShowDelete: true,
-            uploadAsync: true,
-            showCaption: true,
-            showPreview: true,
-            showRemove: true,
-            showUpload: false, // <------ just set this from true to false
-            maxFileCount: 3,
-            allowedFileExtensions: ['jpg', 'png', 'pdf'],
-            initialPreviewAsData: true, // identify if you are sending preview data only and not the raw markup
-            initialPreview: [
-                  @foreach (var item in Model.ruta_virtual)
+    $('#File').fileinput({
+        uploadUrl: '/file-upload-batch/2',
+        language: 'es',
+        overwriteInitial: false,
+        initialPreviewShowDelete: true,
+        uploadAsync: true,
+        showCaption: true,
+        showPreview: true,
+        showRemove: true,
+        showUpload: false, // <------ just set this from true to false
+        maxFileCount: 3,
+        allowedFileExtensions: ['jpg', 'png', 'pdf'],
+        initialPreviewAsData: true, // identify if you are sending preview data only and not the raw markup
+        initialPreview: [
+              @foreach (var item in Model.ruta_virtual)
                 {
                   <text>'@Url.Content(item)',</text>
 
             }
 
-            ],
-            initialPreviewConfig: [
-               @foreach (var item in Model.IDFiles)
+        ],
+        initialPreviewConfig: [
+           @foreach (var item in Model.IDFiles)
            {
                <text>
-                    {
-                        url: '/OperationsTaks/DeleteImage/',
-                        key: @item,//parametro que enviamos via ajax/post para eliminar el archivo
-                        extra: { id: @item}//investigar
-                    },
-                    </text>
+                {
+                    url: '/OperationsTaks/DeleteImage/',
+                    key: @item,//parametro que enviamos via ajax/post para eliminar el archivo
+                    extra: { id: @item}//investigar
+                },
+                </text>
            }
 
-            ],
-            initialPreviewFileType: 'image', // image is the default and can be overridden in config below
-        });
-        $("#formKanban").submit(function (e) {
-            e.preventDefault();
-            var parametros = new FormData($(this)[0]);
-            //CREO EL AJAX
-            $.ajax({
-                type: "POST",
-                url: "/Kanban/Save",
-                cache: false,
-                contentType: false, //importante enviar este parametro en false
-                processData: false, //importante enviar este parametro en false
-                //CONVIERTO EL OBJETO EN FORMATO JSON
-                // data: JSON.stringify(list),
-                data: parametros,
-                dataType: "json",
-                success: function (data) {
-                    if (data.success) {
-                        //REESTABLECE LOS ESTILOS PREDEFINIDOS DE LOS LABEL ERRORES Y DIV, EN CASO DE QUE SE HAYAN MOSTRADO Y SE HAYAN CORREGIDO
-                        $.each(parametros, function (key, value) {
+        ],
+        initialPreviewFileType: 'image', // image is the default and can be overridden in config below
+    });
+    $("#formKanban").submit(function (e) {
+        e.preventDefault();
+        var parametros = new FormData($(this)[0]);
+        //CREO EL AJAX
+        $.ajax({
+            type: "POST",
+            url: "/Kanban/Save",
+            cache: false,
+            contentType: false, //importante enviar este parametro en false
+            processData: false, //importante enviar este parametro en false
+            //CONVIERTO EL OBJETO EN FORMATO JSON
+            // data: JSON.stringify(list),
+            data: parametros,
+            dataType: "json",
+            success: function (data) {
+                if (data.success) {
+                    //REESTABLECE LOS ESTILOS PREDEFINIDOS DE LOS LABEL ERRORES Y DIV, EN CASO DE QUE SE HAYAN MOSTRADO Y SE HAYAN CORREGIDO
+                    $.each(parametros, function (key, value) {
+                        $("#Error_" + key).html('');
+                        $("#div_" + key).removeClass(" has-error has-feedback");
+                    });
+                    $('#alert_success').show("fast");
+                    $("#btnEnviar").prop('disabled', true);
+                    $('#alert_danger').hide();
+                    LoadGrid();
+                }
+                else {
+                    //VA A CAPTURAR TODOS LOS ERRORES ENVIADOS DEL CONTROLADOR
+                    $.each(data.Errors, function (key, value) {
+                        //VALUE VA A TRAER SOLO AQUELLOS VALORES QUE NO CUMPLAN CON LOS REQUISITOS ESTABLECIDOS EN EL MODELSTATE
+                        //CREAR EN LO POSIBLE UNA CLASE QUE GUARDE ESTE CODIGO
+                        if (value != "true") {
+                            $("#Error_" + key).html(value[value.length - 1].ErrorMessage);
+                            $("#div_" + key).addClass(" has-error has-feedback");
+                        } else {
                             $("#Error_" + key).html('');
                             $("#div_" + key).removeClass(" has-error has-feedback");
-                        });
-                        $('#alert_success').show("fast");
-                        $("#btnEnviar").prop('disabled', true);
-                        $('#alert_danger').hide();
-                        LoadGrid();
-                    }
-                    else {
-                        //VA A CAPTURAR TODOS LOS ERRORES ENVIADOS DEL CONTROLADOR
-                        $.each(data.Errors, function (key, value) {
-                            //VALUE VA A TRAER SOLO AQUELLOS VALORES QUE NO CUMPLAN CON LOS REQUISITOS ESTABLECIDOS EN EL MODELSTATE
-                            //CREAR EN LO POSIBLE UNA CLASE QUE GUARDE ESTE CODIGO
-                            if (value != "true") {
-                                $("#Error_" + key).html(value[value.length - 1].ErrorMessage);
-                                $("#div_" + key).addClass(" has-error has-feedback");
-                            } else {
-                                $("#Error_" + key).html('');
-                                $("#div_" + key).removeClass(" has-error has-feedback");
-                            }
-                        });
-                    }
+                        }
+                    });
+                }
 
-                },
-                error: function (data) {
-                    $('#alert_danger').html('error');
-                    $('#alert_danger').show("fast");
-                },
+            },
+            error: function (data) {
+                $('#alert_danger').html('error');
+                $('#alert_danger').show("fast");
+            },
 
-            });
         });
+    });
 
-        @*$("#btnEnviar").click(function () {
+    @*$("#btnEnviar").click(function () {
 
             var params = {
                 TaskID: @Html.DisplayFor(m => m.TaskID),
@@ -194,6 +217,6 @@
             });
         });*@
 
-        $('#alert_danger').hide();
-        $('#alert_success').hide();
-    </script>
+    $('#alert_danger').hide();
+    $('#alert_success').hide();
+</script>

@@ -11,5 +11,6 @@ namespace MVCHelpDesk.Permisos
         Crear = 2,
         Editar = 3,
         Eliminar = 4,
+        Asignar = 5,
     }
 }

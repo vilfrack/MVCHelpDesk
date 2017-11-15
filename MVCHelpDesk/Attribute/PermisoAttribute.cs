@@ -27,7 +27,7 @@ namespace MVCHelpDesk.Attribute
                 }));
             }
         }
-        public  bool PermisoByRol(AllPermisos valor)
+        public bool PermisoByRol(AllPermisos valor)
         {
             int intValor = (int)valor;
 
@@ -39,7 +39,7 @@ namespace MVCHelpDesk.Attribute
 
             return permisoRol;
         }
-        public  bool PermisoByUser(AllPermisos valor)
+        public bool PermisoByUser(AllPermisos valor)
         {
             int intValor = (int)valor;
             var s = (from user in db.Users

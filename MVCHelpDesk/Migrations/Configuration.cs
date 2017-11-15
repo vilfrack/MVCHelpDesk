@@ -62,7 +62,8 @@ namespace MVCHelpDesk.Migrations
                 new Models.Permisos { PermisoID = 1, Descripcion = "Ver" },
                 new Models.Permisos { PermisoID = 2, Descripcion = "Crear" },
                 new Models.Permisos { PermisoID = 3, Descripcion = "Modificar" },
-                new Models.Permisos { PermisoID = 4, Descripcion = "Eliminar" }
+                new Models.Permisos { PermisoID = 4, Descripcion = "Eliminar" },
+                new Models.Permisos { PermisoID = 5, Descripcion = "Asignar" }
             );
             //AGREGAMOS LOS PERMISOS PARA LOS MODULOS
             //context.Modulos.AddOrUpdate(
