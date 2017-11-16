@@ -274,7 +274,7 @@
     <Content Include="Scripts\jquery-ui-1.12.1.custom\index.html" />
     <Content Include="Scripts\jquery-ui-1.12.1.custom\jquery-ui.css" />
     <Content Include="Scripts\jquery-ui-1.12.1.custom\jquery-ui.js" />
-    <Content Include="Scripts\jquery-ui-1.12.1.custom\jquery-ui.min.css" />
+    <Content Include="Content\jquery-ui.min.css" />
     <Content Include="Scripts\jquery-ui-1.12.1.custom\jquery-ui.min.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.custom\jquery-ui.structure.css" />
     <Content Include="Scripts\jquery-ui-1.12.1.custom\jquery-ui.structure.min.css" />

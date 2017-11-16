@@ -15,6 +15,7 @@
 
 
 @Styles.Render("~/bundles/KanbanCss")
+@Styles.Render("~/bundles/jqueryUI")
 <form class="form-horizontal" enctype="multipart/form-data" id="formKanban">
     <div id="contenedor">
         <div class="modal-header">
@@ -25,11 +26,22 @@
         </div>
         <div class="modal-body">
             <div class="container">
-                <div class="col-sm-7">
+                <div class="col-sm-8">
                     <div id="div_Titulo" class="form-group">
-                        <div>
+                        <div class="col-sm-2">
                             <label>Creado por</label><br />
                             <img src="@Url.Content(Model.Foto)" class="img-circle FotoPerfil" />
+                        </div>
+                        <div class="col-sm-4">
+                            <label>Fecha de entrega</label><input type="text" id="datepicker" class="form-control">
+
+                        </div>
+                        <div class="col-sm-2">
+
+                            @if (userIdentity.ValidarPermiso(MVCHelpDesk.Permisos.AllPermisos.Asignar, MVCHelpDesk.Permisos.AllModulos.Requerimiento))
+                            {
+                                <button type="button" class="btn btn-default btn-block">Asignar</button>
+                            }
                         </div>
                     </div>
                     @* EL DIV PERMITE CAMBIAR DE COLOR Y DEBE SER LLAMADO IGUAL COMO ESTA EN EL MODEL *@
@@ -65,22 +77,11 @@
                                 <label>@item.Fecha</label><br />
                                 <label>@item.Comentario</label>
                             </div>
-
                         }
                     </div>
                 </div>
                 @Html.HiddenFor(model => model.TaskID)
-                <div class="col-sm-2">
-                    <h4>Opciones</h4>
 
-                    @if (userIdentity.ValidarPermiso(MVCHelpDesk.Permisos.AllPermisos.Asignar,MVCHelpDesk.Permisos.AllModulos.Requerimiento))
-                    {
-                        <button type="button" class="btn btn-default btn-block">Asignar</button>
-                    }
-                    @*<button type="button" id="datepicker" class="btn btn-default btn-block">Fecha de entrega</button>*@
-
-                    <input type="input" id="hiddenField" class="btn btn-default btn-block" />
-                </div>
             </div>
 
         </div>
@@ -96,12 +97,8 @@
 <script>
 
     $(function () {
-        $("#hiddenField").datepicker({
-            showOn: "button",
-            buttonText: "day"
-        });
+        $("#datepicker").datepicker();;
     });
-
     $('#File').fileinput({
         uploadUrl: '/file-upload-batch/2',
         language: 'es',

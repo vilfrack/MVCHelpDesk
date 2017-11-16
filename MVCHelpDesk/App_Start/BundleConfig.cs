@@ -8,6 +8,7 @@ namespace MVCHelpDesk
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
+            /*SE DEBE ORDENAR MEJOR*/
             bundles.Add(new ScriptBundle("~/bundles/script").Include(
               "~/Scripts/jquery-3.2.1.min.js",
 
@@ -47,6 +48,9 @@ namespace MVCHelpDesk
                  "~/Content/morris.css"
                 ).IncludeDirectory("~/Content", ".css"));
 
+            bundles.Add(new ScriptBundle("~/bundles/jqueryUI").Include(
+                "~/Content/jquery-ui.min.css").IncludeDirectory("~/Content", ".css"));
+
             bundles.Add(new ScriptBundle("~/bundles/KanbanCss").Include(
                 "~/Content/kanban.css").IncludeDirectory("~/Content", ".css"));
 
@@ -54,6 +58,8 @@ namespace MVCHelpDesk
                 "~/Content/bootstrap-3.3.7-dist/css/bootstrap.css",
                 "~/Content/main.css"
                 ).IncludeDirectory("~/Content", ".css"));
+
+
         }
     }
 }
