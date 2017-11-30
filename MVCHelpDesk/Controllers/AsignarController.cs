@@ -6,6 +6,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using MVCHelpDesk.Helper;
+using MVCHelpDesk.Attribute;
+
 namespace MVCHelpDesk.Controllers
 {
     public class AsignarController : Controller
@@ -13,16 +15,13 @@ namespace MVCHelpDesk.Controllers
         public UserIdentity userIdentity = new UserIdentity();
         public Helpers help = new Helpers();
         private ApplicationDbContext db = new ApplicationDbContext();
+
+        [ModuloAttribute(modulo = Permisos.AllModulos.Requerimiento, permisos = Permisos.AllPermisos.Asignar)]
         public ActionResult Index()
         {
             return View();
         }
-        /*
-              <th>Titulo</th>
-            <th>Descripcion</th>
-            <th>Solicitante</th>
-            <th>Fecha de solicitud</th>
-             */
+
         public JsonResult get()
         {
             var requerimientos = (from t in db.Tasks
@@ -54,6 +53,7 @@ namespace MVCHelpDesk.Controllers
         }
 
         // GET: Asignar/Create
+        [ModuloAttribute(modulo = Permisos.AllModulos.Requerimiento, permisos = Permisos.AllPermisos.Asignar)]
         public ActionResult asignar(int id)
         {
             var a = (from t in db.Tasks
@@ -62,10 +62,10 @@ namespace MVCHelpDesk.Controllers
                      select new
                      {
                          TaskID = t.TaskID,
-                         Descripcion = t.Descripcion,
-                         Solicitante = p.Apellido + " " + p.Nombre,
-                         Fecha = t.FechaCreacion,
-                         Asignado = t.AsignadoID
+                         //Descripcion = t.Descripcion,
+                         //Solicitante = p.Apellido + " " + p.Nombre,
+                         //Fecha = t.FechaCreacion,
+                         UsuarioAsignado = t.AsignadoID
                      }).SingleOrDefault();
 
             string UserID = userIdentity.GetIdUser();
@@ -77,35 +77,58 @@ namespace MVCHelpDesk.Controllers
                             where perfil.IDDepartamento == IDDepartamento
                             select new
                             {
+                                UsuarioID = perfil.UsuarioID,
                                 Nombre = perfil.Nombre,
                                 Apellido = perfil.Apellido,
+                                rutaImg = perfil.rutaImg
                             }).ToList();
 
-            if (a.Asignado == null)
+            List<ViewAsignar> viewAsignar = new List<ViewAsignar>();
+            foreach (var item in perfiles)
             {
-                return PartialView();
+                if (a.UsuarioAsignado == item.UsuarioID)
+                {
+                    viewAsignar.Add(new ViewAsignar
+                    {
+                        Nombre = item.Nombre,
+                        Apellido = item.Apellido,
+                        rutaImg = item.rutaImg,
+                        UsuarioAsignado = a.UsuarioAsignado,
+                        UsuarioID = item.UsuarioID,
+                        TaskID = a.TaskID
+                    });
+                }
+                else
+                {
+                    viewAsignar.Add(new ViewAsignar
+                    {
+                        Nombre = item.Nombre,
+                        Apellido = item.Apellido,
+                        rutaImg = item.rutaImg,
+                        UsuarioAsignado = null,
+                        UsuarioID = item.UsuarioID,
+                        TaskID = a.TaskID
+                    });
+                }
+
             }
+                return PartialView(viewAsignar);
 
 
 
-            var query = db.Roles.Find(id);
-            var viewRol = new ViewRol
-            {
-                Name = query.Name,
-                Id = query.Id
-            };
-            return PartialView(viewRol);
         }
 
         // POST: Asignar/Create
         [HttpPost]
-        public ActionResult asignar(FormCollection collection)
+        public ActionResult asignar(ViewAsignar viewAsignar)
         {
             try
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
+                var task = db.Tasks.Find(viewAsignar.TaskID);
+                task.AsignadoID = viewAsignar.Asignado;
+                db.SaveChanges();
+                return Json(new { success = true, JsonRequestBehavior.AllowGet });
+                //return RedirectToAction("Index");
             }
             catch
             {

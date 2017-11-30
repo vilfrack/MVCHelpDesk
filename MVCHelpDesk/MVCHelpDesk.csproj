@@ -211,6 +211,7 @@
     <Compile Include="Models\Requerimiento.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModel\ViewAsignar.cs" />
     <Compile Include="ViewModel\ViewComentario.cs" />
     <Compile Include="ViewModel\ViewPermisos.cs" />
     <Compile Include="ViewModel\ViewRol.cs" />
