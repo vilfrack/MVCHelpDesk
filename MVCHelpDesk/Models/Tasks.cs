@@ -9,7 +9,9 @@ namespace MVCHelpDesk.Models
     {
         [Key]
         public int TaskID { get; set; }
+
         public DateTime FechaCreacion { get; set; }
+
         public DateTime FechaFinalizacion { get; set; }//fecha en el que se deberia finalizar el task
 
         [Required(ErrorMessage = "You must enter the field {0}")]
@@ -23,6 +25,9 @@ namespace MVCHelpDesk.Models
         public int? StatusID { get; set; }
 
         public string UsuarioID { get; set; }
+
+        //SE VA A GUARDAR EL CAMPO DE USUARIOID, PERO PARA EL CASO DE LA PERSONA QUE VA A RESOLVER LA FALLA
+        public string AsignadoID { get; set; }
 
         [Required(ErrorMessage = "Debe seleccionar un departamento")]
         public int? IDDepartamento { get; set; }

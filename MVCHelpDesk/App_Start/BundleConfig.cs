@@ -39,6 +39,12 @@ namespace MVCHelpDesk
             bundles.Add(new ScriptBundle("~/bundles/scriptModulos").Include(
                "~/Scripts/Apps/Modulos/Modulos.js").IncludeDirectory("~/Scripts", ".js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/scriptAsignar").Include(
+              "~/Scripts/Apps/Asignar/Asignar.js").IncludeDirectory("~/Scripts", ".js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/DataPikerJs").Include(
+                "~/Scripts/bootstrap-datepicker.js").IncludeDirectory("~/Scripts", ".js"));
+
             bundles.Add(new StyleBundle("~/bundles/css").Include(
                 "~/Content/bootstrap-3.3.7-dist/css/bootstrap.css",
 
@@ -49,7 +55,11 @@ namespace MVCHelpDesk
                 ).IncludeDirectory("~/Content", ".css"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryUI").Include(
-                "~/Content/jquery-ui.min.css").IncludeDirectory("~/Content", ".css"));
+                "~/Content/jquery-ui.css").IncludeDirectory("~/Content", ".css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/DataPikerCss").Include(
+            "~/Content/bootstrap-datepicker.css").IncludeDirectory("~/Content", ".css"));
+
 
             bundles.Add(new ScriptBundle("~/bundles/KanbanCss").Include(
                 "~/Content/kanban.css").IncludeDirectory("~/Content", ".css"));

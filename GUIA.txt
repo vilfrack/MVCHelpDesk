@@ -20,3 +20,4 @@ EJECUTADO EL PASO 4, SE DEBE BORRAR LA MIGRACION PARA VOLVERLA A EJECUTAR
 12. Se comenta los viewmodel de login que no se van a usar
 13. se comenta los metodos que no se van a usar para Account
 14. En PermisosController hay que optimizar el codigo y eliminar el codigo que no se necesita
+15. El datapiker se descarga de la siguiente pagina https://bootstrap-datepicker.readthedocs.io/en/latest/   en este link hay unas instrucciones https://uxsolutions.github.io/bootstrap-datepicker/?markup=input&format=&weekStart=&startDate=&endDate=&startView=0&minViewMode=0&maxViewMode=4&todayBtn=linked&clearBtn=false&language=en&orientation=auto&multidate=&multidateSeparator=&autoclose=on&todayHighlight=on&keyboardNavigation=on&forceParse=on#sandbox

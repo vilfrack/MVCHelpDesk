@@ -13,33 +13,31 @@ namespace MVCHelpDesk.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         private GetErrors getError = new GetErrors();
-        // GET: Departamento
+
         public ActionResult Index()
         {
             return View();
         }
 
-        // GET: Departamento/Details/5
         public ActionResult Details()
         {
             return PartialView();
         }
+
         public JsonResult get()
         {
-            // ES NECESARIO PONER EXACTAMENTE LOS CAMPOS A EXTRAER PORQUE SI NO DA ERROR
             var jsonData = new
             {
                 data = db.Departamento.ToList()
             };
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
-        // GET: Departamento/Create
+
         public ActionResult Create()
         {
             return PartialView();
         }
 
-        // POST: Departamento/Create
         [HttpPost]
         public ActionResult Create(Departamento departamentos)
         {
@@ -65,7 +63,6 @@ namespace MVCHelpDesk.Controllers
             return PartialView(departamento);
         }
 
-        // POST: Departamento/Edit/5
         [HttpPost]
         public ActionResult Edit(Departamento departamentos)
         {

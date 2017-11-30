@@ -15,7 +15,8 @@
 
 
 @Styles.Render("~/bundles/KanbanCss")
-@Styles.Render("~/bundles/jqueryUI")
+@Styles.Render("~/bundles/DataPikerCss")
+
 <form class="form-horizontal" enctype="multipart/form-data" id="formKanban">
     <div id="contenedor">
         <div class="modal-header">
@@ -33,14 +34,25 @@
                             <img src="@Url.Content(Model.Foto)" class="img-circle FotoPerfil" />
                         </div>
                         <div class="col-sm-4">
-                            <label>Fecha de entrega</label><input type="text" id="datepicker" class="form-control">
-
+                            <label>Fecha de entrega</label>
+                            @*<div class="input-group date" data-provide="datepicker">
+                                <input type="text" class="form-control">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </div>
+                            </div>*@
+                            <div class="input-group date" id="DivDatapiker">
+                                <input type="text" class="form-control">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-sm-2">
+                        <div class="col-sm-2 paddingTop">
 
                             @if (userIdentity.ValidarPermiso(MVCHelpDesk.Permisos.AllPermisos.Asignar, MVCHelpDesk.Permisos.AllModulos.Requerimiento))
                             {
-                                <button type="button" class="btn btn-default btn-block">Asignar</button>
+                                <button type="button" class="btn btn-default btn-block" id="modalAsingar">Asignar</button>
                             }
                         </div>
                     </div>
@@ -81,7 +93,6 @@
                     </div>
                 </div>
                 @Html.HiddenFor(model => model.TaskID)
-
             </div>
 
         </div>
@@ -92,12 +103,14 @@
     </div>
 </form>
 
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+@Scripts.Render("~/bundles/DataPikerJs")
 
 <script>
-
-    $(function () {
-        $("#datepicker").datepicker();;
+    $('#DivDatapiker input').datepicker({
+        todayBtn: "linked",
+        autoclose: true,
+        todayHighlight: true
     });
     $('#File').fileinput({
         uploadUrl: '/file-upload-batch/2',
