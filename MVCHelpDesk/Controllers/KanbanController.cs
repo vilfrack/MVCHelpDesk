@@ -13,6 +13,7 @@ namespace MVCHelpDesk.Controllers
     {
         private Helper.UserIdentity usuario = new UserIdentity();
         private ApplicationDbContext db = new ApplicationDbContext();
+        private GetErrors getError = new GetErrors();
         public ActionResult Index()
         {
             return View(db.Tasks.ToList());
@@ -60,13 +61,17 @@ namespace MVCHelpDesk.Controllers
                                 Status = sta.nombre,
                                 Descripcion = tas.Descripcion,
                                 TaskID = tas.TaskID,
+                                FechaFinalizacion = tas.FechaFinalizacion.ToShortDateString(),
                                 //
                                 UsuarioID = tas.UsuarioID,
+                                Asignado = tas.AsignadoID
                             }).SingleOrDefault();
-
+            var usuarioAsignado = db.Perfiles.Where(w => w.UsuarioID == subquery.Asignado).Select(s => new { Nombre = s.Nombre, Apellido = s.Apellido }).SingleOrDefault();
+            var usuarioSolicitante = db.Perfiles.Where(w => w.UsuarioID == subquery.UsuarioID).Select(s => new { Nombre = s.Nombre, Apellido = s.Apellido }).SingleOrDefault();
             var subqueryFile = db.Files.Where(qf => qf.IDFiles == id).ToList();
             string FotoPredefinida = "~/Images/empleados/perfil.jpg";
             string FotoPerfil = db.Perfiles.Where(w => w.UsuarioID == subquery.UsuarioID).Select(s => s.rutaImg).SingleOrDefault() == null ? FotoPredefinida : db.Perfiles.Where(w => w.UsuarioID == subquery.UsuarioID).Select(s => s.rutaImg).SingleOrDefault();
+            string FotoAsignado = db.Perfiles.Where(w => w.UsuarioID == subquery.Asignado).Select(s => s.rutaImg).SingleOrDefault() == null ? FotoPredefinida : db.Perfiles.Where(w => w.UsuarioID == subquery.Asignado).Select(s => s.rutaImg).SingleOrDefault();
             TaskFiles.TaskID = id;
             TaskFiles.Titulo = subquery.Titulo;
             TaskFiles.Descripcion = subquery.Descripcion;
@@ -74,7 +79,11 @@ namespace MVCHelpDesk.Controllers
             TaskFiles.IDFiles = new List<int>();
             TaskFiles.status = subquery.Status;
             TaskFiles.UsuarioID = subquery.UsuarioID;
+            TaskFiles.FechaFinalizacion = subquery.FechaFinalizacion;
+            TaskFiles.nombre = usuarioSolicitante.Apellido + " " + usuarioSolicitante.Nombre;
             TaskFiles.Foto = FotoPerfil;
+            TaskFiles.FotoAsignado = FotoAsignado;
+            TaskFiles.NombreCompletoAsignado = usuarioAsignado.Apellido + " " + usuarioAsignado.Nombre;
             foreach (var item in subqueryFile)
             {
                 TaskFiles.ruta_virtual.Add(item.ruta_virtual);
@@ -110,15 +119,36 @@ namespace MVCHelpDesk.Controllers
                 coment.Fecha = DateTime.Now;
                 db.Comentarios.Add(coment);
                 db.SaveChanges();
-                bsuccess = true;
-            }
-            if (File !=null)
-            {
+
+                var req = db.Tasks.Find(Convert.ToInt32(viewComentario.TaskID));
+                req.FechaFinalizacion = Convert.ToDateTime(viewComentario.FechaEntrega).Date;
+                db.SaveChanges();
 
                 bsuccess = true;
             }
-            return Json(new { success = bsuccess, JsonRequestBehavior.AllowGet });
+            //if (File !=null)
+            //{
+
+            //    bsuccess = true;
+            //}
+            return Json(new { success = bsuccess, Errors = getError.GetErrorsFromModelState(ModelState), JsonRequestBehavior.AllowGet });
         }
+        [HttpPost]
+        public JsonResult getComentario(int id) {
+            char[] MyChar = { '~'};
+            var comentarioPerfil = (from perfil in db.Perfiles
+                                    join coment in db.Comentarios on perfil.UsuarioID equals coment.UsuarioID
+                                    where coment.TaskID == id
+                                    select new
+                                    {
+                                        Nombre = perfil.Nombre ==null ? "": perfil.Nombre,
+                                        Apellido = perfil.Apellido==null?"": perfil.Apellido,
+                                        rutaImg = perfil.rutaImg.Remove(0, 1),
+                                        Comentario = coment.Comentario,
+                                        Fecha = coment.Fecha
+                                    }).ToList();
 
+            return Json(comentarioPerfil, JsonRequestBehavior.AllowGet);
+        }
     }
 }

@@ -9,9 +9,13 @@ namespace MVCHelpDesk.ViewModel
     {
         public string TaskID { get; set; }
 
-        [Required(ErrorMessage = "You must enter the field {0}")]
-        [StringLength(500, ErrorMessage = "The fiel {0} must contain between {2} and {1} characters", MinimumLength = 5)]
+        [Required(ErrorMessage = "{0} No puede quedar vacio ")]
+        [StringLength(500, ErrorMessage = "El campo {0} Debe contener entre {2} y {1} caracter", MinimumLength = 5)]
         public string Comentario { get; set; }
+
+        [Required(ErrorMessage = "Debe seleccionar una fecha entrega")]
+        public string FechaEntrega { get; set; }
+
         List<ViewComentarioPerfiles> comentarioPerfiles { get; set; }
 
     }

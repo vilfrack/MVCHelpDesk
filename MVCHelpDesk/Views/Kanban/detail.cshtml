@@ -30,30 +30,37 @@
                 <div class="col-sm-8">
                     <div id="div_Titulo" class="form-group">
                         <div class="col-sm-2">
-                            <label>Creado por</label><br />
-                            <img src="@Url.Content(Model.Foto)" class="img-circle FotoPerfil" />
+                            <label>Creado por:</label><br />
+                            <img src="@Url.Content(Model.Foto)" class="img-circle FotoPerfil" data-toggle="tooltip" data-placement="bottom" title="@Model.nombre"/>
                         </div>
                         <div class="col-sm-4">
-                            <label>Fecha de entrega</label>
-                            @*<div class="input-group date" data-provide="datepicker">
-                                <input type="text" class="form-control">
-                                <div class="input-group-addon">
-                                    <span class="glyphicon glyphicon-th"></span>
-                                </div>
-                            </div>*@
-                            <div class="input-group date" id="DivDatapiker">
-                                <input type="text" class="form-control">
-                                <div class="input-group-addon">
-                                    <span class="glyphicon glyphicon-th"></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-2 paddingTop">
-
-                            @if (userIdentity.ValidarPermiso(MVCHelpDesk.Permisos.AllPermisos.Asignar, MVCHelpDesk.Permisos.AllModulos.Requerimiento))
+                            @if (Model.FechaFinalizacion == null || Model.FechaFinalizacion == "")
                             {
-                                <button type="button" class="btn btn-default btn-block" id="modalAsingar">Asignar</button>
+                                <label>Fecha de entrega</label>
+                                <div class="input-group date DivDatapiker" id="div_FechaEntrega">
+                                    <input type="text" name="fechaEntrega" class="form-control">
+                                    <div class="input-group-addon">
+                                        <span class="glyphicon glyphicon-th"></span>
+                                    </div>
+                                    <label id="Error_FechaEntrega" class="control-label"></label>
+                                </div>
                             }
+                            else
+                            {
+                                <label>Fecha de entrega</label>
+                                <div class="input-group date">
+                                    <input type="text" name="fechaEntrega" class="form-control" value="@Model.FechaFinalizacion" readonly="readonly">
+                                    <div class="input-group-addon">
+                                        <span class="glyphicon glyphicon-th"></span>
+                                    </div>
+                                </div>
+                            }
+
+                                </div>
+                        <div class="col-sm-2">
+                            <label>Asigando a:</label>
+                            <img src="@Url.Content(Model.FotoAsignado)" class="img-circle FotoPerfil" data-toggle="tooltip" data-placement="top" title="@Model.NombreCompletoAsignado" />
+
                         </div>
                     </div>
                     @* EL DIV PERMITE CAMBIAR DE COLOR Y DEBE SER LLAMADO IGUAL COMO ESTA EN EL MODEL *@
@@ -71,16 +78,17 @@
                             <input id="File" name="File" type="file" multiple>
                         </div>
                     </div>
-                    <div class="Comentario">
+                    <div class="Comentario" id="div_Comentario">
                         <label>Agregar Comentario</label>
                         <textarea id="Comentario" class="form-control" name="Comentario" rows="3" placeholder="Comentario"></textarea>
+                        <label id="Error_Comentario" class="control-label"></label>
                     </div>
 
                     <div id="alert_success" class="alert alert-success" role="alert">Informacion procesada satisfactoriamente</div>
                     <div id="alert_danger" class="alert alert-danger" role="alert"></div>
 
-                    <div>
-                        @foreach (var item in Model.ComentarioPerfiles)
+                    <div id="DivComentarios">
+                        @*@foreach (var item in Model.ComentarioPerfiles)
                         {//esto debe traerse por ajax
                             <div class="bordes">
                                 <img src="@Url.Content(item.rutaImg)" class="img-circle FotoPerfil" />
@@ -89,7 +97,7 @@
                                 <label>@item.Fecha</label><br />
                                 <label>@item.Comentario</label>
                             </div>
-                        }
+                        }*@
                     </div>
                 </div>
                 @Html.HiddenFor(model => model.TaskID)
@@ -107,7 +115,12 @@
 @Scripts.Render("~/bundles/DataPikerJs")
 
 <script>
-    $('#DivDatapiker input').datepicker({
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+
+    })
+    LoadComment();
+    $('.DivDatapiker input').datepicker({
         todayBtn: "linked",
         autoclose: true,
         todayHighlight: true
@@ -127,10 +140,10 @@
         initialPreviewAsData: true, // identify if you are sending preview data only and not the raw markup
         initialPreview: [
               @foreach (var item in Model.ruta_virtual)
-                {
+              {
                   <text>'@Url.Content(item)',</text>
 
-            }
+              }
 
         ],
         initialPreviewConfig: [
@@ -198,34 +211,40 @@
         });
     });
 
-    @*$("#btnEnviar").click(function () {
+    function LoadComment(){
+        //CREO EL AJAX
+        var params = {
+            id: $('#TaskID').val()
+        };
 
-            var params = {
-                TaskID: @Html.DisplayFor(m => m.TaskID),
-                Comentario : $('#Comentario').val(),
-            };
-            $.ajax({
-                type: "POST",
-                url: "/Kanban/Save",
-                data: params,
-                dataType: "json",
-                success: function (data) {
-                    if (data.success == true) {
-                        $('#alert_success').show();
-                        $('#alert_danger').hide();
-                        cargarComentarios();
-                    }
-                    else {
-                        $('#alert_danger').show();
-                        $('#alert_success').hide();
-                    }
-                },
-                error: function (data) {
+        $.ajax({
+            type: "POST",
+            url: "/Kanban/getComentario",
+            data: params,
+            dataType: "json",
+            success: function (data) {
+                $.each(data, function (key, value) {
+                    console.log(value.rutaImg);
+                    var date = new Date(parseInt(value.Fecha.substr(6)));
+                    var month = date.getMonth() + 1;
+                    var fecha = date.getDate() + "/" + month + "/" + date.getFullYear();
+                        var html = '<div class="bordes">' +
+                                    ' <img src="../'+ value.rutaImg+'" class="img-circle FotoPerfil" />' +
+                                    ' <label>'+value.Nombre+'</label>' +
+                                    ' <label>'+value.Apellido+'</label>' +
+                                    ' <label>'+fecha+'</label><br />' +
+                                    ' <label>'+value.Comentario+'</label>' +
+                                    '</div>';
+                    $("#DivComentarios").append(html);
+                });
+            },
+            error: function (data) {
 
-                },
+            },
 
-            });
-        });*@
+        });
+    }
+    //tooltip
 
     $('#alert_danger').hide();
     $('#alert_success').hide();

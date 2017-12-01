@@ -16,6 +16,8 @@ namespace MVCHelpDesk.ViewModel
 
         public List<int> IDFiles { get; set; }
 
+        public string FechaFinalizacion { get; set; }
+
         public string nombre { get; set; }
 
         public string status { get; set; }
@@ -25,6 +27,10 @@ namespace MVCHelpDesk.ViewModel
         public string UsuarioID { get; set; }
 
         public string Foto { get; set; }
+
+        public string FotoAsignado { get; set; }
+
+        public string NombreCompletoAsignado { get; set; }
         //SE LLAMA A LA VIEWMODEL QUE ESTA EN VIEWCOMENTARIO
         public List<ViewComentarioPerfiles> ComentarioPerfiles { get; set; }
     }
