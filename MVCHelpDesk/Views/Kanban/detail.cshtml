@@ -117,7 +117,6 @@
 <script>
     $(function () {
         $('[data-toggle="tooltip"]').tooltip();
-
     })
     LoadComment();
     $('.DivDatapiker input').datepicker({
@@ -136,15 +135,13 @@
         showRemove: true,
         showUpload: false, // <------ just set this from true to false
         maxFileCount: 3,
-        allowedFileExtensions: ['jpg', 'png', 'pdf'],
+        allowedFileExtensions: ['jpg','png','pdf'],
         initialPreviewAsData: true, // identify if you are sending preview data only and not the raw markup
         initialPreview: [
               @foreach (var item in Model.ruta_virtual)
               {
                   <text>'@Url.Content(item)',</text>
-
               }
-
         ],
         initialPreviewConfig: [
            @foreach (var item in Model.IDFiles)
@@ -185,7 +182,7 @@
                     $('#alert_success').show("fast");
                     $("#btnEnviar").prop('disabled', true);
                     $('#alert_danger').hide();
-                    LoadGrid();
+                    LoadComment();
                 }
                 else {
                     //VA A CAPTURAR TODOS LOS ERRORES ENVIADOS DEL CONTROLADOR

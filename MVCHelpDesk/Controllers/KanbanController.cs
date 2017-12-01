@@ -16,7 +16,8 @@ namespace MVCHelpDesk.Controllers
         private GetErrors getError = new GetErrors();
         public ActionResult Index()
         {
-            return View(db.Tasks.ToList());
+            string UsuarioID = usuario.GetIdUser();
+            return View(db.Tasks.Where(w=>w.AsignadoID== UsuarioID).ToList());
         }
         public ActionResult AddTask()
         {

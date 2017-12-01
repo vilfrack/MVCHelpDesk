@@ -22,6 +22,5 @@ namespace MVCHelpDesk.Helper
                                 select depart.IDDepartamento).SingleOrDefault();
             return departamento;
         }
-
     }
 }
