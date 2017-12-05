@@ -97,7 +97,7 @@
             <div class="panel panel-danger">
                 <div class="panel-heading">Tickets rechazados</div>
                 <div class="panel-body" id="divRechazados">
-                    <div class="column">
+                    <div id="divSubRechazados" class="column">
                         @foreach (var item in Model)
                         {
                             if (item.StatusID == 4)
@@ -133,6 +133,39 @@
             </div>
         </div>
     </div>
+    <script>
+        $( function() {
+            $(".column").sortable({
+                connectWith: ".column",
+                handle: ".portlet-content",
+                cancel: ".portlet-toggle",
+                placeholder: "portlet-placeholder ui-corner-all"
+            });
+
+            $( ".portlet" )
+              .addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
+              .find( ".portlet-content" )
+                .addClass( "ui-widget-header ui-corner-all" )
+                .prepend( "<span class='ui-icon ui-icon-minusthick portlet-toggle'></span>");
+
+            //se cambia el cursor
+            $('.portlet').hover( function() {
+                // the selector should match your link
+                $(this).css('cursor', 'pointer');
+            }
 
 
+            )
+        });
+        @if (ViewBag.permisoAsignar == false)
+        {
+            <text>
+             $("#divSubRechazados").removeClass('column');
+             $("#divSubRechazados").addClass('Subcolumn');
+            </text>
+        }
+
+
+
+    </script>
 </div>

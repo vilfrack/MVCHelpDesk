@@ -9,8 +9,22 @@ h5{
     float: left;
     padding-bottom: 20px;
     margin: 10px 5px 0 10px;
+     /*width:22%;*/
   }
+#contenido {
+    width:120%;
+}
   .column {
+      /*font-size:10pt;*/
+    width: 250px;
+    float: left;
+    padding-bottom: 20px;
+    margin: 5px 5px 0 5px;
+    background-color:rgba(0, 0, 0, 0.1);
+    border-radius:5px;
+  }
+    .Subcolumn {
+    /*font-size:10pt;*/
     width: 250px;
     float: left;
     padding-bottom: 20px;

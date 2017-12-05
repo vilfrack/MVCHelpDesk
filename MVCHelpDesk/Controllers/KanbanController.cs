@@ -7,16 +7,24 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using MVCHelpDesk.Helper;
+using MVCHelpDesk.Attribute;
 namespace MVCHelpDesk.Controllers
 {
     public class KanbanController : Controller
     {
         private Helper.UserIdentity usuario = new UserIdentity();
         private ApplicationDbContext db = new ApplicationDbContext();
+        private ModuloAttribute moduloAttribute = new ModuloAttribute();
         private GetErrors getError = new GetErrors();
         public ActionResult Index()
         {
             string UsuarioID = usuario.GetIdUser();
+            bool permisoAsignar = false;
+            if (!moduloAttribute.PermisoByRol(Permisos.AllModulos.Requerimiento, Permisos.AllPermisos.Asignar) && !moduloAttribute.PermisoByUser(Permisos.AllModulos.Requerimiento, Permisos.AllPermisos.Asignar))
+            {
+                permisoAsignar = true;
+            }
+            ViewBag.permisoAsignar = permisoAsignar;
             return View(db.Tasks.Where(w=>w.AsignadoID== UsuarioID).ToList());
         }
         public ActionResult AddTask()

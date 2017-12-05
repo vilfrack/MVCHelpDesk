@@ -1,30 +1,31 @@
 $( function() {
-    $( ".column" ).sortable({
-      connectWith: ".column",
-      handle: ".portlet-content",
-      cancel: ".portlet-toggle",
-      placeholder: "portlet-placeholder ui-corner-all"
-    });
+   // $( ".column" ).sortable({
+   //   connectWith: ".column",
+   //   handle: ".portlet-content",
+   //   cancel: ".portlet-toggle",
+   //   placeholder: "portlet-placeholder ui-corner-all"
+   // });
 
-    $( ".portlet" )
-      .addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
-      .find( ".portlet-content" )
-        .addClass( "ui-widget-header ui-corner-all" )
-        .prepend( "<span class='ui-icon ui-icon-minusthick portlet-toggle'></span>");
+   // $( ".portlet" )
+   //   .addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
+   //   .find( ".portlet-content" )
+   //     .addClass( "ui-widget-header ui-corner-all" )
+   //     .prepend( "<span class='ui-icon ui-icon-minusthick portlet-toggle'></span>");
 
-    //se cambia el cursor
-     $('.portlet').hover( function() {
-      // the selector should match your link
-         $(this).css('cursor', 'pointer');
-   },
-   function() {
+   // //se cambia el cursor
+   //  $('.portlet').hover( function() {
+   //   // the selector should match your link
+   //      $(this).css('cursor', 'pointer');
+   //},
+   //function() {
       $(this).css('cursor', 'default');
-   });
+   //});
 
     //CONTAR LA CANTIDAD DE DIV
     //para asignar un tamanio dinamico
-    var contar = $(".column").length;
-    contar = contar * 28;
+      var contar = $(".column").length;
+
+      contar = contar * 100;
     $("#contenido").css("width", contar + "%");
 
 
