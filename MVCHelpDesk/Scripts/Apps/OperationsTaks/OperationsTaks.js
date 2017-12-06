@@ -68,6 +68,12 @@ $("#example").on('click', 'tr #editar', function () {
     $("#contenedor-editar").load(url);
 
 });
+//LLAMAR DETALLE
+$("#example").on('click', 'tr #detalle', function () {
+    var idTask = $(this).parents("tr").find("td").eq(0).html();
+    getID(idTask);
+
+});
 //AL HACER CLICK EN EL BOTON ELIMINAR QUE ESTA EN LA TABLA, ESTE OBTIENE EL ID Y SE LO ENVIA AL HIDDEN QUE ESTA EN EL MODAL DE ELIMINAR
 $("#example").on('click', 'tr #eliminar', function () {
     var idTask = $(this).parents("tr").find("td").eq(0).html();
@@ -174,7 +180,10 @@ function LoadGrid() {
                               "data-toggle='modal' data-target='#editModal' ><span class='glyphicon glyphicon-retweet'></span> Editar </button>&nbsp;&nbsp;" +
                                 //boton de eliminar
                               "<button id='eliminar' class='btn btn-danger btn-sm'" +
-                              "data-toggle='modal' data-target='#borrarModal'><span class='glyphicon glyphicon-trash'></span> Eliminar </button>"
+                              "data-toggle='modal' data-target='#borrarModal'><span class='glyphicon glyphicon-trash'></span> Eliminar </button>&nbsp;&nbsp;" +
+                                //boton para ver los casos
+                              "<button id='detalle' class='btn btn-default btn-sm'" +
+                              "data-toggle='modal' data-target='#detalleModal' ><span class='glyphicon glyphicon-retweet'></span> Detalle </button>&nbsp;&nbsp;"
           }
         ]
     })
@@ -184,4 +193,9 @@ function esconderMensajes() {
     $('#alert_success').hide();
     $('#alert_success_eliminar').hide();
     $('#alert_danger_eliminar').hide();
+}
+function getID(TaskID) {
+    var url = "/Kanban/detail?sid=" + TaskID + ""; // Establecer URL de la acción
+    $("#contenedor-modal").load(url);
+    $('#detalleModal').modal('show');
 }

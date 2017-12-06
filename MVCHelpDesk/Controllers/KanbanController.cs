@@ -12,10 +12,14 @@ namespace MVCHelpDesk.Controllers
 {
     public class KanbanController : Controller
     {
+        #region INSTANCIAS
         private Helper.UserIdentity usuario = new UserIdentity();
         private ApplicationDbContext db = new ApplicationDbContext();
         private ModuloAttribute moduloAttribute = new ModuloAttribute();
         private GetErrors getError = new GetErrors();
+        private Helpers help = new Helpers();
+        #endregion
+
         public ActionResult Index()
         {
             string UsuarioID = usuario.GetIdUser();
@@ -25,7 +29,7 @@ namespace MVCHelpDesk.Controllers
                 permisoAsignar = true;
             }
             ViewBag.permisoAsignar = permisoAsignar;
-            return View(db.Tasks.Where(w=>w.AsignadoID== UsuarioID).ToList());
+            return View(db.Tasks.Where(w => w.AsignadoID == UsuarioID).ToList());
         }
         public ActionResult AddTask()
         {
@@ -35,7 +39,13 @@ namespace MVCHelpDesk.Controllers
         public ActionResult editStatus(string id, string status)
         {
             int cod = Convert.ToInt32(id);
-            Tasks task = db.Tasks.SingleOrDefault(c => c.TaskID == cod);
+            Tasks task = db.Tasks.Find(cod);
+            Comentarios coment = new Comentarios();
+            string UserID = usuario.GetIdUser();
+            var perfilUsuario = db.Perfiles.Where(w => w.UsuarioID == UserID)
+                                            .Select(s => new { Nombre = s.Nombre, Apellido = s.Apellido })
+                                            .SingleOrDefault();
+
             if (task != null)
             {
                 var sta = db.Status.ToList();
@@ -46,7 +56,15 @@ namespace MVCHelpDesk.Controllers
                         task.StatusID = item.StatusID;
                     }
                 }
+
+                coment.Comentario = perfilUsuario.Apellido + " " + perfilUsuario.Nombre + " Ha modificado el status del requerimiento a " + status;
+                coment.TaskID = cod;
+                coment.UsuarioID = usuario.GetIdUser();
+                coment.Fecha = DateTime.Now;
+                db.Comentarios.Add(coment);
                 db.SaveChanges();
+
+
             }
             return Json(new { success = true });
         }
@@ -70,7 +88,7 @@ namespace MVCHelpDesk.Controllers
                                 Status = sta.nombre,
                                 Descripcion = tas.Descripcion,
                                 TaskID = tas.TaskID,
-                                FechaFinalizacion = tas.FechaFinalizacion.ToShortDateString(),
+                                FechaFinalizacion = tas.FechaFinalizacion,
                                 //
                                 UsuarioID = tas.UsuarioID,
                                 Asignado = tas.AsignadoID
@@ -88,7 +106,7 @@ namespace MVCHelpDesk.Controllers
             TaskFiles.IDFiles = new List<int>();
             TaskFiles.status = subquery.Status;
             TaskFiles.UsuarioID = subquery.UsuarioID;
-            TaskFiles.FechaFinalizacion = subquery.FechaFinalizacion;
+            TaskFiles.FechaFinalizacion = Convert.ToString(subquery.FechaFinalizacion);
             TaskFiles.nombre = usuarioSolicitante.Apellido + " " + usuarioSolicitante.Nombre;
             TaskFiles.Foto = FotoPerfil;
             TaskFiles.FotoAsignado = FotoAsignado;
@@ -99,11 +117,11 @@ namespace MVCHelpDesk.Controllers
                 TaskFiles.IDFiles.Add(item.IDFiles);
             }
             TaskFiles.ComentarioPerfiles = new List<ViewComentarioPerfiles>();
-            foreach (var item in db.Comentarios.Where(w=>w.TaskID==TaskFiles.TaskID).ToList())
+            foreach (var item in db.Comentarios.Where(w => w.TaskID == TaskFiles.TaskID).ToList())
             {
                 TaskFiles.ComentarioPerfiles.Add(new ViewComentarioPerfiles
                 {
-                    Nombre = db.Perfiles.Where(w=>w.UsuarioID==item.UsuarioID).Select(s=>s.Nombre).SingleOrDefault(),
+                    Nombre = db.Perfiles.Where(w => w.UsuarioID == item.UsuarioID).Select(s => s.Nombre).SingleOrDefault(),
                     Apellido = db.Perfiles.Where(w => w.UsuarioID == item.UsuarioID).Select(s => s.Apellido).SingleOrDefault(),
                     rutaImg = db.Perfiles.Where(w => w.UsuarioID == item.UsuarioID).Select(s => s.rutaImg).SingleOrDefault(),
                     Comentario = item.Comentario,
@@ -135,29 +153,61 @@ namespace MVCHelpDesk.Controllers
 
                 bsuccess = true;
             }
-            //if (File !=null)
-            //{
-
-            //    bsuccess = true;
-            //}
+            if (File != null)
+            {
+                SaveUploadedFile(File, Convert.ToInt32(viewComentario.TaskID));
+                bsuccess = true;
+            }
             return Json(new { success = bsuccess, Errors = getError.GetErrorsFromModelState(ModelState), JsonRequestBehavior.AllowGet });
         }
+        private void SaveUploadedFile(HttpPostedFileBase[] file, int id)
+        {
+            foreach (HttpPostedFileBase Archivo in file)
+            {
+                if (Archivo != null)
+                {
+                    if (Archivo != null && Archivo.ContentLength > 0)
+                    {
+                        var originalDirectory = new DirectoryInfo(string.Format("~/Images/" + id));
+                        string ruta = Path.Combine(Server.MapPath("~/Images/" + id));
+                        string ruta_virtual = "~/Images/" + id;
+                        string pathString = ruta;
+                        var fileName1 = Path.GetFileName(Archivo.FileName);
+                        bool isExists = System.IO.Directory.Exists(pathString);
+                        if (!isExists)
+                            System.IO.Directory.CreateDirectory(pathString);
+                        var path = string.Format("{0}\\{1}", pathString, Archivo.FileName);
+                        Files modelFiles = new Files
+                        {
+                            nombre = Archivo.FileName,
+                            ruta = pathString + "/" + Archivo.FileName,
+                            TasksID = id,
+                            ruta_virtual = ruta_virtual + "/" + Archivo.FileName
+                        };
+                        db.Files.Add(modelFiles);
+                        db.SaveChanges();
+                    }
+                }
+            }
+        }
         [HttpPost]
-        public JsonResult getComentario(int id) {
-            char[] MyChar = { '~'};
+        public JsonResult getComentario(int id)
+        {
+            char[] MyChar = { '~' };
             var comentarioPerfil = (from perfil in db.Perfiles
                                     join coment in db.Comentarios on perfil.UsuarioID equals coment.UsuarioID
                                     where coment.TaskID == id
                                     select new
                                     {
-                                        Nombre = perfil.Nombre ==null ? "": perfil.Nombre,
-                                        Apellido = perfil.Apellido==null?"": perfil.Apellido,
+                                        IDComentario= coment.IDComentario,
+                                        Nombre = perfil.Nombre == null ? "" : perfil.Nombre,
+                                        Apellido = perfil.Apellido == null ? "" : perfil.Apellido,
                                         rutaImg = perfil.rutaImg.Remove(0, 1),
                                         Comentario = coment.Comentario,
                                         Fecha = coment.Fecha
                                     }).ToList();
 
-            return Json(comentarioPerfil, JsonRequestBehavior.AllowGet);
+            return Json(comentarioPerfil.OrderByDescending(o=>o.IDComentario), JsonRequestBehavior.AllowGet);
         }
     }
 }

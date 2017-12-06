@@ -10,9 +10,9 @@ namespace MVCHelpDesk.Models
         [Key]
         public int TaskID { get; set; }
 
-        public DateTime FechaCreacion { get; set; }
+        public DateTime? FechaCreacion { get; set; }
 
-        public DateTime FechaFinalizacion { get; set; }//fecha en el que se deberia finalizar el task
+        public DateTime? FechaFinalizacion { get; set; }//fecha en el que se deberia finalizar el task
 
         [Required(ErrorMessage = "You must enter the field {0}")]
         [StringLength(100, ErrorMessage = "The fiel {0} must contain between {2} and {1} characters", MinimumLength = 4)]

@@ -50,7 +50,7 @@
                                         <div class="postit-container">
                                             <div id="index_0" class="panel panel-danger">
                                                 <div class="panel-heading">@item.Titulo</div>
-                                                <div class="panel-body">
+                                                <div class="panel-body" onclick="getID(@item.TaskID);">
                                                     @item.Descripcion
                                                 </div>
                                                 <div class="panel-footer panel-custom">Panel footer</div>
@@ -78,7 +78,7 @@
                                         <div class="postit-container">
                                             <div id="index_0" class="panel panel-primary">
                                                 <div class="panel-heading">@item.Titulo</div>
-                                                <div class="panel-body">
+                                                <div class="panel-body" onclick="getID(@item.TaskID);">
                                                     @item.Descripcion
                                                 </div>
                                                 <div class="panel-footer panel-custom">Panel footer</div>
@@ -107,7 +107,7 @@
                                         <div class="postit-container">
                                             <div id="index_0" class="panel panel-primary">
                                                 <div class="panel-heading">@item.Titulo</div>
-                                                <div class="panel-body">
+                                                <div class="panel-body" onclick="getID(@item.TaskID);">
                                                     @item.Descripcion
                                                 </div>
                                                 <div class="panel-footer panel-custom">Panel footer</div>
@@ -153,8 +153,6 @@
                 // the selector should match your link
                 $(this).css('cursor', 'pointer');
             }
-
-
             )
         });
         @if (ViewBag.permisoAsignar == false)

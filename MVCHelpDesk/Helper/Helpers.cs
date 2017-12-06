@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using MVCHelpDesk.Models;
 namespace MVCHelpDesk.Helper
 {
@@ -22,5 +20,6 @@ namespace MVCHelpDesk.Helper
                                 select depart.IDDepartamento).SingleOrDefault();
             return departamento;
         }
+
     }
 }

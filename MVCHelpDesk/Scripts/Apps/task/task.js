@@ -110,7 +110,6 @@ $( function() {
 
   });
 function getID(TaskID) {
-
     var url = "/Kanban/detail?sid=" + TaskID + ""; // Establecer URL de la acción
     $("#contenedor-modal").load(url);
     $('#modal').modal('show');

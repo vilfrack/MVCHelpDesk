@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MVCHelpDesk.Models
 {
@@ -13,9 +14,9 @@ namespace MVCHelpDesk.Models
 
         public string ruta_virtual { get; set; }
 
-        public int RequerimientoID { get; set; }
+        public int TasksID { get; set; }
 
-
-        public virtual Requerimiento Requerimiento { get; set; }
+        [ForeignKey("TasksID")]
+        public virtual Tasks Tasks { get; set; }
     }
 }

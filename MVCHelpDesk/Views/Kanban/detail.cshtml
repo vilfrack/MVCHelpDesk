@@ -88,16 +88,7 @@
                     <div id="alert_danger" class="alert alert-danger" role="alert"></div>
 
                     <div id="DivComentarios">
-                        @*@foreach (var item in Model.ComentarioPerfiles)
-                        {//esto debe traerse por ajax
-                            <div class="bordes">
-                                <img src="@Url.Content(item.rutaImg)" class="img-circle FotoPerfil" />
-                                <label>@item.Nombre</label>
-                                <label>@item.Apellido</label>
-                                <label>@item.Fecha</label><br />
-                                <label>@item.Comentario</label>
-                            </div>
-                        }*@
+
                     </div>
                 </div>
                 @Html.HiddenFor(model => model.TaskID)
@@ -180,7 +171,7 @@
                         $("#div_" + key).removeClass(" has-error has-feedback");
                     });
                     $('#alert_success').show("fast");
-                    $("#btnEnviar").prop('disabled', true);
+                    //$("#btnEnviar").prop('disabled', true);
                     $('#alert_danger').hide();
                     LoadComment();
                 }
@@ -213,7 +204,7 @@
         var params = {
             id: $('#TaskID').val()
         };
-
+        $("#DivComentarios").empty();
         $.ajax({
             type: "POST",
             url: "/Kanban/getComentario",
