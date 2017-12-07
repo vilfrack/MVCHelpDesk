@@ -71,11 +71,11 @@
         allowedFileExtensions: ['jpg', 'png', 'pdf'],
         initialPreviewAsData: true, // identify if you are sending preview data only and not the raw markup
         initialPreview: [
-              @*@foreach (var item in Model.ruta_virtual)
+              @foreach (var item in Model.ruta_virtual)
                 {
                   <text>'@Url.Content(item)',</text>
 
-            }*@
+            }
 
         ],
         initialPreviewConfig: [

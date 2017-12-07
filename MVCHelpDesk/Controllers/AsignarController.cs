@@ -24,24 +24,20 @@ namespace MVCHelpDesk.Controllers
 
         public JsonResult get()
         {
-            var requerimientos = (from t in db.Tasks
-                                  join p in db.Perfiles on t.UsuarioID equals p.UsuarioID
-                                  select new {
-                                      TaskID = t.TaskID,
-                                      Descripcion = t.Descripcion,
-                                      Solicitante = p.Apellido +" "+p.Nombre,
-                                      Fecha = t.FechaCreacion
-                                  }).ToList();
+            string UsuarioID = userIdentity.GetIdUser();
+            int IDDepartamento = help.GetDepartByIDUser(UsuarioID);
             var jsonData = new
             {
                 data = (from t in db.Tasks
                         join p in db.Perfiles on t.UsuarioID equals p.UsuarioID
+                        where t.IDDepartamento == IDDepartamento
                         select new
                         {
                             TaskID = t.TaskID,
                             Descripcion = t.Descripcion,
                             Titulo = t.Titulo,
                             Solicitante = p.Apellido + " " + p.Nombre,
+                            Asignado = db.Perfiles.Where(w=>w.UsuarioID==t.AsignadoID).Select(s=> s.Apellido +" "+s.Nombre).FirstOrDefault(),
                             Fecha = t.FechaCreacion
                         }).ToList()
             };
@@ -62,9 +58,6 @@ namespace MVCHelpDesk.Controllers
                      select new
                      {
                          TaskID = t.TaskID,
-                         //Descripcion = t.Descripcion,
-                         //Solicitante = p.Apellido + " " + p.Nombre,
-                         //Fecha = t.FechaCreacion,
                          UsuarioAsignado = t.AsignadoID
                      }).SingleOrDefault();
 

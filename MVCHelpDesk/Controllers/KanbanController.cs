@@ -93,17 +93,28 @@ namespace MVCHelpDesk.Controllers
                                 UsuarioID = tas.UsuarioID,
                                 Asignado = tas.AsignadoID
                             }).SingleOrDefault();
+            //se obtiene los datos del usuario asignado
             var usuarioAsignado = db.Perfiles.Where(w => w.UsuarioID == subquery.Asignado).Select(s => new { Nombre = s.Nombre, Apellido = s.Apellido }).SingleOrDefault();
+            //se obtiene los datos del usuario solicitante
             var usuarioSolicitante = db.Perfiles.Where(w => w.UsuarioID == subquery.UsuarioID).Select(s => new { Nombre = s.Nombre, Apellido = s.Apellido }).SingleOrDefault();
-            var subqueryFile = db.Files.Where(qf => qf.IDFiles == id).ToList();
+            //se obtiene los datos de los archivos
+            var subqueryFile = db.Files.Where(w => w.TasksID == id).ToList();
+            //SE CREA UNA RUTA PARA LA IMAGEN PREDETERMINADA
             string FotoPredefinida = "~/Images/empleados/perfil.jpg";
+            //FOTO DEL SOLICITANTE
             string FotoPerfil = db.Perfiles.Where(w => w.UsuarioID == subquery.UsuarioID).Select(s => s.rutaImg).SingleOrDefault() == null ? FotoPredefinida : db.Perfiles.Where(w => w.UsuarioID == subquery.UsuarioID).Select(s => s.rutaImg).SingleOrDefault();
+            //FOTO DEL ASIGNADO
             string FotoAsignado = db.Perfiles.Where(w => w.UsuarioID == subquery.Asignado).Select(s => s.rutaImg).SingleOrDefault() == null ? FotoPredefinida : db.Perfiles.Where(w => w.UsuarioID == subquery.Asignado).Select(s => s.rutaImg).SingleOrDefault();
             TaskFiles.TaskID = id;
             TaskFiles.Titulo = subquery.Titulo;
             TaskFiles.Descripcion = subquery.Descripcion;
             TaskFiles.ruta_virtual = new List<string>();
             TaskFiles.IDFiles = new List<int>();
+            foreach (var item in subqueryFile)
+            {
+                TaskFiles.ruta_virtual.Add(item.ruta_virtual);
+                TaskFiles.IDFiles.Add(item.IDFiles);
+            }
             TaskFiles.status = subquery.Status;
             TaskFiles.UsuarioID = subquery.UsuarioID;
             TaskFiles.FechaFinalizacion = Convert.ToString(subquery.FechaFinalizacion);
@@ -111,11 +122,7 @@ namespace MVCHelpDesk.Controllers
             TaskFiles.Foto = FotoPerfil;
             TaskFiles.FotoAsignado = FotoAsignado;
             TaskFiles.NombreCompletoAsignado = usuarioAsignado.Apellido + " " + usuarioAsignado.Nombre;
-            foreach (var item in subqueryFile)
-            {
-                TaskFiles.ruta_virtual.Add(item.ruta_virtual);
-                TaskFiles.IDFiles.Add(item.IDFiles);
-            }
+
             TaskFiles.ComentarioPerfiles = new List<ViewComentarioPerfiles>();
             foreach (var item in db.Comentarios.Where(w => w.TaskID == TaskFiles.TaskID).ToList())
             {

@@ -111,12 +111,13 @@ namespace MVCHelpDesk.Controllers
                         {
                             nombre = Archivo.FileName,
                             ruta = pathString + "/" + Archivo.FileName,
-                            IDFiles = id,
+                            TasksID = id,
                             ruta_virtual = ruta_virtual + "/" + Archivo.FileName
                         };
-                        // Archivo.SaveAs(path);
+
                         db.Files.Add(modelFiles);
                         db.SaveChanges();
+                        Archivo.SaveAs(path);
                     }
                 }
             }
@@ -131,7 +132,7 @@ namespace MVCHelpDesk.Controllers
             var vFile = db.Files.ToList();
 
             var subquery = db.Tasks.Where(sq => sq.TaskID == id).SingleOrDefault();
-            var subqueryFile = db.Files.Where(qf => qf.IDFiles == id).ToList();
+            var subqueryFile = db.Files.Where(qf => qf.TasksID == id).ToList();
             TaskFiles.TaskID = id;
             TaskFiles.Titulo = subquery.Titulo;
             TaskFiles.Descripcion = subquery.Descripcion;

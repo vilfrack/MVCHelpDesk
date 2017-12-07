@@ -7,7 +7,7 @@ $("button[data-dismiss='modal']").click(function () {
     esconderMensajes();
 });
 //SE SACAN DEL REEADY PORQUE LUEGO SE EJECUTAN DOS VECES
-$("#formEdit").submit(function (e) {
+$("#formAsignar").submit(function (e) {
     e.preventDefault();
     var parametros = new FormData($(this)[0]);
     $.ajax({
@@ -22,7 +22,7 @@ $("#formEdit").submit(function (e) {
             if (data.success) {
                 $('#alert_success').show("fast");
                 $('#alert_danger').hide();
-                LoadGridRequerimientos();
+                LoadGrid();
             }
             else {
                 //VA A CAPTURAR TODOS LOS ERRORES ENVIADOS DEL CONTROLADOR
@@ -50,9 +50,44 @@ $("#formEdit").submit(function (e) {
 $("#tableRequerimiento").on('click', 'tr #asignar', function () {
     var id = $(this).parents("tr").find("td").eq(0).html();
     var url = "/Asignar/asignar?id=" + id + ""; // Establecer URL de la acción
-    $("#btnEnviarEditar").prop('disabled', false);
-    $("#contenedor-editar").load(url);
+    $("#btnEnviar").prop('disabled', false);
+    $("#contenedor-asignar").load(url);
 });
+/*
+  <th>ID</th>
+            <th>Titulo</th>
+            <th>Descripcion</th>
+            <th>Solicitante</th>
+            <th>Fecha de solicitud</th>
+ */
+function LoadGrid() {
+    $('#tableRequerimiento').dataTable({
+        destroy: true,//PERMITE DESTRUIR LA TABLA PARA VOLVERLA A CREAR
+        bProcessing: true,
+        sAjaxSource: '/Asignar/get',
+        "columns": [
+          { "data": "TaskID" },
+          { "data": "Titulo" },
+          { "data": "Descripcion" },
+          { "data": "Solicitante" },
+          { "data": "Asignado" },
+          {
+              "data": "Fecha",
+              "render": function (jsonDate) {
+                  var date = new Date(parseInt(jsonDate.substr(6)));
+                  var month = date.getMonth() + 1;
+                  return date.getDate() + "/" + month + "/" + date.getFullYear();
+                  //https://www.youtube.com/watch?v=TgD24a9gxXw   explicacion de como cambiar el formato fecha
+              }
+          },
+          {
+              "data": null,
+              defaultContent: "<button id='asignar' class='btn btn-primary btn-sm'" +
+                              "data-toggle='modal' data-target='#modalAsignar' ><span class='glyphicon glyphicon-plus-sign'></span> Asignar </button>&nbsp;&nbsp;"
+          }
+        ]
+    })
+}
 function esconderMensajes() {
     $('#alert_danger').hide();
     $('#alert_success').hide();
