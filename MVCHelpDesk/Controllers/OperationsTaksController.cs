@@ -74,6 +74,12 @@ namespace MVCHelpDesk.Controllers
                     var getLast = db.Tasks.OrderByDescending(u => u.TaskID).FirstOrDefault();
                     id = getLast.TaskID;
                     bsuccess = true;
+
+                    int cantidadArchivo = db.Files.Where(w => w.TasksID == id).Count();
+                    if (cantidadArchivo > 3)
+                    {
+                        return Json(new { success = false, cantidad = cantidadArchivo, Errors = getError.GetErrorsFromModelState(ModelState), JsonRequestBehavior.AllowGet });
+                    }
                     SaveUploadedFile(file, id);
 
 
@@ -164,6 +170,11 @@ namespace MVCHelpDesk.Controllers
                     bsuccess = true;
                     if (FileEdit.Count() > 0)
                     {
+                        int cantidadArchivo = db.Files.Where(w => w.TasksID == tasks.TaskID).Count();
+                        if (cantidadArchivo > 3)
+                        {
+                            return Json(new { success = false, cantidad = cantidadArchivo, Errors = getError.GetErrorsFromModelState(ModelState), JsonRequestBehavior.AllowGet });
+                        }
                         SaveUploadedFile(FileEdit, tasks.TaskID);
                     }
                 }
@@ -200,6 +211,7 @@ namespace MVCHelpDesk.Controllers
         [HttpPost]
         public ActionResult DeleteImage(int id)
         {
+            /* http://plugins.krajee.com/file-input-ajax-demo/3 */
             try
             {
                 bool bsuccess = false;
@@ -214,6 +226,7 @@ namespace MVCHelpDesk.Controllers
                         db.Files.Remove(registro);
                         db.SaveChanges();
                         bsuccess = true;
+
                     }
                 }
 

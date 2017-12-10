@@ -160,8 +160,15 @@ namespace MVCHelpDesk.Controllers
 
                 bsuccess = true;
             }
+
             if (File != null)
             {
+                int TaskID = Convert.ToInt32(viewComentario.TaskID);
+                int cantidadArchivo = db.Files.Where(w => w.TasksID == TaskID).Count();
+                if (cantidadArchivo > 3)
+                {
+                    return Json(new { success = false,cantidad = cantidadArchivo, Errors = getError.GetErrorsFromModelState(ModelState), JsonRequestBehavior.AllowGet });
+                }
                 SaveUploadedFile(File, Convert.ToInt32(viewComentario.TaskID));
                 bsuccess = true;
             }
@@ -193,6 +200,7 @@ namespace MVCHelpDesk.Controllers
                         };
                         db.Files.Add(modelFiles);
                         db.SaveChanges();
+                        Archivo.SaveAs(path);
                     }
                 }
             }

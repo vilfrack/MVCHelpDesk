@@ -27,18 +27,24 @@ $("#formCreate").submit(function (e) {
                 LoadGrid();
             }
             else {
-                //VA A CAPTURAR TODOS LOS ERRORES ENVIADOS DEL CONTROLADOR
-                $.each(data.Errors, function (key, value) {
-                    //VALUE VA A TRAER SOLO AQUELLOS VALORES QUE NO CUMPLAN CON LOS REQUISITOS ESTABLECIDOS EN EL MODELSTATE
-                    //CREAR EN LO POSIBLE UNA CLASE QUE GUARDE ESTE CODIGO
-                    if (value != "true") {
-                        $("#Error_" + key).html(value[value.length - 1].ErrorMessage);
-                        $("#div_" + key).addClass(" has-error has-feedback");
-                    } else {
-                        $("#Error_" + key).html('');
-                        $("#div_" + key).removeClass(" has-error has-feedback");
-                    }
-                });
+                if (data.cantidad > 3) {
+                    $('#alert_danger').html('No se puede agregar mas de 3 archivos');
+                    $('#alert_danger').show("fast");
+                } else {
+                    //VA A CAPTURAR TODOS LOS ERRORES ENVIADOS DEL CONTROLADOR
+                    $.each(data.Errors, function (key, value) {
+                        //VALUE VA A TRAER SOLO AQUELLOS VALORES QUE NO CUMPLAN CON LOS REQUISITOS ESTABLECIDOS EN EL MODELSTATE
+                        //CREAR EN LO POSIBLE UNA CLASE QUE GUARDE ESTE CODIGO
+                        if (value != "true") {
+                            $("#Error_" + key).html(value[value.length - 1].ErrorMessage);
+                            $("#div_" + key).addClass(" has-error has-feedback");
+                        } else {
+                            $("#Error_" + key).html('');
+                            $("#div_" + key).removeClass(" has-error has-feedback");
+                        }
+                    });
+                }
+
             }
 
         },
@@ -128,14 +134,19 @@ $("#formEdit").submit(function (e) {
 
             }
             else {
-                //VA A CAPTURAR TODOS LOS ERRORES ENVIADOS DEL CONTROLADOR
-                $.each(data.Errors, function (key, value) {
-                    //VALUE VA A TRAER SOLO AQUELLOS VALORES QUE NO CUMPLAN CON LOS REQUISITOS ESTABLECIDOS EN EL MODELSTATE
-                    if (value != null) {
-                        $("#Error_" + key).html(value[value.length - 1].ErrorMessage);
-                        $("#div_" + key).addClass(" has-error has-feedback");
-                    }
-                });
+                if (data.cantidad > 3) {
+                    $('#alert_danger').html('No se puede agregar mas de 3 archivos');
+                    $('#alert_danger').show("fast");
+                } else {
+                    //VA A CAPTURAR TODOS LOS ERRORES ENVIADOS DEL CONTROLADOR
+                    $.each(data.Errors, function (key, value) {
+                        //VALUE VA A TRAER SOLO AQUELLOS VALORES QUE NO CUMPLAN CON LOS REQUISITOS ESTABLECIDOS EN EL MODELSTATE
+                        if (value != null) {
+                            $("#Error_" + key).html(value[value.length - 1].ErrorMessage);
+                            $("#div_" + key).addClass(" has-error has-feedback");
+                        }
+                    });
+                }
             }
         },
         error: function (data) {
