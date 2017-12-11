@@ -161,6 +161,12 @@
                 <text>
                  $("#divSubRechazados").removeClass('column');
                  $("#divSubRechazados").addClass('Subcolumn');
+            $('#divSubRechazados').mouseenter(function () {
+
+                $('#divSubRechazados').removeClass('column')
+                $('#divSubRechazados').addClass('Subcolumn');
+            });
+
 
                  $('#divSubRealizados').mouseenter(function () {
                      $('div:not("#divSubRealizados") div.column')
