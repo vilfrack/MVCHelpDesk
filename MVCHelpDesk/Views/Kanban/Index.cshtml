@@ -68,7 +68,7 @@
             <div class="panel panel-success">
                 <div class="panel-heading">Tickets en prueba/realizados</div>
                 <div class="panel-body" id="divRealizados">
-                    <div class="column">
+                    <div id="divSubRealizados" class="column">
                         @foreach (var item in Model)
                         {
                             if (item.StatusID == 3)
@@ -154,15 +154,26 @@
                 $(this).css('cursor', 'pointer');
             }
             )
-        });
-        @if (ViewBag.permisoAsignar == false)
-        {
-            <text>
-             $("#divSubRechazados").removeClass('column');
-             $("#divSubRechazados").addClass('Subcolumn');
-            </text>
-        }
 
+
+            @if (ViewBag.permisoAsignar == false)
+            {
+                <text>
+                 $("#divSubRechazados").removeClass('column');
+                 $("#divSubRechazados").addClass('Subcolumn');
+
+                 $('#divSubRealizados').mouseenter(function () {
+                     $('div:not("#divSubRealizados") div.column')
+                         .removeClass('column')
+                         .addClass('Subcolumn');
+                 }).mouseleave(function () {
+                     $('.Subcolumn')
+                         .removeClass('Subcolumn')
+                         .addClass('column');
+                 });
+                </text>
+            }
+        });
 
 
     </script>

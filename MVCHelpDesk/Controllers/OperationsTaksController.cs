@@ -74,11 +74,10 @@ namespace MVCHelpDesk.Controllers
                     var getLast = db.Tasks.OrderByDescending(u => u.TaskID).FirstOrDefault();
                     id = getLast.TaskID;
                     bsuccess = true;
-
-                    int cantidadArchivo = db.Files.Where(w => w.TasksID == id).Count();
-                    if (cantidadArchivo > 3)
+                    bool boolArchivos = helper.CantidadArchivos(id);
+                    if (boolArchivos == true)
                     {
-                        return Json(new { success = false, cantidad = cantidadArchivo, Errors = getError.GetErrorsFromModelState(ModelState), JsonRequestBehavior.AllowGet });
+                        return Json(new { success = false, cantidad = boolArchivos, Errors = getError.GetErrorsFromModelState(ModelState), JsonRequestBehavior.AllowGet });
                     }
                     SaveUploadedFile(file, id);
 
@@ -170,10 +169,10 @@ namespace MVCHelpDesk.Controllers
                     bsuccess = true;
                     if (FileEdit.Count() > 0)
                     {
-                        int cantidadArchivo = db.Files.Where(w => w.TasksID == tasks.TaskID).Count();
-                        if (cantidadArchivo > 3)
+                        bool boolArchivos = helper.CantidadArchivos(tasks.TaskID);
+                        if (boolArchivos == true)
                         {
-                            return Json(new { success = false, cantidad = cantidadArchivo, Errors = getError.GetErrorsFromModelState(ModelState), JsonRequestBehavior.AllowGet });
+                            return Json(new { success = false, cantidad = boolArchivos, Errors = getError.GetErrorsFromModelState(ModelState), JsonRequestBehavior.AllowGet });
                         }
                         SaveUploadedFile(FileEdit, tasks.TaskID);
                     }

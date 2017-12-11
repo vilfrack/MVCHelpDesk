@@ -27,7 +27,7 @@ $("#formCreate").submit(function (e) {
                 LoadGrid();
             }
             else {
-                if (data.cantidad > 3) {
+                if (data.cantidad == true) {
                     $('#alert_danger').html('No se puede agregar mas de 3 archivos');
                     $('#alert_danger').show("fast");
                 } else {
@@ -134,7 +134,7 @@ $("#formEdit").submit(function (e) {
 
             }
             else {
-                if (data.cantidad > 3) {
+                if (data.cantidad == true) {
                     $('#alert_danger').html('No se puede agregar mas de 3 archivos');
                     $('#alert_danger').show("fast");
                 } else {

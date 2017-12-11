@@ -164,10 +164,10 @@ namespace MVCHelpDesk.Controllers
             if (File != null)
             {
                 int TaskID = Convert.ToInt32(viewComentario.TaskID);
-                int cantidadArchivo = db.Files.Where(w => w.TasksID == TaskID).Count();
-                if (cantidadArchivo > 3)
+                bool boolArchivos = help.CantidadArchivos(TaskID);
+                if (boolArchivos == true)
                 {
-                    return Json(new { success = false,cantidad = cantidadArchivo, Errors = getError.GetErrorsFromModelState(ModelState), JsonRequestBehavior.AllowGet });
+                    return Json(new { success = false,cantidad = boolArchivos, Errors = getError.GetErrorsFromModelState(ModelState), JsonRequestBehavior.AllowGet });
                 }
                 SaveUploadedFile(File, Convert.ToInt32(viewComentario.TaskID));
                 bsuccess = true;

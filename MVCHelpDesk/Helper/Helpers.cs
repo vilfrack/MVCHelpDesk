@@ -20,6 +20,13 @@ namespace MVCHelpDesk.Helper
                                 select depart.IDDepartamento).SingleOrDefault();
             return departamento;
         }
-
+        public bool CantidadArchivos(int TaskID) {
+           int CantidadArchivo = db.Files.Where(w => w.TasksID == TaskID).Count();
+            if (CantidadArchivo >= 3)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

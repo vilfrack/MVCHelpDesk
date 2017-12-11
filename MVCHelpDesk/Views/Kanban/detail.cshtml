@@ -116,14 +116,13 @@
         todayHighlight: true
     });
     $('#File').fileinput({
-        uploadUrl: '/file-upload-batch/2',
         language: 'es',
         overwriteInitial: false,
         initialPreviewShowDelete: false,
         uploadAsync: false,
         showCaption: true,
         showPreview: true,
-        showRemove: false,
+        showRemove: true,
         showUpload: false, // <------ just set this from true to false
         maxFileCount: 3,
         allowedFileExtensions: ['jpg','png','pdf'],
@@ -134,19 +133,7 @@
                   <text>'@Url.Content(item)',</text>
               }
         ],
-        initialPreviewConfig: [
-           @foreach (var item in Model.IDFiles)
-           {
-               <text>
-                {
-                    url: '/OperationsTaks/DeleteImage/',
-                    key: @item,//parametro que enviamos via ajax/post para eliminar el archivo
-                    extra: { id: @item}//investigar
-                },
-                </text>
-           }
 
-        ],
         initialPreviewFileType: 'image', // image is the default and can be overridden in config below
     });
     $("#formKanban").submit(function (e) {
@@ -188,7 +175,7 @@
                     //        $("#div_" + key).removeClass(" has-error has-feedback");
                     //    }
                     //});
-                    if (data.cantidad>3) {
+                    if (data.cantidad==true) {
                         $('#alert_danger').html('No se puede agregar mas de 3 archivos');
                         $('#alert_danger').show("fast");
                     }

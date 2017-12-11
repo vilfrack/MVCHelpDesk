@@ -58,8 +58,6 @@
 
     //var url = $('#foo').data('url');
     $('#FileEdit').fileinput({
-        uploadUrl: '/file-upload-batch/2',
-        language: 'es',
         overwriteInitial: false,
         initialPreviewShowDelete: true,
         uploadAsync: true,
@@ -76,7 +74,6 @@
                   <text>'@Url.Content(item)',</text>
 
             }
-
         ],
         initialPreviewConfig: [
            @foreach (var item in Model.IDFiles)
