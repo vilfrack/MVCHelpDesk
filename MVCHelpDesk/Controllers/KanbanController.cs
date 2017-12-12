@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.Mvc;
 using MVCHelpDesk.Helper;
 using MVCHelpDesk.Attribute;
+using System.Data.Entity.Validation;
+
 namespace MVCHelpDesk.Controllers
 {
     public class KanbanController : Controller
@@ -38,35 +40,47 @@ namespace MVCHelpDesk.Controllers
         [HttpPost]
         public ActionResult editStatus(string id, string status)
         {
-            int cod = Convert.ToInt32(id);
-            Tasks task = db.Tasks.Find(cod);
-            Comentarios coment = new Comentarios();
-            string UserID = usuario.GetIdUser();
-            var perfilUsuario = db.Perfiles.Where(w => w.UsuarioID == UserID)
-                                            .Select(s => new { Nombre = s.Nombre, Apellido = s.Apellido })
-                                            .SingleOrDefault();
-
-            if (task != null)
+            try
             {
-                var sta = db.Status.ToList();
-                foreach (var item in sta)
+                int cod = Convert.ToInt32(id);
+                Tasks task = db.Tasks.Find(cod);
+                Comentarios coment = new Comentarios();
+                string UserID = usuario.GetIdUser();
+                var perfilUsuario = db.Perfiles.Where(w => w.UsuarioID == UserID)
+                                                .Select(s => new { Nombre = s.Nombre, Apellido = s.Apellido })
+                                                .SingleOrDefault();
+
+                if (task != null)
                 {
-                    if (item.nombre == status)
+                    var sta = db.Status.ToList();
+                    foreach (var item in sta)
                     {
-                        task.StatusID = item.StatusID;
+                        if (item.nombre == status)
+                        {
+                            task.StatusID = item.StatusID;
+                        }
                     }
+
+                    coment.Comentario = perfilUsuario.Apellido + " " + perfilUsuario.Nombre + " Ha modificado el status del requerimiento a " + status;
+                    coment.TaskID = cod;
+                    coment.UsuarioID = usuario.GetIdUser();
+                    coment.Fecha = DateTime.Now;
+                    db.Comentarios.Add(coment);
+                    db.SaveChanges();
+
+
                 }
-
-                coment.Comentario = perfilUsuario.Apellido + " " + perfilUsuario.Nombre + " Ha modificado el status del requerimiento a " + status;
-                coment.TaskID = cod;
-                coment.UsuarioID = usuario.GetIdUser();
-                coment.Fecha = DateTime.Now;
-                db.Comentarios.Add(coment);
-                db.SaveChanges();
-
-
+                return Json(new { success = true });
             }
-            return Json(new { success = true });
+            catch (DbEntityValidationException e)
+            {
+                return Json(new { success = false });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false });
+            }
+
         }
         [HttpGet]
         public ActionResult detail(string sid)

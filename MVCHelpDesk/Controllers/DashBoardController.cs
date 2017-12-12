@@ -14,5 +14,8 @@ namespace MVCHelpDesk.Controllers
         {
             return View();
         }
+        public ActionResult CantidadTask() {
+            return PartialView();
+        }
     }
 }

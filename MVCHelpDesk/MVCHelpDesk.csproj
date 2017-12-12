@@ -292,6 +292,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\plugins\chart.js" />
     <Content Include="Scripts\plugins\DataTables-1.10.15\examples\advanced_init\column_render.html" />
     <Content Include="Scripts\plugins\DataTables-1.10.15\examples\advanced_init\complex_header.html" />
     <Content Include="Scripts\plugins\DataTables-1.10.15\examples\advanced_init\defaults.html" />
@@ -1037,6 +1038,7 @@
     <Content Include="Views\Asignar\Index.cshtml" />
     <Content Include="Views\Asignar\Details.cshtml" />
     <Content Include="Views\Asignar\asignar.cshtml" />
+    <Content Include="Views\DashBoard\CantidadTask.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AllPermisos\" />
