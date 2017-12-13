@@ -17,5 +17,21 @@ namespace MVCHelpDesk.Controllers
         public ActionResult CantidadTask() {
             return PartialView();
         }
+        public ActionResult TaskMensuales()
+        {
+            return PartialView();
+        }
+        public ActionResult DesarrolladorTask()
+        {
+            return PartialView();
+        }
+        public ActionResult DesarrolladorTiempo()
+        {
+            return PartialView();
+        }
+        public ActionResult TaskTiempo()
+        {
+            return PartialView();
+        }
     }
 }

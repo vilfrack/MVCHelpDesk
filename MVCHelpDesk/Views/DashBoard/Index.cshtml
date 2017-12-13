@@ -5,8 +5,54 @@
 }
 
 <h2>Index</h2>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+            <h2>Requerimientos Anuales</h2>
+            <div>
+                @Html.Action("CantidadTask", "DashBoard")
+            </div>
 
-<h2>Cantidad de Task</h2>
-<div>
-    @Html.Action("CantidadTask", "DashBoard")
+        </div>
+        <div class="col-sm-6">
+            <h2>Cantidad de Requerimientos Mensual</h2>
+            <div>
+                @Html.Action("TaskMensuales", "DashBoard")
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <h2>Requerimientos por Desarrollador</h2>
+            <div>
+                @Html.Action("DesarrolladorTask", "DashBoard")
+            </div>
+
+        </div>
+        <div class="col-sm-6">
+            <h2>Requerimientos desarrollados a tiempos</h2>
+            <div>
+                @Html.Action("DesarrolladorTiempo", "DashBoard")
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <h2>Requerimientos desarrollados a tiempos</h2>
+            @* desempeño*@
+            <div>
+                @Html.Action("TaskTiempo", "DashBoard")
+            </div>
+
+        </div>
+        <div class="col-sm-6">
+            @*<h2>Requerimientos desarrollados a tiempos</h2>
+            <div>
+                @Html.Action("DesarrolladorTiempo", "DashBoard")
+            </div>*@
+
+        </div>
+    </div>
 </div>
+

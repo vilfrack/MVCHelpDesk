@@ -15,8 +15,8 @@ namespace MVCHelpDesk
               "~/Scripts/jquery-ui-1.12.1.custom/jquery-ui.js",
               "~/Scripts/fileinput.js",
               "~/Scripts/bootstrap.js",
-              "~/Scripts/plugins/morris/morris.js",
-              "~/Scripts/plugins/morris/morris-data.js",
+              //"~/Scripts/plugins/morris/morris.js",
+              //"~/Scripts/plugins/morris/morris-data.js",
               "~/Scripts/plugins/DataTables-1.10.15/media/js/jquery.dataTables.js",//para el grid
               "~/Scripts/plugins/DataTables-1.10.15/media/js/dataTables.bootstrap.js",//para el grid
               "~/Scripts/Apps/task/task.js").IncludeDirectory("~/Scripts", ".js"));

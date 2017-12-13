@@ -1039,6 +1039,10 @@
     <Content Include="Views\Asignar\Details.cshtml" />
     <Content Include="Views\Asignar\asignar.cshtml" />
     <Content Include="Views\DashBoard\CantidadTask.cshtml" />
+    <Content Include="Views\DashBoard\TaskMensuales.cshtml" />
+    <Content Include="Views\DashBoard\DesarrolladorTask.cshtml" />
+    <Content Include="Views\DashBoard\DesarrolladorTiempo.cshtml" />
+    <Content Include="Views\DashBoard\TaskTiempo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AllPermisos\" />
