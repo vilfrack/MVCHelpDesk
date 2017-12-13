@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MVCHelpDesk.Models
 {
@@ -9,5 +11,7 @@ namespace MVCHelpDesk.Models
 
         public string nombre { get; set; }
 
+        [ForeignKey("StatusID")]
+        public virtual ICollection<MaestroTaskStatus> MaestroTaskStatus { get; set; }
     }
 }

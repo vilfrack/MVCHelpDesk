@@ -35,7 +35,7 @@ namespace MVCHelpDesk.Controllers
             var jsonData = new
             {
                 data = (from query in db.Tasks
-                        join sta in db.Status on query.StatusID equals sta.StatusID
+                        join sta in db.Status on query.StatusIDActual equals sta.StatusID
                         join dep in db.Departamento on query.IDDepartamento equals dep.IDDepartamento
                         select new
                         {
@@ -63,16 +63,27 @@ namespace MVCHelpDesk.Controllers
                 int id = 0;
                 if (ModelState.IsValid)
                 {
-
+                    MaestroTaskStatus maestroTaskStatus = new MaestroTaskStatus();
                     //  tasks.ruta_foto = CrearDirectorio(IDRuta);
                     tasks.FechaCreacion = DateTime.Now.Date;
                     //tasks.FechaFinalizacion = DateTime.Now.Date;
-                    tasks.StatusID = 1;
+                    tasks.StatusIDActual = 1;
                     tasks.UsuarioID = user.GetIdUser();
+
+
                     db.Tasks.Add(tasks);
                     db.SaveChanges();
                     var getLast = db.Tasks.OrderByDescending(u => u.TaskID).FirstOrDefault();
                     id = getLast.TaskID;
+
+                    // SE SALVA EN EL HISTORICO DE REQUERIMIENTOS
+                    maestroTaskStatus.StatusID = 1;
+                    maestroTaskStatus.TaskID = id;
+                    maestroTaskStatus.Fecha = DateTime.Now.Date;
+                    db.MaestroTaskStatus.Add(maestroTaskStatus);
+                    db.SaveChanges();
+
+
                     bsuccess = true;
                     bool boolArchivos = helper.CantidadArchivos(id);
                     if (boolArchivos == true)

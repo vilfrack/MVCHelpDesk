@@ -53,6 +53,9 @@ namespace MVCHelpDesk.Models
 
         public DbSet<Comentarios> Comentarios { get; set; }
 
+        public DbSet<MaestroTaskStatus> MaestroTaskStatus { get; set; }
+
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

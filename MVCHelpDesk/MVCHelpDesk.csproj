@@ -196,6 +196,7 @@
     <Compile Include="Models\Comentarios.cs" />
     <Compile Include="Models\Departamento.cs" />
     <Compile Include="Models\Files.cs" />
+    <Compile Include="Models\MaestroTaskStatus.cs" />
     <Compile Include="Models\Modulos.cs" />
     <Compile Include="Models\Perfiles.cs" />
     <Compile Include="Models\PermisoPorRol.cs" />

@@ -45,6 +45,7 @@ namespace MVCHelpDesk.Controllers
                 int cod = Convert.ToInt32(id);
                 Tasks task = db.Tasks.Find(cod);
                 Comentarios coment = new Comentarios();
+                MaestroTaskStatus taskStatus = new MaestroTaskStatus();
                 string UserID = usuario.GetIdUser();
                 var perfilUsuario = db.Perfiles.Where(w => w.UsuarioID == UserID)
                                                 .Select(s => new { Nombre = s.Nombre, Apellido = s.Apellido })
@@ -57,7 +58,10 @@ namespace MVCHelpDesk.Controllers
                     {
                         if (item.nombre == status)
                         {
-                            task.StatusID = item.StatusID;
+                            task.StatusIDActual = item.StatusID;
+                            taskStatus.StatusID = item.StatusID;
+                            taskStatus.TaskID = cod;
+                            taskStatus.Fecha = DateTime.Now.Date;
                         }
                     }
 
@@ -66,6 +70,7 @@ namespace MVCHelpDesk.Controllers
                     coment.UsuarioID = usuario.GetIdUser();
                     coment.Fecha = DateTime.Now;
                     db.Comentarios.Add(coment);
+                    db.MaestroTaskStatus.Add(taskStatus);
                     db.SaveChanges();
 
 
@@ -93,7 +98,7 @@ namespace MVCHelpDesk.Controllers
 
             // var subquery = db.Tasks.Where(sq => sq.TaskID == id).SingleOrDefault();
             var subquery = (from tas in vtask
-                            join sta in vStatus on tas.StatusID equals sta.StatusID
+                            join sta in vStatus on tas.StatusIDActual equals sta.StatusID
                             where tas.TaskID == id
                             select new
                             {
