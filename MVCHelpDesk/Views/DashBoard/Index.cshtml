@@ -3,56 +3,88 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@Styles.Render("~/bundles/DataPikerCss")
 
+@Scripts.Render("~/bundles/scriptDashBoard")
+@Scripts.Render("~/bundles/DataPikerJs")
 <h2>Index</h2>
 <div class="container">
     <div class="row">
-        <div class="col-sm-6">
-            <h2>Requerimientos Anuales</h2>
-            <div>
-                @Html.Action("CantidadTask", "DashBoard")
+        <div class="form-inline">
+            <div class="form-group">
+                <label>Fecha de Inicio</label>
+                <div class="input-group date DivDatapiker" id="div_FechaEntrega">
+                    <input type="text" name="fechaEntrega" class="form-control">
+                    <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-th"></span>
+                    </div>
+                </div>
             </div>
-
+            <div class="form-group">
+                <label>Fecha de Final</label>
+                <div class="input-group date DivDatapiker" id="div_FechaEntrega">
+                    <input type="text" name="fechaEntrega" class="form-control">
+                    <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-th"></span>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-default">Buscar</button>
         </div>
-        <div class="col-sm-6">
-            <h2>Cantidad de Requerimientos Mensual</h2>
-            <div>
-                @Html.Action("TaskMensuales", "DashBoard")
+    </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <h2>Requerimientos Anuales</h2>
+                <div id="DivCantidadTask">
+                    @*@Html.Action("CantidadTask", "DashBoard")*@
+                </div>
+
+            </div>
+            <div class="col-sm-6">
+                <h2>Cantidad de Requerimientos Mensual</h2>
+                <div>
+                    @Html.Action("TaskMensuales", "DashBoard")
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <h2>Requerimientos por Desarrollador</h2>
+                <div>
+                    @Html.Action("DesarrolladorTask", "DashBoard")
+                </div>
+
+            </div>
+            <div class="col-sm-6">
+                <h2>Requerimientos desarrollados a tiempos</h2>
+                <div>
+                    @Html.Action("DesarrolladorTiempo", "DashBoard")
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <h2>Requerimientos desarrollados a tiempos</h2>
+                @* desempeño*@
+                <div>
+                    @Html.Action("TaskTiempo", "DashBoard")
+                </div>
+
+            </div>
+            <div class="col-sm-6">
+                @*<h2>Requerimientos desarrollados a tiempos</h2>
+                    <div>
+                        @Html.Action("DesarrolladorTiempo", "DashBoard")
+                    </div>*@
+
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-6">
-            <h2>Requerimientos por Desarrollador</h2>
-            <div>
-                @Html.Action("DesarrolladorTask", "DashBoard")
-            </div>
-
-        </div>
-        <div class="col-sm-6">
-            <h2>Requerimientos desarrollados a tiempos</h2>
-            <div>
-                @Html.Action("DesarrolladorTiempo", "DashBoard")
-            </div>
-
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-6">
-            <h2>Requerimientos desarrollados a tiempos</h2>
-            @* desempeño*@
-            <div>
-                @Html.Action("TaskTiempo", "DashBoard")
-            </div>
-
-        </div>
-        <div class="col-sm-6">
-            @*<h2>Requerimientos desarrollados a tiempos</h2>
-            <div>
-                @Html.Action("DesarrolladorTiempo", "DashBoard")
-            </div>*@
-
-        </div>
-    </div>
-</div>
-
+<script>
+    $('.DivDatapiker input').datepicker({
+        todayBtn: "linked",
+        autoclose: true,
+        todayHighlight: true
+    });
+</script>

@@ -244,6 +244,7 @@
     <Content Include="Images\empleados\f87e608a-5014-48d4-85ce-4a70d55bab9c\8.jpg" />
     <Content Include="Images\empleados\perfil.jpg" />
     <Content Include="Scripts\Apps\Asignar\Asignar.js" />
+    <Content Include="Scripts\Apps\DashBoard\DashBoard.js" />
     <Content Include="Scripts\Apps\Departamento\departamento.js" />
     <Content Include="Scripts\Apps\Modulos\Modulos.js" />
     <Content Include="Scripts\Apps\OperationsTaks\OperationsTaks.js" />

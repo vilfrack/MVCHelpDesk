@@ -70,6 +70,9 @@ namespace MVCHelpDesk
                 ).IncludeDirectory("~/Content", ".css"));
 
 
+            bundles.Add(new ScriptBundle("~/bundles/scriptDashBoard").Include(
+                "~/Scripts/Apps/DashBoard/DashBoard.js").IncludeDirectory("~/Scripts", ".js"));
+
         }
     }
 }

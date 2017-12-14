@@ -14,7 +14,7 @@
                     <div class="column">
                         @foreach (var item in Model)
                         {
-                            if (item.StatusID == 1)
+                            if (item.StatusIDActual == 1)
                             {
                                 <div class="portlet" id="@item.TaskID">
                                     <div class="portlet-content">
@@ -43,7 +43,7 @@
                     <div class="column">
                         @foreach (var item in Model)
                         {
-                            if (item.StatusID == 2)
+                            if (item.StatusIDActual == 2)
                             {
                                 <div class="portlet" id="@item.TaskID">
                                     <div class="portlet-content">
@@ -71,7 +71,7 @@
                     <div id="divSubRealizados" class="column">
                         @foreach (var item in Model)
                         {
-                            if (item.StatusID == 3)
+                            if (item.StatusIDActual == 3)
                             {
                                 <div class="portlet" id="@item.TaskID">
                                     <div class="portlet-content">
@@ -100,7 +100,7 @@
                     <div id="divSubRechazados" class="column">
                         @foreach (var item in Model)
                         {
-                            if (item.StatusID == 4)
+                            if (item.StatusIDActual == 4)
                             {
                                 <div class="portlet" id="@item.TaskID">
                                     <div class="portlet-content">
