@@ -5,8 +5,9 @@
 }
 @Styles.Render("~/bundles/DataPikerCss")
 
-@Scripts.Render("~/bundles/scriptDashBoard")
+@*@Scripts.Render("~/bundles/scriptDashBoard")*@
 @Scripts.Render("~/bundles/DataPikerJs")
+<script src="~/Scripts/plugins/chart.js"></script>
 <h2>Index</h2>
 <div class="container">
     <div class="row">
@@ -14,7 +15,7 @@
             <div class="form-group">
                 <label>Fecha de Inicio</label>
                 <div class="input-group date DivDatapiker" id="div_FechaEntrega">
-                    <input type="text" name="fechaEntrega" class="form-control">
+                    <input type="text" name="fechaInicio" id="fechaInicio" class="form-control">
                     <div class="input-group-addon">
                         <span class="glyphicon glyphicon-th"></span>
                     </div>
@@ -23,13 +24,13 @@
             <div class="form-group">
                 <label>Fecha de Final</label>
                 <div class="input-group date DivDatapiker" id="div_FechaEntrega">
-                    <input type="text" name="fechaEntrega" class="form-control">
+                    <input type="text" name="fechaFinal" id="fechaFinal" class="form-control">
                     <div class="input-group-addon">
                         <span class="glyphicon glyphicon-th"></span>
                     </div>
                 </div>
             </div>
-            <button type="submit" class="btn btn-default">Buscar</button>
+            <button type="button" id="btnBuscar" class="btn btn-default">Buscar</button>
         </div>
     </div>
         <div class="row">
@@ -37,13 +38,19 @@
                 <h2>Requerimientos Anuales</h2>
                 <div id="DivCantidadTask">
                     @*@Html.Action("CantidadTask", "DashBoard")*@
+                    <div class="col-md-12">
+                        <canvas id="CantidadTask" width="800" height="600"></canvas>
+                    </div>
                 </div>
 
             </div>
             <div class="col-sm-6">
                 <h2>Cantidad de Requerimientos Mensual</h2>
                 <div>
-                    @Html.Action("TaskMensuales", "DashBoard")
+                    <div class="col-md-12">
+                        <canvas id="TaskMensuales" width="256" height="175"></canvas>
+                    </div>
+                    @*@Html.Action("TaskMensuales", "DashBoard")*@
                 </div>
             </div>
         </div>
@@ -51,14 +58,20 @@
             <div class="col-sm-6">
                 <h2>Requerimientos por Desarrollador</h2>
                 <div>
-                    @Html.Action("DesarrolladorTask", "DashBoard")
+                    <div class="col-md-12">
+                        <canvas id="DesarrolladorTask" width="256" height="175"></canvas>
+                    </div>
+                    @*@Html.Action("DesarrolladorTask", "DashBoard")*@
                 </div>
 
             </div>
             <div class="col-sm-6">
                 <h2>Requerimientos desarrollados a tiempos</h2>
                 <div>
-                    @Html.Action("DesarrolladorTiempo", "DashBoard")
+                    <div class="col-md-12">
+                        <canvas id="DesarrolladorTiempo" width="256" height="175"></canvas>
+                    </div>
+                    @*@Html.Action("DesarrolladorTiempo", "DashBoard")*@
                 </div>
 
             </div>
@@ -68,7 +81,7 @@
                 <h2>Requerimientos desarrollados a tiempos</h2>
                 @* desempeño*@
                 <div>
-                    @Html.Action("TaskTiempo", "DashBoard")
+                    @*@Html.Action("TaskTiempo", "DashBoard")*@
                 </div>
 
             </div>
@@ -87,4 +100,99 @@
         autoclose: true,
         todayHighlight: true
     });
+    CantidadTask();
+    TaskMensuales();
+    DesarrolladorTask();
+    DesarrolladorTiempo();
+
+    function CantidadTask() {
+        var ctx = document.getElementById("CantidadTask").getContext('2d');
+        var myBarChart = new Chart(ctx, {
+            type: 'bar',
+            //type: 'horizontalBar',
+            data: {
+                labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+                datasets: [{
+                    label: "Rechazado",
+                    backgroundColor: "rgba(255, 99, 132, 0.2)",
+                    data: [3, 7, 4, 5, 8, 9, 2, 10, 9, 4, 5, 4],
+                    borderColor: 'rgba(255,99,132,1)',
+                    borderWidth: 1
+                }, {
+                    label: "Asignados",
+                    backgroundColor: "rgba(54, 162, 235, 0.2)",
+                    data: [3, 7, 4, 5, 8, 9, 2, 10, 9, 4, 5, 4],
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }, {
+                    label: "En desarrollo",
+                    backgroundColor: "rgba(255, 206, 86, 0.2)",
+                    data: [3, 7, 4, 5, 8, 9, 2, 10, 9, 4, 5, 4],
+                    borderColor: 'rgba(255, 206, 86, 1)',
+                    borderWidth: 1
+                }],
+
+            },
+        });
+    }
+    function TaskMensuales(){
+          var ctxx = $("#TaskMensuales").get(0).getContext("2d");
+        var datos = {
+            labels:['Asignados','Desarrollo','Finalizados','Rechazados'],
+            datasets: [{
+                label:'point',
+                data: [10, 20, 30,15],
+                backgroundColor: ['#03A9F4', '#B3E5FC', '#81C784', '#E57373']
+            }],
+        };
+        var myDoughnutChart = new Chart(ctxx, {
+            type: 'doughnut',
+            data: datos,
+            options: {
+                animation: {
+                    animateScale:true
+                }
+            }
+        });
+    }
+    function DesarrolladorTask() {
+        var ctxx = $("#DesarrolladorTask").get(0).getContext("2d");
+        var datos = {
+            labels: ['Asignados', 'Desarrollo', 'Finalizados', 'Rechazados'],
+            datasets: [{
+                label: 'point',
+                data: [10, 20, 30, 15],
+                backgroundColor: ['#03A9F4', '#B3E5FC', '#81C784', '#E57373']
+            }],
+        };
+        var myDoughnutChart = new Chart(ctxx, {
+            type: 'doughnut',
+            data: datos,
+            options: {
+                animation: {
+                    animateScale: true
+                }
+            }
+        });
+    }
+    function DesarrolladorTiempo() {
+        var ctxx = $("#DesarrolladorTiempo").get(0).getContext("2d");
+        var datos = {
+            labels: ['Asignados', 'Desarrollo', 'Finalizados', 'Rechazados'],
+            datasets: [{
+                label: 'point',
+                data: [10, 20, 30, 15],
+                backgroundColor: ['#03A9F4', '#B3E5FC', '#81C784', '#E57373']
+            }],
+        };
+        var myDoughnutChart = new Chart(ctxx, {
+            type: 'doughnut',
+            data: datos,
+            options: {
+                animation: {
+                    animateScale: true
+                }
+            }
+        });
+    }
 </script>

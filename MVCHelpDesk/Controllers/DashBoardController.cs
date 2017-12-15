@@ -1,4 +1,5 @@
 ﻿using MVCHelpDesk.Models;
+using MVCHelpDesk.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,16 +11,21 @@ namespace MVCHelpDesk.Controllers
     [Authorize]
     public class DashBoardController : Controller
     {
+        public List<MaestroTaskStatus> ListCantidadTask { get; set; }
+
         private ApplicationDbContext db = new ApplicationDbContext();
         // GET: DashBoard
         public ActionResult Index()
         {
             return View();
         }
+        [HttpPost]
+        public ActionResult Index(string FechaInicio, string FechaFin)
+        {
+            return View();
+        }
+
         public ActionResult CantidadTask() {
-
-
-            //return Json(new { success = true, Errors = getError.GetErrorsFromModelState(ModelState), JsonRequestBehavior.AllowGet });
             return PartialView();
         }
         public ActionResult TaskMensuales()
@@ -39,11 +45,13 @@ namespace MVCHelpDesk.Controllers
             return PartialView();
         }
         /*PRUEBA*/
-        public JsonResult getCantidadTask()
+        public JsonResult getCantidadTask(string fechaInicio, string fechaFinal)
         {
+            DateTime fInicio = Convert.ToDateTime(fechaInicio).Date;
+            DateTime fFinal = Convert.ToDateTime(fechaFinal).Date;
             var jsonData = new
             {
-                data = db.MaestroTaskStatus.ToList()
+                data = db.MaestroTaskStatus.Where(w=> w.Fecha >= fInicio && w.Fecha <= fFinal).ToList()
             };
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
