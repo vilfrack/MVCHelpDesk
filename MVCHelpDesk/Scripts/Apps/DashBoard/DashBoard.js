@@ -1,4 +1,26 @@
-﻿function CantidadTask() {
+﻿var datos;
+$(document).ready(function () {
+    //string FechaInicio, string FechaFin
+    var params = {
+        FechaInicio: 'FechaInicio',
+        FechaFin:'FechaFin'
+    };
+    $.ajax({
+        type: "POST",
+        url: "/DashBoard/getCantidadTask",
+        data: params,
+        dataType: "json",
+        success: function (data) {
+            datos = data;
+        },
+        error: function (data) {
+
+        },
+
+    });
+});
+
+function CantidadTask() {
     var ctx = document.getElementById("CantidadTask").getContext('2d');
     var myBarChart = new Chart(ctx, {
         type: 'bar',
