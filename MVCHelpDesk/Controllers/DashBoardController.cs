@@ -62,6 +62,7 @@ namespace MVCHelpDesk.Controllers
                     diciembre = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioDiciembre && w.Fecha <= FinDiciembre && w.StatusID == item.StatusID).Count(),
                 });
             }
+
             return View(viewDashBoard.ToList());
         }
         [HttpPost]

@@ -117,7 +117,7 @@
                 labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
                 datasets: [{
                     label: "Rechazados",
-                    backgroundColor: "rgba(255, 99, 132, 0.2)",
+                    backgroundColor: "#E57373",
                     //data: [3, 7, 4, 5, 8, 9, 2, 10, 9, 4, 5, 4],
                     data: @foreach (var item in Model.Where(w => w.statusNombre == "Rechazados").ToList())
                           {
@@ -128,11 +128,10 @@
                                 </text>
                            }
 
-                    borderColor: 'rgba(255,99,132,1)',
-                    borderWidth: 1
+                    //borderWidth: 1
                 }, {
                     label: "Asignados",
-                    backgroundColor: "rgba(54, 162, 235, 0.2)",
+                    backgroundColor: "#03A9F4",
                     //data: [3, 7, 4, 5, 8, 9, 2, 10, 9, 4, 5, 4],
                     data: @foreach (var item in Model.Where(w => w.statusNombre == "Asignado").ToList())
                             {
@@ -142,11 +141,10 @@
                                 ],
                                 </text>
                             }
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
+                    //borderWidth: 1
                 }, {
                     label: "En desarrollo",
-                    backgroundColor: "rgba(255, 206, 86, 0.2)",
+                    backgroundColor: "#B3E5FC",
                     //data: [3, 7, 4, 5, 8, 9, 2, 10, 9, 4, 5, 4],
                     data: @foreach (var item in Model.Where(w => w.statusNombre == "Desarrollo").ToList())
                             {
@@ -156,8 +154,20 @@
                                 ],
                                 </text>
                             }
-                    borderColor: 'rgba(255, 206, 86, 1)',
-                    borderWidth: 1
+                    //borderWidth: 1
+                },{
+                    label: "Realizados",
+                    backgroundColor: "#81C784",
+                    //data: [3, 7, 4, 5, 8, 9, 2, 10, 9, 4, 5, 4],
+                    data: @foreach (var item in Model.Where(w => w.statusNombre == "Realizados").ToList())
+                            {
+                                <text>
+                                [
+                                        @item.enero,@item.febrero,@item.marzo,@item.abril,@item.mayo,@item.junio,@item.julio,@item.agosto,@item.septiembre,@item.octubre,@item.noviembre,@item.diciembre
+                                ],
+                                </text>
+                            }
+                    //borderWidth: 1
                 }],
 
             },
