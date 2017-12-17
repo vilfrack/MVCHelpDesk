@@ -112,13 +112,11 @@
         var ctx = document.getElementById("CantidadTask").getContext('2d');
         var myBarChart = new Chart(ctx, {
             type: 'bar',
-            //type: 'horizontalBar',
             data: {
                 labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
                 datasets: [{
                     label: "Rechazados",
                     backgroundColor: "#E57373",
-                    //data: [3, 7, 4, 5, 8, 9, 2, 10, 9, 4, 5, 4],
                     data: @foreach (var item in Model.Where(w => w.statusNombre == "Rechazados").ToList())
                           {
                                 <text>
@@ -127,12 +125,9 @@
                                 ],
                                 </text>
                            }
-
-                    //borderWidth: 1
                 }, {
                     label: "Asignados",
                     backgroundColor: "#03A9F4",
-                    //data: [3, 7, 4, 5, 8, 9, 2, 10, 9, 4, 5, 4],
                     data: @foreach (var item in Model.Where(w => w.statusNombre == "Asignado").ToList())
                             {
                                 <text>
@@ -141,11 +136,9 @@
                                 ],
                                 </text>
                             }
-                    //borderWidth: 1
                 }, {
                     label: "En desarrollo",
                     backgroundColor: "#B3E5FC",
-                    //data: [3, 7, 4, 5, 8, 9, 2, 10, 9, 4, 5, 4],
                     data: @foreach (var item in Model.Where(w => w.statusNombre == "Desarrollo").ToList())
                             {
                                 <text>
@@ -154,11 +147,9 @@
                                 ],
                                 </text>
                             }
-                    //borderWidth: 1
                 },{
                     label: "Realizados",
                     backgroundColor: "#81C784",
-                    //data: [3, 7, 4, 5, 8, 9, 2, 10, 9, 4, 5, 4],
                     data: @foreach (var item in Model.Where(w => w.statusNombre == "Realizados").ToList())
                             {
                                 <text>
@@ -167,7 +158,6 @@
                                 ],
                                 </text>
                             }
-                    //borderWidth: 1
                 }],
 
             },
@@ -180,7 +170,15 @@
             labels: ['Asignados', 'Desarrollo', 'Finalizados', 'Rechazados'],
             datasets: [{
                 label: 'point',
-                data: [10, 20, 30, 15],
+                //data: [10, 20, 30, 15],
+                 data: @foreach (var item in Model.Select(s=> new { s.TotalAsignado,s.TotalDesarrollo,s.TotalRealizado,s.TotalRechazado }).Distinct().ToList())
+                 {
+                                <text>
+                                [
+                                        @item.TotalAsignado,@item.TotalDesarrollo,@item.TotalRealizado,@item.TotalRechazado
+                                ],
+                                </text>
+                            }
                 backgroundColor: ['#03A9F4', '#B3E5FC', '#81C784', '#E57373']
             }],
         };

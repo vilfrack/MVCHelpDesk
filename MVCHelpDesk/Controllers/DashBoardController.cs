@@ -60,6 +60,10 @@ namespace MVCHelpDesk.Controllers
                     octubre = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioOctubre && w.Fecha <= FinOctubre && w.StatusID == item.StatusID).Count(),
                     noviembre = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioNoviembre && w.Fecha <= FinNoviembre && w.StatusID == item.StatusID).Count(),
                     diciembre = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioDiciembre && w.Fecha <= FinDiciembre && w.StatusID == item.StatusID).Count(),
+                    TotalAsignado = db.MaestroTaskStatus.Where(w => w.StatusID == 1 && w.Fecha >= InicioEnero && w.Fecha <= FinDiciembre).Count(),
+                    TotalDesarrollo = db.MaestroTaskStatus.Where(w => w.StatusID == 2 && w.Fecha >= InicioEnero && w.Fecha <= FinDiciembre).Count(),
+                    TotalRealizado = db.MaestroTaskStatus.Where(w => w.StatusID == 3 && w.Fecha >= InicioEnero && w.Fecha <= FinDiciembre).Count(),
+                    TotalRechazado = db.MaestroTaskStatus.Where(w => w.StatusID == 4 && w.Fecha >= InicioEnero && w.Fecha <= FinDiciembre).Count(),
                 });
             }
 
@@ -93,6 +97,8 @@ namespace MVCHelpDesk.Controllers
             DateTime InicioDiciembre = fechasDashBoard.InicioDiciembre();
             DateTime FinDiciembre = fechasDashBoard.FinDiciembre();
 
+            DateTime FInicio = Convert.ToDateTime(FechaInicio);
+            DateTime FFin = Convert.ToDateTime(FechaFin);
             List<ViewDashboard> viewDashBoard = new List<ViewDashboard>();
             foreach (var item in db.Status.ToList())
             {
@@ -111,6 +117,11 @@ namespace MVCHelpDesk.Controllers
                     octubre = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioOctubre && w.Fecha <= FinOctubre && w.StatusID == item.StatusID).Count(),
                     noviembre = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioNoviembre && w.Fecha <= FinNoviembre && w.StatusID == item.StatusID).Count(),
                     diciembre = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioDiciembre && w.Fecha <= FinDiciembre && w.StatusID == item.StatusID).Count(),
+
+                    TotalAsignado = db.MaestroTaskStatus.Where(w => w.StatusID == 1 && w.Fecha >= FInicio && w.Fecha <= FFin).Count(),
+                    TotalDesarrollo = db.MaestroTaskStatus.Where(w => w.StatusID == 2 && w.Fecha >= FInicio && w.Fecha <= FFin).Count(),
+                    TotalRealizado = db.MaestroTaskStatus.Where(w => w.StatusID == 3 && w.Fecha >= FInicio && w.Fecha <= FFin).Count(),
+                    TotalRechazado = db.MaestroTaskStatus.Where(w => w.StatusID == 4 && w.Fecha >= FInicio && w.Fecha <= FFin).Count(),
                 });
             }
 

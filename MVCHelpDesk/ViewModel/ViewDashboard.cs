@@ -20,5 +20,10 @@ namespace MVCHelpDesk.ViewModel
         public int octubre { get; set; }
         public int noviembre { get; set; }
         public int diciembre { get; set; }
+
+        public int TotalAsignado { get; set; }
+        public int TotalDesarrollo { get; set; }
+        public int TotalRealizado { get; set; }
+        public int TotalRechazado { get; set; }
     }
 }
