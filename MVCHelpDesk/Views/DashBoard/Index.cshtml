@@ -11,31 +11,33 @@
 <h2>Index</h2>
 <div class="container">
     <div class="row">
-        <div class="form-inline">
-            <div class="form-group">
-                <label>Fecha de Inicio</label>
-                <div class="input-group date DivDatapiker" id="div_FechaEntrega">
-                    <input type="text" name="fechaInicio" id="fechaInicio" class="form-control">
-                    <div class="input-group-addon">
-                        <span class="glyphicon glyphicon-th"></span>
+        <form action="@Url.Action("Index", "DashBoard")" method="post">
+            <div class="form-inline">
+                <div class="form-group">
+                    <label>Fecha de Inicio</label>
+                    <div class="input-group date DivDatapiker" id="div_FechaEntrega">
+                        <input type="text" name="fechaInicio" id="fechaInicio" class="form-control">
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-th"></span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label>Fecha de Final</label>
-                <div class="input-group date DivDatapiker" id="div_FechaEntrega">
-                    <input type="text" name="fechaFinal" id="fechaFinal" class="form-control">
-                    <div class="input-group-addon">
-                        <span class="glyphicon glyphicon-th"></span>
+                <div class="form-group">
+                    <label>Fecha de Final</label>
+                    <div class="input-group date DivDatapiker" id="div_FechaEntrega">
+                        <input type="text" name="fechaFinal" id="fechaFinal" class="form-control">
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-th"></span>
+                        </div>
                     </div>
                 </div>
+                <button type="submit" id="btnBuscar" class="btn btn-default">Buscar</button>
             </div>
-            <button type="button" id="btnBuscar" class="btn btn-default">Buscar</button>
-        </div>
+        </form>
     </div>
     <div class="row">
         <div class="col-sm-6">
-            <h2>Requerimientos Anuales</h2>
+            <h4>Requerimientos Anuales</h4>
             <div id="DivCantidadTask">
                 @*@Html.Action("CantidadTask", "DashBoard")*@
                 <div class="col-md-12">
@@ -45,8 +47,9 @@
 
         </div>
         <div class="col-sm-6">
-            <h2>Cantidad de Requerimientos Mensual</h2>
+            <h4>Cantidad de Requerimientos Mensual</h4>
             <div>
+
                 <div class="col-md-12">
                     <canvas id="TaskMensuales" width="256" height="175"></canvas>
                 </div>
@@ -56,7 +59,7 @@
     </div>
     <div class="row">
         <div class="col-sm-6">
-            <h2>Requerimientos por Desarrollador</h2>
+            <h4>Requerimientos por Desarrollador</h4>
             <div>
                 <div class="col-md-12">
                     <canvas id="DesarrolladorTask" width="256" height="175"></canvas>
@@ -66,7 +69,7 @@
 
         </div>
         <div class="col-sm-6">
-            <h2>Requerimientos desarrollados a tiempos</h2>
+            <h4>Requerimientos desarrollados a tiempos</h4>
             <div>
                 <div class="col-md-12">
                     <canvas id="DesarrolladorTiempo" width="256" height="175"></canvas>
@@ -78,7 +81,7 @@
     </div>
     <div class="row">
         <div class="col-sm-6">
-            <h2>Requerimientos desarrollados a tiempos</h2>
+            <h4>Requerimientos desarrollados a tiempos</h4>
             @* desempeño*@
             <div>
                 @*@Html.Action("TaskTiempo", "DashBoard")*@
@@ -98,7 +101,8 @@
     $('.DivDatapiker input').datepicker({
         todayBtn: "linked",
         autoclose: true,
-        todayHighlight: true
+        todayHighlight: true,
+        format: 'yyyy/mm/dd'
     });
     CantidadTask();
     TaskMensuales();
@@ -106,7 +110,6 @@
     DesarrolladorTiempo();
     @{
         int enero, febrero, marzo, abri, mayo, junio, julio, agosto, septiembre, octubre, noviembre, diciembre = 0;
-
      }
     function CantidadTask() {
         var ctx = document.getElementById("CantidadTask").getContext('2d');

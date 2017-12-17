@@ -70,7 +70,7 @@ namespace MVCHelpDesk.Controllers
             return View(viewDashBoard.ToList());
         }
         [HttpPost]
-        public ActionResult Index(string FechaInicio, string FechaFin)
+        public ActionResult Index(string FechaInicio, string fechaFinal)
         {
             DateTime InicioEnero = fechasDashBoard.InicioEnero();
             DateTime FinEnero = fechasDashBoard.FinEnero();
@@ -97,8 +97,8 @@ namespace MVCHelpDesk.Controllers
             DateTime InicioDiciembre = fechasDashBoard.InicioDiciembre();
             DateTime FinDiciembre = fechasDashBoard.FinDiciembre();
 
-            DateTime FInicio = Convert.ToDateTime(FechaInicio);
-            DateTime FFin = Convert.ToDateTime(FechaFin);
+            DateTime FInicio = Convert.ToDateTime(FechaInicio).Date;
+            DateTime FFin = Convert.ToDateTime(fechaFinal).Date;
             List<ViewDashboard> viewDashBoard = new List<ViewDashboard>();
             foreach (var item in db.Status.ToList())
             {
