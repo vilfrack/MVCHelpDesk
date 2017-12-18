@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MVCHelpDesk.ViewModel.ViewDashboard>
+﻿
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -11,28 +11,28 @@
 <h2>Index</h2>
 <div class="container">
     <div class="row">
-        <form action="@Url.Action("Index", "DashBoard")" method="post">
-            <div class="form-inline">
-                <div class="form-group">
-                    <label>Fecha de Inicio</label>
-                    <div class="input-group date DivDatapiker" id="div_FechaEntrega">
-                        <input type="text" name="fechaInicio" id="fechaInicio" class="form-control">
-                        <div class="input-group-addon">
-                            <span class="glyphicon glyphicon-th"></span>
-                        </div>
+
+        <form action="@Url.Action("AnualMensual", "DashBoard")" method="post">
+            div class="form-inline">
+            <div class="form-group">
+                <label>Fecha de Inicio</label>
+                <div class="input-group date DivDatapiker" id="div_FechaEntrega">
+                    <input type="text" name="fechaInicio" id="fechaInicio" class="form-control">
+                    <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-th"></span>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label>Fecha de Final</label>
-                    <div class="input-group date DivDatapiker" id="div_FechaEntrega">
-                        <input type="text" name="fechaFinal" id="fechaFinal" class="form-control">
-                        <div class="input-group-addon">
-                            <span class="glyphicon glyphicon-th"></span>
-                        </div>
-                    </div>
-                </div>
-                <button type="submit" id="btnBuscar" class="btn btn-default">Buscar</button>
             </div>
+            <div class="form-group">
+                <label>Fecha de Final</label>
+                <div class="input-group date DivDatapiker" id="div_FechaEntrega">
+                    <input type="text" name="fechaFinal" id="fechaFinal" class="form-control">
+                    <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-th"></span>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" id="btnBuscar" class="btn btn-default">Buscar</button>
         </form>
     </div>
     <div class="row">
@@ -108,9 +108,9 @@
     TaskMensuales();
     DesarrolladorTask();
     DesarrolladorTiempo();
-    @{
+      @{
         int enero, febrero, marzo, abri, mayo, junio, julio, agosto, septiembre, octubre, noviembre, diciembre = 0;
-     }
+    }
     function CantidadTask() {
         var ctx = document.getElementById("CantidadTask").getContext('2d');
         var myBarChart = new Chart(ctx, {
@@ -121,50 +121,50 @@
                     label: "Rechazados",
                     backgroundColor: "#E57373",
                     data: @foreach (var item in Model.Where(w => w.statusNombre == "Rechazados").ToList())
-                          {
-                                <text>
-                                [
-                                     @item.enero,@item.febrero,@item.marzo,@item.abril,@item.mayo,@item.junio,@item.julio,@item.agosto,@item.septiembre,@item.octubre,@item.noviembre,@item.diciembre
-                                ],
-                                </text>
-                           }
-                }, {
-                    label: "Asignados",
-                    backgroundColor: "#03A9F4",
-                    data: @foreach (var item in Model.Where(w => w.statusNombre == "Asignado").ToList())
-                            {
-                                <text>
-                                [
-                                        @item.enero,@item.febrero,@item.marzo,@item.abril,@item.mayo,@item.junio,@item.julio,@item.agosto,@item.septiembre,@item.octubre,@item.noviembre,@item.diciembre
-                                ],
-                                </text>
-                            }
-                }, {
-                    label: "En desarrollo",
-                    backgroundColor: "#B3E5FC",
-                    data: @foreach (var item in Model.Where(w => w.statusNombre == "Desarrollo").ToList())
-                            {
-                                <text>
-                                [
-                                        @item.enero,@item.febrero,@item.marzo,@item.abril,@item.mayo,@item.junio,@item.julio,@item.agosto,@item.septiembre,@item.octubre,@item.noviembre,@item.diciembre
-                                ],
-                                </text>
-                            }
-                },{
-                    label: "Realizados",
-                    backgroundColor: "#81C784",
-                    data: @foreach (var item in Model.Where(w => w.statusNombre == "Realizados").ToList())
-                            {
-                                <text>
-                                [
-                                        @item.enero,@item.febrero,@item.marzo,@item.abril,@item.mayo,@item.junio,@item.julio,@item.agosto,@item.septiembre,@item.octubre,@item.noviembre,@item.diciembre
-                                ],
-                                </text>
-                            }
-                }],
+        {
+            <text>
+            [
+                 @item.enero,@item.febrero,@item.marzo,@item.abril,@item.mayo,@item.junio,@item.julio,@item.agosto,@item.septiembre,@item.octubre,@item.noviembre,@item.diciembre
+            ],
+            </text>
+        }
+    }, {
+    label: "Asignados",
+    backgroundColor: "#03A9F4",
+    data: @foreach (var item in Model.Where(w => w.statusNombre == "Asignado").ToList())
+    {
+        <text>
+        [
+                @item.enero,@item.febrero,@item.marzo,@item.abril,@item.mayo,@item.junio,@item.julio,@item.agosto,@item.septiembre,@item.octubre,@item.noviembre,@item.diciembre
+        ],
+        </text>
+    }
+    }, {
+        label: "En desarrollo",
+        backgroundColor: "#B3E5FC",
+        data: @foreach (var item in Model.Where(w => w.statusNombre == "Desarrollo").ToList())
+        {
+            <text>
+            [
+                    @item.enero,@item.febrero,@item.marzo,@item.abril,@item.mayo,@item.junio,@item.julio,@item.agosto,@item.septiembre,@item.octubre,@item.noviembre,@item.diciembre
+            ],
+            </text>
+        }
+    },{
+    label: "Realizados",
+    backgroundColor: "#81C784",
+    data: @foreach (var item in Model.Where(w => w.statusNombre == "Realizados").ToList())
+    {
+        <text>
+        [
+                @item.enero,@item.febrero,@item.marzo,@item.abril,@item.mayo,@item.junio,@item.julio,@item.agosto,@item.septiembre,@item.octubre,@item.noviembre,@item.diciembre
+        ],
+        </text>
+    }
+    }],
 
-            },
-        });
+    },
+    });
     }
 
     function TaskMensuales() {
@@ -174,27 +174,29 @@
             datasets: [{
                 label: 'point',
                 //data: [10, 20, 30, 15],
-                 data: @foreach (var item in Model.Select(s=> new { s.TotalAsignado,s.TotalDesarrollo,s.TotalRealizado,s.TotalRechazado }).Distinct().ToList())
-                 {
-                                <text>
-                                [
-                                        @item.TotalAsignado,@item.TotalDesarrollo,@item.TotalRealizado,@item.TotalRechazado
-                                ],
-                                </text>
-                            }
-                backgroundColor: ['#03A9F4', '#B3E5FC', '#81C784', '#E57373']
-            }],
-        };
-        var myDoughnutChart = new Chart(ctxx, {
-            type: 'doughnut',
-            data: datos,
-            options: {
-                animation: {
-                    animateScale: true
-                }
+                data: @foreach (var item in Model.Select(s=> new { s.TotalAsignado,s.TotalDesarrollo,s.TotalRealizado,s.TotalRechazado }).Distinct().ToList())
+        {
+            <text>
+            [
+                    @item.TotalAsignado,@item.TotalDesarrollo,@item.TotalRealizado,@item.TotalRechazado
+            ],
+            </text>
+        }
+        backgroundColor: ['#03A9F4', '#B3E5FC', '#81C784', '#E57373']
+    }],
+    };
+    var myDoughnutChart = new Chart(ctxx, {
+        type: 'doughnut',
+        data: datos,
+        options: {
+            animation: {
+                animateScale: true
             }
-        });
+        }
+    });
     }
+
+
 
     function DesarrolladorTask() {
         var ctxx = $("#DesarrolladorTask").get(0).getContext("2d");
