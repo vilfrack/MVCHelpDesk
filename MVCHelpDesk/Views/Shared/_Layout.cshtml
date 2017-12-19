@@ -137,10 +137,20 @@
                 <ul class="nav navbar-nav side-nav">
                     <li class="active">
                         @*<a href="index.html"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>*@
-                        @Html.ActionLink("Dashboard", "index", "Dashboard")
+
                     </li>
                     <li>
-                        <a href="@Url.Action("index", "Dashboard")"><i class="fa fa-fw fa-bar-chart-o"></i> Charts</a>
+                        @*@Url.Action("index", "Dashboard")*@
+                        <a href="#" data-toggle="collapse" data-target="#Charts"><i class="fa fa-fw fa-bar-chart-o"></i> Dashboard <i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="Charts" class="collapse">
+                            <li>
+                                @Html.ActionLink("Departamento", "index", "Dashboard")
+                            </li>
+                            <li>
+                                @Html.ActionLink("DashBoard Empleado", "DashBoardUsuario", "Dashboard")
+                            </li>
+                        </ul>
+
                     </li>
                     <li>
                         <a href="tables.html"><i class="fa fa-fw fa-table"></i> Tables</a>
@@ -158,13 +168,13 @@
                         @Html.ActionLink("Departamento", "index", "Departamento")
                     </li>
                     <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Sistema <i class="fa fa-fw fa-caret-down"></i></a>
-                        <ul id="demo" class="collapse">
+                        <a href="javascript:;" data-toggle="collapse" data-target="#Sistema"><i class="fa fa-fw fa-arrows-v"></i> Sistema <i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="Sistema" class="collapse">
                             <li>
                                 @Html.ActionLink("Usuarios", "index", "Usuario")
                             </li>
                             <li>
-                               @Html.ActionLink("Roles", "index", "Roles")
+                                @Html.ActionLink("Roles", "index", "Roles")
                             </li>
                             <li>
                                 @Html.ActionLink("Modulos", "index", "Modulos")

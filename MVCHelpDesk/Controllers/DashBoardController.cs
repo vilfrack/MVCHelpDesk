@@ -66,8 +66,8 @@ namespace MVCHelpDesk.Controllers
                     TotalRechazado = db.MaestroTaskStatus.Where(w => w.StatusID == 4 && w.Fecha >= InicioEnero && w.Fecha <= FinDiciembre).Count(),
                 });
             }
-
-            return PartialView(viewDashBoard.ToList());
+            ViewBag.DashBoard = viewDashBoard.ToList();
+            return View(viewDashBoard.ToList());
         }
         [HttpPost]
         public ActionResult Index(string FechaInicio, string fechaFinal)
@@ -124,9 +124,12 @@ namespace MVCHelpDesk.Controllers
                     TotalRechazado = db.MaestroTaskStatus.Where(w => w.StatusID == 4 && w.Fecha >= FInicio && w.Fecha <= FFin).Count(),
                 });
             }
-            return PartialView(viewDashBoard.ToList());
+            return View(viewDashBoard.ToList());
         }
 
+        public ActionResult DashBoardUsuario() {
+            return View();
+        }
         /*PRUEBA*/
         public JsonResult getCantidadTask(string fechaInicio, string fechaFinal)
         {
