@@ -66,6 +66,9 @@ namespace MVCHelpDesk.Controllers
                     TotalRechazado = db.MaestroTaskStatus.Where(w => w.StatusID == 4 && w.Fecha >= InicioEnero && w.Fecha <= FinDiciembre).Count(),
                 });
             }
+            int aplico = db.Tasks.Where(w => w.StatusIDActual == 5 && w.FechaEntrega <= w.FechaFinalizacion).Count();
+            int noAplico = db.Tasks.Where(w => w.StatusIDActual == 5 && w.FechaEntrega >= w.FechaFinalizacion).Count();
+
             ViewBag.DashBoard = viewDashBoard.ToList();
             return View(viewDashBoard.ToList());
         }

@@ -25,5 +25,8 @@ namespace MVCHelpDesk.ViewModel
         public int TotalDesarrollo { get; set; }
         public int TotalRealizado { get; set; }
         public int TotalRechazado { get; set; }
+
+        public int aplico { get; set; }
+        public int noAplico { get; set; }
     }
 }
