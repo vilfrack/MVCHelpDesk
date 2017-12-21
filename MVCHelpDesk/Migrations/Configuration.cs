@@ -55,7 +55,8 @@ namespace MVCHelpDesk.Migrations
                 new Models.Status { StatusID = 1, nombre = "Asignado" },
                 new Models.Status { StatusID = 2, nombre = "Desarrollo"},
                 new Models.Status { StatusID = 3, nombre = "Realizados"},
-                new Models.Status { StatusID = 4, nombre = "Rechazados"}
+                new Models.Status { StatusID = 4, nombre = "Rechazados"},
+                 new Models.Status { StatusID = 5, nombre = "Finalizados"}
             );
             //AGREGAMOS LOS PERMISOS
             context.Permisos.AddOrUpdate(

@@ -1,18 +1,16 @@
-﻿using MVCHelpDesk.Models;
+﻿using MVCHelpDesk.Attribute;
+using MVCHelpDesk.Helper;
+using MVCHelpDesk.Models;
 using MVCHelpDesk.ViewModel;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using MVCHelpDesk.Helper;
-using MVCHelpDesk.Attribute;
-using System.Data.Entity.Validation;
 
 namespace MVCHelpDesk.Controllers
 {
-    public class KanbanController : Controller
+    public class RevisionController : Controller
     {
         #region INSTANCIAS
         private Helper.UserIdentity usuario = new UserIdentity();
@@ -21,71 +19,10 @@ namespace MVCHelpDesk.Controllers
         private GetErrors getError = new GetErrors();
         private Helpers help = new Helpers();
         #endregion
-
+        // GET: Revision
         public ActionResult Index()
         {
-            string UsuarioID = usuario.GetIdUser();
-            bool permisoAsignar = false;
-            if (!moduloAttribute.PermisoByRol(Permisos.AllModulos.Requerimiento, Permisos.AllPermisos.Asignar) && !moduloAttribute.PermisoByUser(Permisos.AllModulos.Requerimiento, Permisos.AllPermisos.Asignar))
-            {
-                permisoAsignar = true;
-            }
-            ViewBag.permisoAsignar = permisoAsignar;
-            return View(db.Tasks.Where(w => w.AsignadoID == UsuarioID).ToList());
-        }
-        public ActionResult AddTask()
-        {
-            return View();
-        }
-        [HttpPost]
-        public ActionResult editStatus(string id, string status)
-        {
-            try
-            {
-                int cod = Convert.ToInt32(id);
-                Tasks task = db.Tasks.Find(cod);
-                Comentarios coment = new Comentarios();
-                MaestroTaskStatus taskStatus = new MaestroTaskStatus();
-                string UserID = usuario.GetIdUser();
-                var perfilUsuario = db.Perfiles.Where(w => w.UsuarioID == UserID)
-                                                .Select(s => new { Nombre = s.Nombre, Apellido = s.Apellido })
-                                                .SingleOrDefault();
-
-                if (task != null)
-                {
-                    var sta = db.Status.ToList();
-                    foreach (var item in sta)
-                    {
-                        if (item.nombre == status)
-                        {
-                            task.StatusIDActual = item.StatusID;
-                            taskStatus.StatusID = item.StatusID;
-                            taskStatus.TaskID = cod;
-                            taskStatus.Fecha = DateTime.Now.Date;
-                        }
-                    }
-
-                    coment.Comentario = perfilUsuario.Apellido + " " + perfilUsuario.Nombre + " Ha modificado el status del requerimiento a " + status;
-                    coment.TaskID = cod;
-                    coment.UsuarioID = usuario.GetIdUser();
-                    coment.Fecha = DateTime.Now;
-                    db.Comentarios.Add(coment);
-                    db.MaestroTaskStatus.Add(taskStatus);
-                    db.SaveChanges();
-
-
-                }
-                return Json(new { success = true });
-            }
-            catch (DbEntityValidationException e)
-            {
-                return Json(new { success = false });
-            }
-            catch (Exception ex)
-            {
-                return Json(new { success = false });
-            }
-
+            return View(db.Tasks.Where(w => w.StatusIDActual==3).ToList());
         }
         [HttpGet]
         public ActionResult detail(string sid)
@@ -107,7 +44,7 @@ namespace MVCHelpDesk.Controllers
                                 Status = sta.nombre,
                                 Descripcion = tas.Descripcion,
                                 TaskID = tas.TaskID,
-                                FechaFinalizacion = tas.FechaFinalizacion,
+                                FechaEntrega = tas.FechaEntrega,
                                 //
                                 UsuarioID = tas.UsuarioID,
                                 Asignado = tas.AsignadoID
@@ -136,7 +73,7 @@ namespace MVCHelpDesk.Controllers
             }
             TaskFiles.status = subquery.Status;
             TaskFiles.UsuarioID = subquery.UsuarioID;
-            TaskFiles.FechaFinalizacion = Convert.ToString(subquery.FechaFinalizacion);
+            TaskFiles.FechaFinalizacion = Convert.ToString(subquery.FechaEntrega);
             TaskFiles.nombre = usuarioSolicitante.Apellido + " " + usuarioSolicitante.Nombre;
             TaskFiles.Foto = FotoPerfil;
             TaskFiles.FotoAsignado = FotoAsignado;
@@ -160,69 +97,36 @@ namespace MVCHelpDesk.Controllers
             return PartialView(TaskFiles);
         }
         [HttpPost]
-        public JsonResult Save(ViewComentario viewComentario, HttpPostedFileBase[] File)
+        public JsonResult Save(ViewComentario viewComentario, int status)
         {
             bool bsuccess = false;
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && status == 5)
             {
                 Comentarios coment = new Comentarios();
+
+                MaestroTaskStatus maestroTaskStatus = new MaestroTaskStatus();
+
                 coment.Comentario = viewComentario.Comentario;
                 coment.TaskID = Convert.ToInt32(viewComentario.TaskID);
                 coment.UsuarioID = usuario.GetIdUser();
-                coment.Fecha = DateTime.Now.Date;
+                coment.Fecha = DateTime.Now;
+
+                maestroTaskStatus.Fecha = DateTime.Now.Date;
+                maestroTaskStatus.TaskID= Convert.ToInt32(viewComentario.TaskID);
+                maestroTaskStatus.StatusID = status==0? 3: 5;
+
                 db.Comentarios.Add(coment);
-                db.SaveChanges();
+                db.MaestroTaskStatus.Add(maestroTaskStatus);
 
-                var req = db.Tasks.Find(Convert.ToInt32(viewComentario.TaskID));
-                req.FechaEntrega = Convert.ToDateTime(viewComentario.FechaEntrega).Date;
+                var requerimiento = db.Tasks.Find(Convert.ToInt32(viewComentario.TaskID));
+                requerimiento.StatusIDActual = status == 0 ? 3 : 5;
+                requerimiento.FechaFinalizacion = DateTime.Now.Date;
                 db.SaveChanges();
 
                 bsuccess = true;
             }
 
-            if (File != null)
-            {
-                int TaskID = Convert.ToInt32(viewComentario.TaskID);
-                bool boolArchivos = help.CantidadArchivos(TaskID);
-                if (boolArchivos == true)
-                {
-                    return Json(new { success = false,cantidad = boolArchivos, Errors = getError.GetErrorsFromModelState(ModelState), JsonRequestBehavior.AllowGet });
-                }
-                SaveUploadedFile(File, Convert.ToInt32(viewComentario.TaskID));
-                bsuccess = true;
-            }
-            return Json(new { success = bsuccess, Errors = getError.GetErrorsFromModelState(ModelState), JsonRequestBehavior.AllowGet });
-        }
-        private void SaveUploadedFile(HttpPostedFileBase[] file, int id)
-        {
-            foreach (HttpPostedFileBase Archivo in file)
-            {
-                if (Archivo != null)
-                {
-                    if (Archivo != null && Archivo.ContentLength > 0)
-                    {
-                        var originalDirectory = new DirectoryInfo(string.Format("~/Images/" + id));
-                        string ruta = Path.Combine(Server.MapPath("~/Images/" + id));
-                        string ruta_virtual = "~/Images/" + id;
-                        string pathString = ruta;
-                        var fileName1 = Path.GetFileName(Archivo.FileName);
-                        bool isExists = System.IO.Directory.Exists(pathString);
-                        if (!isExists)
-                            System.IO.Directory.CreateDirectory(pathString);
-                        var path = string.Format("{0}\\{1}", pathString, Archivo.FileName);
-                        Files modelFiles = new Files
-                        {
-                            nombre = Archivo.FileName,
-                            ruta = pathString + "/" + Archivo.FileName,
-                            TasksID = id,
-                            ruta_virtual = ruta_virtual + "/" + Archivo.FileName
-                        };
-                        db.Files.Add(modelFiles);
-                        db.SaveChanges();
-                        Archivo.SaveAs(path);
-                    }
-                }
-            }
+            return Json(new { success = bsuccess,status= status, Errors = getError.GetErrorsFromModelState(ModelState), JsonRequestBehavior.AllowGet });
         }
         [HttpPost]
         public JsonResult getComentario(int id)
@@ -233,7 +137,7 @@ namespace MVCHelpDesk.Controllers
                                     where coment.TaskID == id
                                     select new
                                     {
-                                        IDComentario= coment.IDComentario,
+                                        IDComentario = coment.IDComentario,
                                         Nombre = perfil.Nombre == null ? "" : perfil.Nombre,
                                         Apellido = perfil.Apellido == null ? "" : perfil.Apellido,
                                         rutaImg = perfil.rutaImg.Remove(0, 1),
@@ -241,7 +145,7 @@ namespace MVCHelpDesk.Controllers
                                         Fecha = coment.Fecha
                                     }).ToList();
 
-            return Json(comentarioPerfil.OrderByDescending(o=>o.IDComentario), JsonRequestBehavior.AllowGet);
+            return Json(comentarioPerfil.OrderByDescending(o => o.IDComentario), JsonRequestBehavior.AllowGet);
         }
     }
 }

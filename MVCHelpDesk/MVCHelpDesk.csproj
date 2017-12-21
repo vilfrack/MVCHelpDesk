@@ -183,6 +183,7 @@
     <Compile Include="Controllers\PermisosController.cs" />
     <Compile Include="Controllers\PruebaController.cs" />
     <Compile Include="Controllers\RequerimientoController.cs" />
+    <Compile Include="Controllers\RevisionController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Global.asax.cs">
@@ -1042,6 +1043,8 @@
     <Content Include="Views\Asignar\Details.cshtml" />
     <Content Include="Views\Asignar\asignar.cshtml" />
     <Content Include="Views\DashBoard\DashBoardUsuario.cshtml" />
+    <Content Include="Views\Revision\Index.cshtml" />
+    <Content Include="Views\Revision\detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AllPermisos\" />
