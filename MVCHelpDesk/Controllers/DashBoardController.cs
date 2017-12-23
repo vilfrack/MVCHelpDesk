@@ -97,9 +97,10 @@ namespace MVCHelpDesk.Controllers
                 noAplicoOctubre = db.Tasks.Where(w => w.FechaEntrega >= InicioOctubre && w.FechaEntrega <= FinOctubre && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
                 noAplicoNoviembre = db.Tasks.Where(w => w.FechaEntrega >= InicioNoviembre && w.FechaEntrega <= FinNoviembre && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
                 noAplicoDiciembre = db.Tasks.Where(w => w.FechaEntrega >= InicioDiciembre && w.FechaEntrega <= FinDiciembre && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-            });
-            int aplico = db.Tasks.Where(w => w.StatusIDActual == 5 && w.FechaEntrega <= w.FechaFinalizacion).Count();
-            int noAplico = db.Tasks.Where(w => w.StatusIDActual == 5 && w.FechaEntrega >= w.FechaFinalizacion).Count();
+
+                aplico = db.Tasks.Where(w => w.StatusIDActual == 5 && w.FechaEntrega <= w.FechaFinalizacion).Count(),
+                noAplico = db.Tasks.Where(w => w.StatusIDActual == 5 && w.FechaEntrega >= w.FechaFinalizacion).Count()
+        });
 
             return View(viewDashBoard.ToList());
         }
