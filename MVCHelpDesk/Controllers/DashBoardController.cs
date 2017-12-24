@@ -1,4 +1,5 @@
-﻿using MVCHelpDesk.Models;
+﻿using MVCHelpDesk.Helper;
+using MVCHelpDesk.Models;
 using MVCHelpDesk.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,9 @@ namespace MVCHelpDesk.Controllers
     [Authorize]
     public class DashBoardController : Controller
     {
+        private Helpers helper = new Helpers();
+        private UserIdentity userIdentity = new UserIdentity();
+
         public List<MaestroTaskStatus> ListCantidadTask { get; set; }
         public Helper.FechasDashBoard fechasDashBoard = new Helper.FechasDashBoard();
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -68,39 +72,37 @@ namespace MVCHelpDesk.Controllers
 
                     //aplico = db.Tasks.Where(w => w.StatusIDActual == 5 && w.FechaEntrega <= w.FechaFinalizacion).Count(),
                     //noAplico = db.Tasks.Where(w => w.StatusIDActual == 5 && w.FechaEntrega >= w.FechaFinalizacion).Count(),
-            });
+                    aplicoEnero = db.Tasks.Where(w => w.FechaEntrega >= InicioEnero && w.FechaEntrega <= FinEnero && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    aplicoFebrero = db.Tasks.Where(w => w.FechaEntrega >= InicioFebrero && w.FechaEntrega <= FinFebrero && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    aplicoMarzo = db.Tasks.Where(w => w.FechaEntrega >= InicioMarzo && w.FechaEntrega <= FinMarzo && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    aplicoAbril = db.Tasks.Where(w => w.FechaEntrega >= InicioAbril && w.FechaEntrega <= FinAbril && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    aplicoMayo = db.Tasks.Where(w => w.FechaEntrega >= InicioMayo && w.FechaEntrega <= FinMayo && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    aplicoJunio = db.Tasks.Where(w => w.FechaEntrega >= InicioJunio && w.FechaEntrega <= FinJunio && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    aplicoJulio = db.Tasks.Where(w => w.FechaEntrega >= InicioJulio && w.FechaEntrega <= FinJulio && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    aplicoAgosto = db.Tasks.Where(w => w.FechaEntrega >= InicioAgosto && w.FechaEntrega <= FinAgosto && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    aplicoSeptiembre = db.Tasks.Where(w => w.FechaEntrega >= InicioSeptiembre && w.FechaEntrega <= FinSeptiembre && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    aplicoOctubre = db.Tasks.Where(w => w.FechaEntrega >= InicioOctubre && w.FechaEntrega <= FinOctubre && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    aplicoNoviembre = db.Tasks.Where(w => w.FechaEntrega >= InicioNoviembre && w.FechaEntrega <= FinNoviembre && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    aplicoDiciembre = db.Tasks.Where(w => w.FechaEntrega >= InicioDiciembre && w.FechaEntrega <= FinDiciembre && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+
+                    noAplicoEnero = db.Tasks.Where(w => w.FechaEntrega >= InicioEnero && w.FechaEntrega <= FinEnero && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    noAplicoFebrero = db.Tasks.Where(w => w.FechaEntrega >= InicioFebrero && w.FechaEntrega <= FinFebrero && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    noAplicoMarzo = db.Tasks.Where(w => w.FechaEntrega >= InicioMarzo && w.FechaEntrega <= FinMarzo && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    noAplicoAbril = db.Tasks.Where(w => w.FechaEntrega >= InicioAbril && w.FechaEntrega <= FinAbril && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    noAplicoMayo = db.Tasks.Where(w => w.FechaEntrega >= InicioMayo && w.FechaEntrega <= FinMayo && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    noAplicoJunio = db.Tasks.Where(w => w.FechaEntrega >= InicioJunio && w.FechaEntrega <= FinJunio && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    noAplicoJulio = db.Tasks.Where(w => w.FechaEntrega >= InicioJulio && w.FechaEntrega <= FinJulio && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    noAplicoAgosto = db.Tasks.Where(w => w.FechaEntrega >= InicioAgosto && w.FechaEntrega <= FinAgosto && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    noAplicoSeptiembre = db.Tasks.Where(w => w.FechaEntrega >= InicioSeptiembre && w.FechaEntrega <= FinSeptiembre && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    noAplicoOctubre = db.Tasks.Where(w => w.FechaEntrega >= InicioOctubre && w.FechaEntrega <= FinOctubre && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    noAplicoNoviembre = db.Tasks.Where(w => w.FechaEntrega >= InicioNoviembre && w.FechaEntrega <= FinNoviembre && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    noAplicoDiciembre = db.Tasks.Where(w => w.FechaEntrega >= InicioDiciembre && w.FechaEntrega <= FinDiciembre && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+
+                    aplico = db.Tasks.Where(w => w.StatusIDActual == 5 && w.FechaEntrega <= w.FechaFinalizacion).Count(),
+                    noAplico = db.Tasks.Where(w => w.StatusIDActual == 5 && w.FechaEntrega >= w.FechaFinalizacion).Count()
+                });
             }
-            viewDashBoard.Add(new AplicoMensual
-            {
-                aplicoEnero = db.Tasks.Where(w => w.FechaEntrega >= InicioEnero && w.FechaEntrega <= FinEnero && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                aplicoFebrero = db.Tasks.Where(w => w.FechaEntrega >= InicioFebrero && w.FechaEntrega <= FinFebrero && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                aplicoMarzo = db.Tasks.Where(w => w.FechaEntrega >= InicioMarzo && w.FechaEntrega <= FinMarzo && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                aplicoAbril = db.Tasks.Where(w => w.FechaEntrega >= InicioAbril && w.FechaEntrega <= FinAbril && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                aplicoMayo = db.Tasks.Where(w => w.FechaEntrega >= InicioMayo && w.FechaEntrega <= FinMayo && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                aplicoJunio = db.Tasks.Where(w => w.FechaEntrega >= InicioJunio && w.FechaEntrega <= FinJunio && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                aplicoJulio = db.Tasks.Where(w => w.FechaEntrega >= InicioJulio && w.FechaEntrega <= FinJulio && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                aplicoAgosto = db.Tasks.Where(w => w.FechaEntrega >= InicioAgosto && w.FechaEntrega <= FinAgosto && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                aplicoSeptiembre = db.Tasks.Where(w => w.FechaEntrega >= InicioSeptiembre && w.FechaEntrega <= FinSeptiembre && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                aplicoOctubre = db.Tasks.Where(w => w.FechaEntrega >= InicioOctubre && w.FechaEntrega <= FinOctubre && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                aplicoNoviembre = db.Tasks.Where(w => w.FechaEntrega >= InicioNoviembre && w.FechaEntrega <= FinNoviembre && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                aplicoDiciembre = db.Tasks.Where(w => w.FechaEntrega >= InicioDiciembre && w.FechaEntrega <= FinDiciembre && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
 
-                noAplicoEnero = db.Tasks.Where(w => w.FechaEntrega >= InicioEnero && w.FechaEntrega <= FinEnero && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                noAplicoFebrero = db.Tasks.Where(w => w.FechaEntrega >= InicioFebrero && w.FechaEntrega <= FinFebrero && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                noAplicoMarzo = db.Tasks.Where(w => w.FechaEntrega >= InicioMarzo && w.FechaEntrega <= FinMarzo && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                noAplicoAbril = db.Tasks.Where(w => w.FechaEntrega >= InicioAbril && w.FechaEntrega <= FinAbril && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                noAplicoMayo = db.Tasks.Where(w => w.FechaEntrega >= InicioMayo && w.FechaEntrega <= FinMayo && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                noAplicoJunio = db.Tasks.Where(w => w.FechaEntrega >= InicioJunio && w.FechaEntrega <= FinJunio && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                noAplicoJulio = db.Tasks.Where(w => w.FechaEntrega >= InicioJulio && w.FechaEntrega <= FinJulio && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                noAplicoAgosto = db.Tasks.Where(w => w.FechaEntrega >= InicioAgosto && w.FechaEntrega <= FinAgosto && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                noAplicoSeptiembre = db.Tasks.Where(w => w.FechaEntrega >= InicioSeptiembre && w.FechaEntrega <= FinSeptiembre && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                noAplicoOctubre = db.Tasks.Where(w => w.FechaEntrega >= InicioOctubre && w.FechaEntrega <= FinOctubre && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                noAplicoNoviembre = db.Tasks.Where(w => w.FechaEntrega >= InicioNoviembre && w.FechaEntrega <= FinNoviembre && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-                noAplicoDiciembre = db.Tasks.Where(w => w.FechaEntrega >= InicioDiciembre && w.FechaEntrega <= FinDiciembre && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
-
-                aplico = db.Tasks.Where(w => w.StatusIDActual == 5 && w.FechaEntrega <= w.FechaFinalizacion).Count(),
-                noAplico = db.Tasks.Where(w => w.StatusIDActual == 5 && w.FechaEntrega >= w.FechaFinalizacion).Count()
-        });
 
             return View(viewDashBoard.ToList());
         }
@@ -134,10 +136,10 @@ namespace MVCHelpDesk.Controllers
 
             DateTime FInicio = Convert.ToDateTime(FechaInicio).Date;
             DateTime FFin = Convert.ToDateTime(fechaFinal).Date;
-            List<ViewDashboard> viewDashBoard = new List<ViewDashboard>();
+            List<AplicoMensual> viewDashBoard = new List<AplicoMensual>();
             foreach (var item in db.Status.ToList())
             {
-                viewDashBoard.Add(new ViewDashboard
+                viewDashBoard.Add(new AplicoMensual
                 {
                     statusNombre = item.nombre,
                     enero = db.MaestroTaskStatus.Where(w => w.Fecha >= InicioEnero && w.Fecha <= FinEnero && w.StatusID == item.StatusID).Count(),
@@ -157,12 +159,58 @@ namespace MVCHelpDesk.Controllers
                     TotalDesarrollo = db.MaestroTaskStatus.Where(w => w.StatusID == 2 && w.Fecha >= FInicio && w.Fecha <= FFin).Count(),
                     TotalRealizado = db.MaestroTaskStatus.Where(w => w.StatusID == 3 && w.Fecha >= FInicio && w.Fecha <= FFin).Count(),
                     TotalRechazado = db.MaestroTaskStatus.Where(w => w.StatusID == 4 && w.Fecha >= FInicio && w.Fecha <= FFin).Count(),
+
+                    aplicoEnero = db.Tasks.Where(w => w.FechaEntrega >= InicioEnero && w.FechaEntrega <= FinEnero && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    aplicoFebrero = db.Tasks.Where(w => w.FechaEntrega >= InicioFebrero && w.FechaEntrega <= FinFebrero && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    aplicoMarzo = db.Tasks.Where(w => w.FechaEntrega >= InicioMarzo && w.FechaEntrega <= FinMarzo && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    aplicoAbril = db.Tasks.Where(w => w.FechaEntrega >= InicioAbril && w.FechaEntrega <= FinAbril && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    aplicoMayo = db.Tasks.Where(w => w.FechaEntrega >= InicioMayo && w.FechaEntrega <= FinMayo && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    aplicoJunio = db.Tasks.Where(w => w.FechaEntrega >= InicioJunio && w.FechaEntrega <= FinJunio && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    aplicoJulio = db.Tasks.Where(w => w.FechaEntrega >= InicioJulio && w.FechaEntrega <= FinJulio && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    aplicoAgosto = db.Tasks.Where(w => w.FechaEntrega >= InicioAgosto && w.FechaEntrega <= FinAgosto && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    aplicoSeptiembre = db.Tasks.Where(w => w.FechaEntrega >= InicioSeptiembre && w.FechaEntrega <= FinSeptiembre && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    aplicoOctubre = db.Tasks.Where(w => w.FechaEntrega >= InicioOctubre && w.FechaEntrega <= FinOctubre && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    aplicoNoviembre = db.Tasks.Where(w => w.FechaEntrega >= InicioNoviembre && w.FechaEntrega <= FinNoviembre && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    aplicoDiciembre = db.Tasks.Where(w => w.FechaEntrega >= InicioDiciembre && w.FechaEntrega <= FinDiciembre && w.FechaEntrega <= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+
+                    noAplicoEnero = db.Tasks.Where(w => w.FechaEntrega >= InicioEnero && w.FechaEntrega <= FinEnero && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    noAplicoFebrero = db.Tasks.Where(w => w.FechaEntrega >= InicioFebrero && w.FechaEntrega <= FinFebrero && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    noAplicoMarzo = db.Tasks.Where(w => w.FechaEntrega >= InicioMarzo && w.FechaEntrega <= FinMarzo && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    noAplicoAbril = db.Tasks.Where(w => w.FechaEntrega >= InicioAbril && w.FechaEntrega <= FinAbril && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    noAplicoMayo = db.Tasks.Where(w => w.FechaEntrega >= InicioMayo && w.FechaEntrega <= FinMayo && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    noAplicoJunio = db.Tasks.Where(w => w.FechaEntrega >= InicioJunio && w.FechaEntrega <= FinJunio && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    noAplicoJulio = db.Tasks.Where(w => w.FechaEntrega >= InicioJulio && w.FechaEntrega <= FinJulio && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    noAplicoAgosto = db.Tasks.Where(w => w.FechaEntrega >= InicioAgosto && w.FechaEntrega <= FinAgosto && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    noAplicoSeptiembre = db.Tasks.Where(w => w.FechaEntrega >= InicioSeptiembre && w.FechaEntrega <= FinSeptiembre && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    noAplicoOctubre = db.Tasks.Where(w => w.FechaEntrega >= InicioOctubre && w.FechaEntrega <= FinOctubre && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    noAplicoNoviembre = db.Tasks.Where(w => w.FechaEntrega >= InicioNoviembre && w.FechaEntrega <= FinNoviembre && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+                    noAplicoDiciembre = db.Tasks.Where(w => w.FechaEntrega >= InicioDiciembre && w.FechaEntrega <= FinDiciembre && w.FechaEntrega >= w.FechaFinalizacion && w.StatusIDActual == 5).Count(),
+
+                    aplico = db.Tasks.Where(w => w.StatusIDActual == 5 && w.FechaEntrega <= w.FechaFinalizacion && w.FechaEntrega >= FInicio && w.FechaEntrega <= FFin).Count(),
+                    noAplico = db.Tasks.Where(w => w.StatusIDActual == 5 && w.FechaEntrega >= w.FechaFinalizacion && w.FechaEntrega >= FInicio && w.FechaEntrega <= FFin).Count()
                 });
             }
             return View(viewDashBoard.ToList());
         }
 
         public ActionResult DashBoardUsuario() {
+            var UserID = userIdentity.GetIdUser();
+            var idDepartamento = helper.GetDepartByIDUser(UserID);
+            var perfil = helper.AllUserByDepart(idDepartamento);
+
+            ViewBag.Perfil = new SelectList(perfil, "UsuarioID", "Nombre");
+
+            return View();
+        }
+        [HttpPost]
+        public ActionResult DashBoardUsuario(string FechaInicio, string fechaFinal,string DropPerfiles)
+        {
+            var UserID = userIdentity.GetIdUser();
+            var idDepartamento = helper.GetDepartByIDUser(UserID);
+            var perfil = helper.AllUserByDepart(idDepartamento);
+
+            ViewBag.Perfil = new SelectList(perfil, "UsuarioID", "Nombre");
+
             return View();
         }
         /*PRUEBA*/

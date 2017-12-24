@@ -35,6 +35,10 @@ namespace MVCHelpDesk.Helper
             }
             return false;
         }
+        public List<Perfiles> AllUserByDepart(int idDepartamento) {
+            var perfil = db.Perfiles.Where(w=>w.IDDepartamento == idDepartamento).ToList();
+            return perfil;
+        }
 
     }
     public class FechasDashBoard
