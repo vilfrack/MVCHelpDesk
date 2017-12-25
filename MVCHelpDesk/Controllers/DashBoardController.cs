@@ -199,8 +199,58 @@ namespace MVCHelpDesk.Controllers
             var perfil = helper.AllUserByDepart(idDepartamento);
 
             ViewBag.Perfil = new SelectList(perfil, "UsuarioID", "Nombre");
+            List<AplicoMensual> viewDashBoard = new List<AplicoMensual>();
+            foreach (var item in db.Status.ToList())
+            {
+                viewDashBoard.Add(new AplicoMensual
+                {
+                    enero = 0,
+                    febrero = 0,
+                    marzo = 0,
+                    abril = 0,
+                    mayo = 0,
+                    junio = 0,
+                    julio = 0,
+                    agosto = 0,
+                    septiembre = 0,
+                    octubre = 0,
+                    noviembre = 0,
+                    diciembre = 0,
+                    TotalAsignado = 0,
+                    TotalDesarrollo = 0,
+                    TotalRealizado = 0,
+                    TotalRechazado = 0,
+                    aplicoEnero = 0,
+                    aplicoFebrero = 0,
+                    aplicoMarzo = 0,
+                    aplicoAbril = 0,
+                    aplicoMayo = 0,
+                    aplicoJunio = 0,
+                    aplicoJulio = 0,
+                    aplicoAgosto = 0,
+                    aplicoSeptiembre = 0,
+                    aplicoOctubre = 0,
+                    aplicoNoviembre = 0,
+                    aplicoDiciembre = 0,
+                    noAplicoEnero = 0,
+                    noAplicoFebrero = 0,
+                    noAplicoMarzo = 0,
+                    noAplicoAbril = 0,
+                    noAplicoMayo = 0,
+                    noAplicoJunio = 0,
+                    noAplicoJulio = 0,
+                    noAplicoAgosto = 0,
+                    noAplicoSeptiembre = 0,
+                    noAplicoOctubre = 0,
+                    noAplicoNoviembre = 0,
+                    noAplicoDiciembre = 0,
+                    aplico = -1,
+                    noAplico = 0,
+                    statusNombre = item.nombre,
+                });
+            }
 
-            return View();
+            return View(viewDashBoard.ToList());
         }
         [HttpPost]
         public ActionResult DashBoardUsuario(string FechaInicio, string fechaFinal,string DropPerfiles)
@@ -208,10 +258,280 @@ namespace MVCHelpDesk.Controllers
             var UserID = userIdentity.GetIdUser();
             var idDepartamento = helper.GetDepartByIDUser(UserID);
             var perfil = helper.AllUserByDepart(idDepartamento);
-
             ViewBag.Perfil = new SelectList(perfil, "UsuarioID", "Nombre");
 
-            return View();
+            DateTime InicioEnero = fechasDashBoard.InicioEnero();
+            DateTime FinEnero = fechasDashBoard.FinEnero();
+            DateTime InicioFebrero = fechasDashBoard.InicioFebrero();
+            DateTime FinFebrero = fechasDashBoard.FinFebrero();
+            DateTime InicioMarzo = fechasDashBoard.InicioMarzo();
+            DateTime FinMarzo = fechasDashBoard.FinMarzo();
+            DateTime InicioAbril = fechasDashBoard.InicioAbril();
+            DateTime FinAbril = fechasDashBoard.FinAbril();
+            DateTime InicioMayo = fechasDashBoard.InicioMayo();
+            DateTime FinMayo = fechasDashBoard.FinMayo();
+            DateTime InicioJunio = fechasDashBoard.FinJunio();
+            DateTime FinJunio = fechasDashBoard.FinJunio();
+            DateTime InicioJulio = fechasDashBoard.InicioJulio();
+            DateTime FinJulio = fechasDashBoard.FinJulio();
+            DateTime InicioAgosto = fechasDashBoard.InicioAgosto();
+            DateTime FinAgosto = fechasDashBoard.FinAgosto();
+            DateTime InicioSeptiembre = fechasDashBoard.InicioSeptiembre();
+            DateTime FinSeptiembre = fechasDashBoard.FinSeptiembre();
+            DateTime InicioOctubre = fechasDashBoard.InicioOctubre();
+            DateTime FinOctubre = fechasDashBoard.FinOctubre();
+            DateTime InicioNoviembre = fechasDashBoard.InicioNoviembre();
+            DateTime FinNoviembre = fechasDashBoard.FinNoviembre();
+            DateTime InicioDiciembre = fechasDashBoard.InicioDiciembre();
+            DateTime FinDiciembre = fechasDashBoard.FinDiciembre();
+
+            DateTime FInicio = Convert.ToDateTime(FechaInicio).Date;
+            DateTime FFin = Convert.ToDateTime(fechaFinal).Date;
+            List<AplicoMensual> viewDashBoard = new List<AplicoMensual>();
+
+            var query = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w=>w.task.AsignadoID== DropPerfiles);//AHORA SIMPLEMENTE LLAMAMOS LOS NOMBRES QUE CREAMOS EN LA LINEA ANTERIOR
+
+
+            //var id = 1;
+            //var query = database.Posts    // your starting point - table in the "from" statement
+            //   .Join(database.Post_Metas, // the source table of the inner join
+            //      post => post.ID,        // Select the primary key (the first part of the "on" clause in an sql "join" statement)
+            //      meta => meta.Post_ID,   // Select the foreign key (the second part of the "on" clause)
+            //      (post, meta) => new { Post = post, Meta = meta }) // selection
+            //   .Where(postAndMeta => postAndMeta.Post.ID == id);
+
+            foreach (var item in db.Status.ToList())
+            {
+                viewDashBoard.Add(new AplicoMensual
+                {
+                    statusNombre = item.nombre,
+                    enero = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioEnero && w.maestroTask.Fecha <= FinEnero && w.maestroTask.StatusID == item.StatusID && w.task.AsignadoID== DropPerfiles).Count(),
+                    febrero = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioFebrero && w.maestroTask.Fecha <= FinFebrero && w.maestroTask.StatusID == item.StatusID && w.task.AsignadoID == DropPerfiles).Count(),
+                    marzo = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioMarzo && w.maestroTask.Fecha <= FinMarzo && w.maestroTask.StatusID == item.StatusID && w.task.AsignadoID == DropPerfiles).Count(),
+                    abril = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioAbril && w.maestroTask.Fecha <= FinAbril && w.maestroTask.StatusID == item.StatusID && w.task.AsignadoID == DropPerfiles).Count(),
+                    mayo = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioMayo && w.maestroTask.Fecha <= FinMayo && w.maestroTask.StatusID == item.StatusID && w.task.AsignadoID == DropPerfiles).Count(),
+                    junio = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioJunio && w.maestroTask.Fecha <= FinJunio && w.maestroTask.StatusID == item.StatusID && w.task.AsignadoID == DropPerfiles).Count(),
+                    julio = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioJulio && w.maestroTask.Fecha <= FinJulio && w.maestroTask.StatusID == item.StatusID && w.task.AsignadoID == DropPerfiles).Count(),
+                    agosto = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioAgosto && w.maestroTask.Fecha <= FinAgosto && w.maestroTask.StatusID == item.StatusID && w.task.AsignadoID == DropPerfiles).Count(),
+                    septiembre = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioSeptiembre && w.maestroTask.Fecha <= FinSeptiembre && w.maestroTask.StatusID == item.StatusID && w.task.AsignadoID == DropPerfiles).Count(),
+                    octubre = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioOctubre && w.maestroTask.Fecha <= FinOctubre && w.maestroTask.StatusID == item.StatusID && w.task.AsignadoID == DropPerfiles).Count(),
+                    noviembre = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioNoviembre && w.maestroTask.Fecha <= FinNoviembre && w.maestroTask.StatusID == item.StatusID && w.task.AsignadoID == DropPerfiles).Count(),
+                    diciembre = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioDiciembre && w.maestroTask.Fecha <= FinDiciembre && w.maestroTask.StatusID == item.StatusID && w.task.AsignadoID == DropPerfiles).Count(),
+
+                    TotalAsignado = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioEnero && w.maestroTask.Fecha <= FinDiciembre && w.maestroTask.StatusID == 1 && w.task.AsignadoID == DropPerfiles).Count(),
+                    TotalDesarrollo = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioEnero && w.maestroTask.Fecha <= FinDiciembre && w.maestroTask.StatusID == 2 && w.task.AsignadoID == DropPerfiles).Count(),
+                    TotalRealizado = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioEnero && w.maestroTask.Fecha <= FinDiciembre && w.maestroTask.StatusID == 3 && w.task.AsignadoID == DropPerfiles).Count(),
+                    TotalRechazado = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.maestroTask.Fecha >= InicioEnero && w.maestroTask.Fecha <= FinDiciembre && w.maestroTask.StatusID == 4 && w.task.AsignadoID == DropPerfiles).Count(),
+
+                    aplicoEnero = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.task.FechaEntrega >= InicioEnero && w.task.FechaEntrega <= FinEnero && w.task.FechaEntrega <= w.task.FechaFinalizacion && w.task.StatusIDActual == 5 && w.task.AsignadoID==DropPerfiles).Count(),
+                    aplicoFebrero = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.task.FechaEntrega >= InicioFebrero && w.task.FechaEntrega <= FinFebrero && w.task.FechaEntrega <= w.task.FechaFinalizacion && w.task.StatusIDActual == 5 && w.task.AsignadoID == DropPerfiles).Count(),
+                    aplicoMarzo = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.task.FechaEntrega >= InicioMarzo && w.task.FechaEntrega <= FinMarzo && w.task.FechaEntrega <= w.task.FechaFinalizacion && w.task.StatusIDActual == 5 && w.task.AsignadoID == DropPerfiles).Count(),
+                    aplicoAbril = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.task.FechaEntrega >= InicioAbril && w.task.FechaEntrega <= FinAbril && w.task.FechaEntrega <= w.task.FechaFinalizacion && w.task.StatusIDActual == 5 && w.task.AsignadoID == DropPerfiles).Count(),
+                    aplicoMayo = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.task.FechaEntrega >= InicioMayo && w.task.FechaEntrega <= FinMayo && w.task.FechaEntrega <= w.task.FechaFinalizacion && w.task.StatusIDActual == 5 && w.task.AsignadoID == DropPerfiles).Count(),
+                    aplicoJunio = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.task.FechaEntrega >= InicioJunio && w.task.FechaEntrega <= FinJunio && w.task.FechaEntrega <= w.task.FechaFinalizacion && w.task.StatusIDActual == 5 && w.task.AsignadoID == DropPerfiles).Count(),
+                    aplicoJulio = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.task.FechaEntrega >= InicioJulio && w.task.FechaEntrega <= FinJulio && w.task.FechaEntrega <= w.task.FechaFinalizacion && w.task.StatusIDActual == 5 && w.task.AsignadoID == DropPerfiles).Count(),
+                    aplicoAgosto = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.task.FechaEntrega >= InicioAgosto && w.task.FechaEntrega <= FinAgosto && w.task.FechaEntrega <= w.task.FechaFinalizacion && w.task.StatusIDActual == 5 && w.task.AsignadoID == DropPerfiles).Count(),
+                    aplicoSeptiembre = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.task.FechaEntrega >= InicioSeptiembre && w.task.FechaEntrega <= FinSeptiembre && w.task.FechaEntrega <= w.task.FechaFinalizacion && w.task.StatusIDActual == 5 && w.task.AsignadoID == DropPerfiles).Count(),
+                    aplicoOctubre = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.task.FechaEntrega >= InicioOctubre && w.task.FechaEntrega <= FinOctubre && w.task.FechaEntrega <= w.task.FechaFinalizacion && w.task.StatusIDActual == 5 && w.task.AsignadoID == DropPerfiles).Count(),
+                    aplicoNoviembre = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.task.FechaEntrega >= InicioNoviembre && w.task.FechaEntrega <= FinNoviembre && w.task.FechaEntrega <= w.task.FechaFinalizacion && w.task.StatusIDActual == 5 && w.task.AsignadoID == DropPerfiles).Count(),
+                    aplicoDiciembre = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.task.FechaEntrega >= InicioDiciembre && w.task.FechaEntrega <= FinDiciembre && w.task.FechaEntrega <= w.task.FechaFinalizacion && w.task.StatusIDActual == 5 && w.task.AsignadoID == DropPerfiles).Count(),
+
+                    noAplicoEnero = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.task.FechaEntrega >= InicioEnero && w.task.FechaEntrega <= FinEnero && w.task.FechaEntrega >= w.task.FechaFinalizacion && w.task.StatusIDActual == 5 && w.task.AsignadoID==DropPerfiles).Count(),
+                    noAplicoFebrero = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.task.FechaEntrega >= InicioFebrero && w.task.FechaEntrega <= FinFebrero && w.task.FechaEntrega >= w.task.FechaFinalizacion && w.task.StatusIDActual == 5 && w.task.AsignadoID == DropPerfiles).Count(),
+                    noAplicoMarzo = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.task.FechaEntrega >= InicioMarzo && w.task.FechaEntrega <= FinMarzo && w.task.FechaEntrega >= w.task.FechaFinalizacion && w.task.StatusIDActual == 5 && w.task.AsignadoID == DropPerfiles).Count(),
+                    noAplicoAbril = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.task.FechaEntrega >= InicioAbril && w.task.FechaEntrega <= FinAbril && w.task.FechaEntrega >= w.task.FechaFinalizacion && w.task.StatusIDActual == 5 && w.task.AsignadoID == DropPerfiles).Count(),
+                    noAplicoMayo = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.task.FechaEntrega >= InicioMayo && w.task.FechaEntrega <= FinMayo && w.task.FechaEntrega >= w.task.FechaFinalizacion && w.task.StatusIDActual == 5 && w.task.AsignadoID == DropPerfiles).Count(),
+                    noAplicoJunio = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.task.FechaEntrega >= InicioJunio && w.task.FechaEntrega <= FinJunio && w.task.FechaEntrega >= w.task.FechaFinalizacion && w.task.StatusIDActual == 5 && w.task.AsignadoID == DropPerfiles).Count(),
+                    noAplicoJulio = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.task.FechaEntrega >= InicioJulio && w.task.FechaEntrega <= FinJulio && w.task.FechaEntrega >= w.task.FechaFinalizacion && w.task.StatusIDActual == 5 && w.task.AsignadoID == DropPerfiles).Count(),
+                    noAplicoAgosto = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.task.FechaEntrega >= InicioAgosto && w.task.FechaEntrega <= FinAgosto && w.task.FechaEntrega >= w.task.FechaFinalizacion && w.task.StatusIDActual == 5 && w.task.AsignadoID == DropPerfiles).Count(),
+                    noAplicoSeptiembre = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.task.FechaEntrega >= InicioSeptiembre && w.task.FechaEntrega <= FinSeptiembre && w.task.FechaEntrega >= w.task.FechaFinalizacion && w.task.StatusIDActual == 5 && w.task.AsignadoID == DropPerfiles).Count(),
+                    noAplicoOctubre = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.task.FechaEntrega >= InicioOctubre && w.task.FechaEntrega <= FinOctubre && w.task.FechaEntrega >= w.task.FechaFinalizacion && w.task.StatusIDActual == 5 && w.task.AsignadoID == DropPerfiles).Count(),
+                    noAplicoNoviembre = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.task.FechaEntrega >= InicioNoviembre && w.task.FechaEntrega <= FinNoviembre && w.task.FechaEntrega >= w.task.FechaFinalizacion && w.task.StatusIDActual == 5 && w.task.AsignadoID == DropPerfiles).Count(),
+                    noAplicoDiciembre = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.task.FechaEntrega >= InicioDiciembre && w.task.FechaEntrega <= FinDiciembre && w.task.FechaEntrega >= w.task.FechaFinalizacion && w.task.StatusIDActual == 5 && w.task.AsignadoID == DropPerfiles).Count(),
+
+                    aplico = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.task.StatusIDActual == 5 && w.task.FechaEntrega <= w.task.FechaFinalizacion && w.task.FechaEntrega >= FInicio && w.task.FechaEntrega <= FFin && w.task.AsignadoID == DropPerfiles).Count(),
+                    noAplico = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+                                                  .Where(w => w.task.StatusIDActual == 5 && w.task.FechaEntrega >= w.task.FechaFinalizacion && w.task.FechaEntrega >= FInicio && w.task.FechaEntrega <= FFin && w.task.AsignadoID == DropPerfiles).Count()
+                });
+            }
+
+
+
+
+
+
+            return View(viewDashBoard);
         }
         /*PRUEBA*/
         public JsonResult getCantidadTask(string fechaInicio, string fechaFinal)
