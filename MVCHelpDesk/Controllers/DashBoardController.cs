@@ -284,16 +284,15 @@ namespace MVCHelpDesk.Controllers
             DateTime FinNoviembre = fechasDashBoard.FinNoviembre();
             DateTime InicioDiciembre = fechasDashBoard.InicioDiciembre();
             DateTime FinDiciembre = fechasDashBoard.FinDiciembre();
-
-            DateTime FInicio = Convert.ToDateTime(FechaInicio).Date;
-            DateTime FFin = Convert.ToDateTime(fechaFinal).Date;
+            DateTime FInicio = FechaInicio=="" ? InicioEnero: Convert.ToDateTime(FechaInicio).Date;
+            DateTime FFin = fechaFinal == "" ? FinDiciembre : Convert.ToDateTime(fechaFinal).Date;
             List<AplicoMensual> viewDashBoard = new List<AplicoMensual>();
 
-            var query = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
-                                                  maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
-                                                  taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
-                                                  (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
-                                                  .Where(w=>w.task.AsignadoID== DropPerfiles);//AHORA SIMPLEMENTE LLAMAMOS LOS NOMBRES QUE CREAMOS EN LA LINEA ANTERIOR
+            //var query = db.MaestroTaskStatus.Join(db.Tasks,//SE SELECCIONA LA TABLA A LA CUAL SE APLICARA EL JOIN
+            //                                      maestroIDTask => maestroIDTask.TaskID,//SE SELECCIONA LAS LLAVES
+            //                                      taskID => taskID.TaskID,//SE SELECCIONA LAS LLAVES
+            //                                      (maestroIDTask, taskID) => new { maestroTask = maestroIDTask, task = taskID })//LOS NOMBRE QUE TENDRAN NUESTRAS TABLAS
+            //                                      .Where(w=>w.task.AsignadoID== DropPerfiles);//AHORA SIMPLEMENTE LLAMAMOS LOS NOMBRES QUE CREAMOS EN LA LINEA ANTERIOR
 
 
             //var id = 1;
@@ -528,6 +527,22 @@ namespace MVCHelpDesk.Controllers
 
 
 
+            var Requerimientos = (from maestro in db.MaestroTaskStatus
+                                  join status in db.Status on maestro.StatusID equals status.StatusID
+                                  join task in db.Tasks on maestro.TaskID equals task.TaskID
+                                  join per in db.Perfiles on task.AsignadoID equals per.UsuarioID
+                                  where task.AsignadoID == DropPerfiles
+                                  select new
+                                  {
+                                      TaskID = maestro.TaskID,
+                                      Nombre = status.nombre
+                                  }).ToList();
+
+            //FUNCIONA INVESTIGAR
+            var query = Requerimientos.GroupBy(x => x)
+              .Where(g => g.Count() > 1)
+              .Select(y => new { Element = y.Key, Counter = y.Count() })
+              .ToList();
 
 
 

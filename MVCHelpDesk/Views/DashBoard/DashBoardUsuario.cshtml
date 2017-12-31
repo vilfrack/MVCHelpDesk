@@ -50,7 +50,7 @@
         {
             <div class="row">
                 <div class="col-sm-6">
-                    <h4>Requerimientos Anuales</h4>
+                    <h4>Cantidad de requerimientos anuales</h4>
                     <div id="DivCantidadTask">
                         @*@Html.Action("CantidadTask", "DashBoard")*@
                         <div class="col-md-12">
@@ -59,21 +59,9 @@
                     </div>
 
                 </div>
-                <div class="col-sm-6">
-                    <h4>Requerimientos que cumplieron durante el año</h4>
-                    <div>
-                        <div class="col-md-12">
-                            <canvas id="AplicoTask" width="800" height="600"></canvas>
-                        </div>
-                        @*@Html.Action("DesarrolladorTask", "DashBoard")*@
-                    </div>
 
-                </div>
-
-            </div>
-            <div class="row">
                 <div class="col-sm-6">
-                    <h4>Cantidad de Requerimientos</h4>
+                    <h4>Total de requerimientos anuales</h4>
                     <div>
 
                         <div class="col-md-12">
@@ -82,8 +70,20 @@
                         @*@Html.Action("TaskMensuales", "DashBoard")*@
                     </div>
                 </div>
+            </div>
+            <div class="row">
                 <div class="col-sm-6">
-                    <h4>Requerimientos que cumplieron en General</h4>
+                    <h4>Requerimientos que (aplicaron/no aplicaron) durante el año</h4>
+                    <div>
+                        <div class="col-md-12">
+                            <canvas id="AplicoTask" width="800" height="600"></canvas>
+                        </div>
+                        @*@Html.Action("DesarrolladorTask", "DashBoard")*@
+                    </div>
+
+                </div>
+                <div class="col-sm-6">
+                    <h4>Total de Requerimientos que (aplicaron/no aplicaron) durante el año</h4>
                     <div>
                         <div class="col-md-12">
                             <canvas id="aplicoTaskGeneral" width="256" height="175"></canvas>
@@ -110,7 +110,6 @@
     }
 
     if (@Model.Select(s=>s.aplico).FirstOrDefault() != -1) {
-        alert('sd');
         CantidadTask();
         TaskMensuales();
         AplicoTask();
