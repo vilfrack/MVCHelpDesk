@@ -538,13 +538,13 @@ namespace MVCHelpDesk.Controllers
                                       Nombre = status.nombre
                                   }).ToList();
 
-            //FUNCIONA INVESTIGAR
-            var query = Requerimientos.GroupBy(x => x)
-              .Where(g => g.Count() > 1)
-              .Select(y => new { Element = y.Key, Counter = y.Count() })
-              .ToList();
+            //FUNCIONA INVESTIGAR https://stackoverflow.com/questions/18547354/c-sharp-linq-find-duplicates-in-list
+            var repetidos = Requerimientos.GroupBy(x => x)
+                                      .Where(w => w.Count() > 1)
+                                      .Select(s => new { Elemento = s.Key, Cantidad = s.Count() })
+                                      .ToList();
 
-
+            ViewBag.repetidos = repetidos;
 
             return View(viewDashBoard);
         }
