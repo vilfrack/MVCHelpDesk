@@ -4,21 +4,15 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     SelectList DropPerfiles = ViewBag.Perfil;
 
-
-    if (ViewBag.repetidos != null)
-    {
-
-    }
 }
 
-<h2>Departamento</h2>
+<h2>DashBoard Empleados</h2>
 
 @Styles.Render("~/bundles/DataPikerCss")
 
 @*@Scripts.Render("~/bundles/scriptDashBoard")*@
 @Scripts.Render("~/bundles/DataPikerJs")
 <script src="~/Scripts/plugins/chart.js"></script>
-<h2>Index</h2>
 <div class="container">
     <div class="row">
         <form action="@Url.Action("DashBoardUsuario", "DashBoard")" method="post" class="form-inline">
@@ -52,8 +46,9 @@
         </form>
     </div>
     @{
-        if (Model.Select(s=>s.aplico).FirstOrDefault() != -1)
+        if (Model.Select(s => s.aplico).FirstOrDefault() != -1)
         {
+
             <div class="row">
                 <div class="col-sm-6">
                     <h4>Cantidad de requerimientos anuales</h4>
@@ -63,7 +58,6 @@
                             <canvas id="CantidadTask" width="800" height="600"></canvas>
                         </div>
                     </div>
-
                 </div>
 
                 <div class="col-sm-6">
@@ -115,7 +109,6 @@
         int enero, febrero, marzo, abri, mayo, junio, julio, agosto, septiembre, octubre, noviembre, diciembre = 0;
     }
 
-    if (@Model.Select(s=>s.aplico).FirstOrDefault() != -1) {
         CantidadTask();
         TaskMensuales();
         AplicoTask();
@@ -192,23 +185,23 @@
                                 [
                                     @item.TotalAsignado,@item.TotalDesarrollo,@item.TotalRealizado,@item.TotalRechazado
                                 ],
-                                </text>
+                    </text>
                             }
                     backgroundColor: ['#03A9F4', '#B3E5FC', '#81C784', '#E57373']
                 }],
-        };
-    var myDoughnutChart = new Chart(ctxx, {
-        type: 'doughnut',
-        data: datos,
-        options: {
-            animation: {
-                animateScale: true
-            }
+            };
+            var myDoughnutChart = new Chart(ctxx, {
+                type: 'doughnut',
+                data: datos,
+                options: {
+                    animation: {
+                        animateScale: true
+                    }
+                }
+            });
         }
-    });
-    }
 
-    }
+
 
     function AplicoTask() {
         var ctx = document.getElementById("AplicoTask").getContext('2d');

@@ -26,8 +26,7 @@ namespace MVCHelpDesk.ViewModel
         public int TotalRealizado { get; set; }
         public int TotalRechazado { get; set; }
 
-
-}
+    }
     public class AplicoMensual : ViewDashboard
     {
         public int aplico { get; set; }
@@ -58,12 +57,6 @@ namespace MVCHelpDesk.ViewModel
         public int noAplicoOctubre { get; set; }
         public int noAplicoNoviembre { get; set; }
         public int noAplicoDiciembre { get; set; }
-
-        public List<dynamic> ListRepetidos;
     }
 
-    public class Repetidos {
-        public int TaskID { get; set; }
-        public string Nombre { get; set; }
-    }
 }
