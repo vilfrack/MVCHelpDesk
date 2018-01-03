@@ -217,6 +217,7 @@
     <Compile Include="ViewModel\ViewComentario.cs" />
     <Compile Include="ViewModel\ViewDashboard.cs" />
     <Compile Include="ViewModel\ViewPermisos.cs" />
+    <Compile Include="ViewModel\ViewPrueba.cs" />
     <Compile Include="ViewModel\ViewRol.cs" />
     <Compile Include="ViewModel\ViewTaskFile.cs" />
     <Compile Include="ViewModel\ViewUserPerfil.cs" />

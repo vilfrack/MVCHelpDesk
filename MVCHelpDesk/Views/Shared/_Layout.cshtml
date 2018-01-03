@@ -137,7 +137,6 @@
                 <ul class="nav navbar-nav side-nav">
                     <li class="active">
                         @*<a href="index.html"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>*@
-
                     </li>
                     <li>
                         @*@Url.Action("index", "Dashboard")*@
@@ -150,7 +149,6 @@
                                 @Html.ActionLink("DashBoard Empleado", "DashBoardUsuario", "Dashboard")
                             </li>
                         </ul>
-
                     </li>
                     <li>
                         @Html.ActionLink("Departamento", "index", "Departamento")
@@ -177,11 +175,7 @@
                     </li>
                     <li>
                         @*<a href="blank-page.html"><i class="fa fa-fw fa-file"></i> Blank Page</a>*@
-
                     </li>
-
-
-
                     <li>
                         <a href="javascript:;" data-toggle="collapse" data-target="#Kanban"><i class="fa fa-fw fa-table"></i>Cuadro Kanban <i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="Kanban" class="collapse">
@@ -193,7 +187,6 @@
                             </li>
                         </ul>
                     </li>
-
                     <li>
                         @*<a href="task.html"><i class="fa fa-fw fa-dashboard"></i> task</a>*@
                         @Html.ActionLink("Crear Task", "index", "OperationsTaks")
@@ -222,9 +215,6 @@
         </div>
         <!-- /#page-wrapper -->
     </div>
-
-
-
     @RenderSection("scripts", required: false)
 </body>
 </html>
